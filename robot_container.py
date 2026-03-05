@@ -17,6 +17,7 @@ from telemetry import Telemetry
 from subsystems.Drive.heading_controller import HeadingController
 from subsystems.Vision.limelight_system import LLsystem
 from subsystems.laser_can import LaserCAN
+from subsystems.intake import IntakeSystem
 from Commands.seed_zero import SeedZero
 from Commands.drive_teleop_command import DriveTeleopCommand
 from Commands.auto_pilot_command import AutoPilotCommand
@@ -43,7 +44,9 @@ class RobotContainer:
 #            print("Creating CAN Devices",round(self.timer.get(),0))
 
         self.headingController = HeadingController.getInstance()        
+        self.intake = IntakeSystem.getInstance()           
         LaserCAN.getInstance()
+
         self.limelightSytem = LLsystem.getInstance()
         self._joystick = CommandXboxController(0)
         self.seedZero = SeedZero(self.drivetrain,self.headingController)
@@ -74,11 +77,11 @@ class RobotContainer:
 
 
 #        reset the field-centric heading on left bumper press
-        self._joystick.button(5).onTrue(self.seedZero)
+#        self._joystick.button(5).onTrue(self.seedZero)
 
         #reset pose to 0
-        self._joystick.button(6).onTrue(
-            self.drivetrain.runOnce(lambda:self.drivetrain.reset_pose(Pose2d())))
+#        self._joystick.button(6).onTrue(
+#            self.drivetrain.runOnce(lambda:self.drivetrain.reset_pose(Pose2d())))
 
         
         self.drivetrain.register_telemetry(
@@ -97,10 +100,27 @@ class RobotContainer:
         self._joystick.button(4).onTrue(
             self.headingController.runOnce(lambda:self.headingController.rotateTo270()))
 
+        self._joystick.button(7).onTrue(
+            self.intake.runOnce(lambda:self.intake.intake()))
+#        self._joystick.button(7).onFalse(
+#            self.intake.runOnce(lambda:self.intake.stop_()))        
         
+        self._joystick.button(8).onTrue(
+            self.intake.runOnce(lambda:self.intake.stop_intake()))
+#        self._joystick.button(8).onFalse(
+#            self.intake.runOnce(lambda:self.intake.stop_arm()))                
+
+        self._joystick.button(5).onTrue(
+            self.intake.runOnce(lambda:self.intake.arm_up()))
+ 
+        self._joystick.button(6).onTrue(
+            self.intake.runOnce(lambda:self.intake.arm_down()))
+        
+        self._joystick.button(10).onTrue(
+            self.intake.runOnce(lambda:self.intake.zero_position()))
 
 #        self._joystick.button(7).whileTrue(FindkS())
-        self._joystick.button(7).whileTrue(FindSlipCurrent())
+#        self._joystick.button(7).whileTrue(FindSlipCurrent())
 #        self._joystick.button(7).whileTrue(FindWheelBase())        
 #        self._joystick.button(8).whileTrue(FindKP_MaxA())        
 
@@ -113,8 +133,8 @@ class RobotContainer:
 #            commands2.DeferredCommand(lambda:self.drive_path.drive_trench()).finallyDo
 #           (self.headingController.setTargetRotationInt))        
 
-        self._joystick.button(8).whileTrue(
-            AutoPilotCommand(26,-1.5,0,0).finallyDo((self.headingController.setTargetRotationInt)))
+ #       self._joystick.button(8).whileTrue(
+ #           AutoPilotCommand(26,-1.5,0,0).finallyDo((self.headingController.setTargetRotationInt)))
  
         self._joystick.button(9).onTrue(
               InstantCommand(lambda:self.update_constants()))
@@ -134,9 +154,10 @@ class RobotContainer:
         self.constants.update_constants()
         # update limelight, autobuilder, and heading controller constants  
 #        self.limelightSytem.configfureLimelights()
-        self.autoGenerator.configAutoBuilder()
-        self.drivetrain.update()
-        self.drive_teleop_command.setConstants()
+#        self.autoGenerator.configAutoBuilder()
+#        self.drivetrain.update()
+#        self.drive_teleop_command.setConstants()
+        self.intake.setup()
         # DriveGoal_Cam does not need to be explicitly updated, it is generated at each use
     
      
