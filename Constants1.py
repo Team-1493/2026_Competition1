@@ -124,6 +124,11 @@ class ConstantValues():
         ARM_FORWARDTHRESH = .285
         ARM_REVERSETHRESH = 0                
         SENSOR_TO_MECHANISM_RATIO = 50 # 1 if 1 rotation of the motor = 1 rotation of the arm
+
+    class ShooterConstants():
+        LEADER_KP = 1
+        LEADER_KV = 0
+        VELOCITY = 0
         
     class VisionConstants():    
         
@@ -263,6 +268,7 @@ class ConstantValues():
         ConstantValues.DriveConstants.TELEOP_SCALE_FACTOR_ROT = SmartDashboard.getNumber("Drive Teleop Scale Rot",ConstantValues.DriveConstants.TELEOP_SCALE_FACTOR_ROT)                                 
         ConstantValues.DriveConstants.SPEED_AT_12_VOLTS = SmartDashboard.getNumber("Drive Speed 12V",ConstantValues.DriveConstants.SPEED_AT_12_VOLTS)                         
 
+        ### Update Constants for Intake
         ConstantValues.IntakeConstants.INTAKE_VOLTAGE = SmartDashboard.getNumber("Intake Intake Volt",ConstantValues.IntakeConstants.INTAKE_VOLTAGE)                         
         ConstantValues.IntakeConstants.MAX_UP_ROTATION = SmartDashboard.getNumber("Intake Arm Max Up",ConstantValues.IntakeConstants.MAX_UP_ROTATION)
         ConstantValues.IntakeConstants.MAX_DOWN_ROTATION = SmartDashboard.getNumber("Intake Arm Max Down",ConstantValues.IntakeConstants.MAX_DOWN_ROTATION)   
@@ -276,6 +282,10 @@ class ConstantValues():
         ConstantValues.IntakeConstants.ARM_REVERSETHRESH = SmartDashboard.getNumber("Intake Arm Rev Thresh",ConstantValues.IntakeConstants.ARM_REVERSETHRESH)                     
         ConstantValues.IntakeConstants.SENSOR_TO_MECHANISM_RATIO = SmartDashboard.getNumber("Intake Arm Mech Ratio",ConstantValues.IntakeConstants.SENSOR_TO_MECHANISM_RATIO)                     
 
+        ### Update Constants for Shooter
+        ConstantValues.ShooterConstants.LEADER_KP = SmartDashboard.getNumber("Leader KP", ConstantValues.ShooterConstants.LEADER_KP)
+        ConstantValues.ShooterConstants.LEADER_KV = SmartDashboard.getNumber("Leader KV", ConstantValues.ShooterConstants.LEADER_KV)
+        ConstantValues.ShooterConstants.VELOCITY = SmartDashboard.getNumber("Velocity", ConstantValues.ShooterConstants.VELOCITY)
 
         ### Update Constants for DriveToGoalCamera
         ConstantValues.DriveToGoalCameraConstants.kLateralTolerance = SmartDashboard.getNumber("DTG_Cam LatTol",ConstantValues.DriveToGoalCameraConstants.kLateralTolerance)      
@@ -362,8 +372,11 @@ class ConstantValues():
         SmartDashboard.putNumber("Intake Arm Peak Curr Rev",ConstantValues.IntakeConstants.ARM_PEAK_REVERSE_TORQUE_CURRENT)                     
         SmartDashboard.putNumber("Intake Arm For Thresh",ConstantValues.IntakeConstants.ARM_FORWARDTHRESH)                     
         SmartDashboard.putNumber("Intake Arm Rev Thresh",ConstantValues.IntakeConstants.ARM_REVERSETHRESH)                     
-        SmartDashboard.putNumber("Intake Arm Mech Ratio",ConstantValues.IntakeConstants.SENSOR_TO_MECHANISM_RATIO)                     
-
+        SmartDashboard.putNumber("Intake Arm Mech Ratio",ConstantValues.IntakeConstants.SENSOR_TO_MECHANISM_RATIO)  
+                   
+        SmartDashboard.putNumber("Leader KP", ConstantValues.ShooterConstants.LEADER_KP)
+        SmartDashboard.putNumber("Leader KV", ConstantValues.ShooterConstants.LEADER_KV)
+        SmartDashboard.putNumber("Voltage", ConstantValues.ShooterConstants.VELOCITY)
 
         SmartDashboard.putNumber("DTG_Cam LatTol",ConstantValues.DriveToGoalCameraConstants.kLateralTolerance)      
         SmartDashboard.putNumber("DTG_Cam ForTol",ConstantValues.DriveToGoalCameraConstants.kForwardTolerance)
