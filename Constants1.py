@@ -129,7 +129,7 @@ class ConstantValues():
         LEADER_KP = 1
         LEADER_KV = 0
         VELOCITY = 0
-        
+        THRESHOLD = 6.0
     class VisionConstants():    
         
         tag1 = AprilTag()
