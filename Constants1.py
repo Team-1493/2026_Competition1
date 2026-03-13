@@ -128,8 +128,9 @@ class ConstantValues():
     class ShooterConstants():
         LEADER_KP = 1
         LEADER_KV = 0
-        VELOCITY = 0
-        THRESHOLD = 6.0
+        SHOOTING_VELOCITY = 0
+        CONVEYOR_VOLTAGE = 0
+        TOLERANCE = 1e-3
     class VisionConstants():    
         
         tag1 = AprilTag()
@@ -285,7 +286,8 @@ class ConstantValues():
         ### Update Constants for Shooter
         ConstantValues.ShooterConstants.LEADER_KP = SmartDashboard.getNumber("Leader KP", ConstantValues.ShooterConstants.LEADER_KP)
         ConstantValues.ShooterConstants.LEADER_KV = SmartDashboard.getNumber("Leader KV", ConstantValues.ShooterConstants.LEADER_KV)
-        ConstantValues.ShooterConstants.VELOCITY = SmartDashboard.getNumber("Velocity", ConstantValues.ShooterConstants.VELOCITY)
+        ConstantValues.ShooterConstants.SHOOTING_VELOCITY = SmartDashboard.getNumber("Shooting Velocity", ConstantValues.ShooterConstants.SHOOTING_VELOCITY)
+        ConstantValues.ShooterConstants.CONVEYOR_VOLTAGE = SmartDashboard.getNumber("Conveyor Voltage", ConstantValues.ShooterConstants.CONVEYOR_VOLTAGE)
 
         ### Update Constants for DriveToGoalCamera
         ConstantValues.DriveToGoalCameraConstants.kLateralTolerance = SmartDashboard.getNumber("DTG_Cam LatTol",ConstantValues.DriveToGoalCameraConstants.kLateralTolerance)      
@@ -376,7 +378,8 @@ class ConstantValues():
                    
         SmartDashboard.putNumber("Leader KP", ConstantValues.ShooterConstants.LEADER_KP)
         SmartDashboard.putNumber("Leader KV", ConstantValues.ShooterConstants.LEADER_KV)
-        SmartDashboard.putNumber("Voltage", ConstantValues.ShooterConstants.VELOCITY)
+        SmartDashboard.putNumber("Shooting Velocity", ConstantValues.ShooterConstants.SHOOTING_VELOCITY)
+        SmartDashboard.putNumber("Conveyor Voltage", ConstantValues.ShooterConstants.CONVEYOR_VOLTAGE)
 
         SmartDashboard.putNumber("DTG_Cam LatTol",ConstantValues.DriveToGoalCameraConstants.kLateralTolerance)      
         SmartDashboard.putNumber("DTG_Cam ForTol",ConstantValues.DriveToGoalCameraConstants.kForwardTolerance)
