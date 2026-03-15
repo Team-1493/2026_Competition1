@@ -5,15 +5,15 @@ from phoenix6 import hardware, configs, controls
 from phoenix6.signals import MotorAlignmentValue
 from Constants1 import ConstantValues
 
-class Shooter(Subsystem):
+class ShooterSystem(Subsystem):
     instance=None
     
     @staticmethod
     def getInstance():
-        if Shooter.instance == None:
-            Shooter.instance = Shooter()
+        if ShooterSystem.instance == None:
+            ShooterSystem.instance = ShooterSystem()
             print('*' * 22 + ' SHOOTER ' + '*' * 22)
-        return Shooter.instance
+        return ShooterSystem.instance
     def setup(self):
         pass
     def __init__(self,
@@ -40,12 +40,7 @@ class Shooter(Subsystem):
         self.cfg = configs.TalonFXConfiguration()
         self.cfg.slot0.k_v = ConstantValues.ShooterConstants.LEADER_KV
         self.leader_motor.configurator.apply(self.cfg)
-        
-        self.tolerance = ConstantValues.ShooterConstants.TOLERANCE
-        self.conveyor_voltage = ConstantValues.ShooterConstants.CONVEYOR_VOLTAGE
-        self.velocity = ConstantValues.ShooterConstants.SHOOTING_VELOCITY
-        self.threshold = self.velocity * 0.1
-        
+        self.conveyor_voltage = ConstantValues.ShooterConstants.CONVEYOR_VOLTAGE   
 
         self.velocity_voltage = controls.VelocityVoltage(velocity=self.velocity)
         self.voltage_control = controls.VoltageOut(0)
@@ -56,15 +51,15 @@ class Shooter(Subsystem):
         """
         Move the leader motor
         """
-        self.leader_motor.set_control(self.velocity_voltage.with_velocity(velocity))
         self.velocity = velocity
+        self.leader_motor.set_control(self.velocity_voltage.with_velocity(self.velocity))
     def stop_shooter(self):
         self.leader_motor.set_control(self.brake)
     def immediate_move_conveyor(self):
         self.feeder_motor.set_control(self.voltage_control.with_output(self.conveyor_voltage))
     def move_conveyor(self):
         # If the shooter motor's velocity is around the threshold, THEN move the feeder
-        if abs(self.threshold - self.mean_shooter_velocity()) <= self.tolerance:
+        if abs((self.velocity * 0.1) - self.mean_shooter_velocity()) <= 0.1 or self.mean_shooter_velocity() >= self.velocity:
             self.feeder_motor.set_control(self.voltage_control.with_output(self.conveyor_voltage))
     def stop_conveyor(self):
         self.feeder_motor.set_control(self.brake)
