@@ -6,8 +6,9 @@ from phoenix6.swerve.requests import ForwardPerspectiveValue
 from phoenix6.configs import Slot0Configs, Slot1Configs
 from typing import Callable, overload
 from wpilib import DriverStation, Notifier, RobotController, SmartDashboard
+import wpilib
 from wpilib.sysid import SysIdRoutineLog
-from wpimath.geometry import Pose2d, Rotation2d
+from wpimath.geometry import Pose2d, Rotation2d, Translation2d
 from Constants1 import ConstantValues
 
 
@@ -148,94 +149,24 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
             self, drive_motor_type, steer_motor_type, encoder_type,
             drivetrain_constants, arg0, arg1, arg2, arg3
         )
-        self.rot_deg=0 
         self.reset_pose(Pose2d())
         self._sim_notifier: Notifier | None = None
         self._last_sim_time: units.second = 0.0
 
-        self._has_applied_operator_perspective = False
         """Keep track if we've ever applied the operator perspective before or not"""
+        self._has_applied_operator_perspective = False
+
+        self.set_operator_perspective_forward(self._BLUE_ALLIANCE_PERSPECTIVE_ROTATION)
+        
+        self.previous_alliance_color = None
+        self.alliance_color = None        
+        
         self.setup_swerve_requests()
-        # Swerve requests to apply during SysId characterization
-        self._translation_characterization = swerve.requests.SysIdSwerveTranslation()
-        self._steer_characterization = swerve.requests.SysIdSwerveSteerGains()
-        self._rotation_characterization = swerve.requests.SysIdSwerveRotation()
 
-        self._sys_id_routine_translation = SysIdRoutine(
-            SysIdRoutine.Config(
-                # Use default ramp rate (1 V/s) and timeout (10 s)
-                # Reduce dynamic voltage to 4 V to prevent brownout
-                stepVoltage=4.0,
-                # Log state with SignalLogger class
-                recordState=lambda state: SignalLogger.write_string(
-                    "SysIdTranslation_State", SysIdRoutineLog.stateEnumToString(state)
-                ),
-            ),
-            SysIdRoutine.Mechanism(
-                lambda output: self.set_control(
-                    self._translation_characterization.with_volts(output)
-                ),
-                lambda log: None,
-                self,
-            ),
-        )
-        """SysId routine for characterizing translation. This is used to find PID gains for the drive motors."""
-
-        self._sys_id_routine_steer = SysIdRoutine(
-            SysIdRoutine.Config(
-                # Use default ramp rate (1 V/s) and timeout (10 s)
-                # Use dynamic voltage of 7 V
-                stepVoltage=7.0,
-                # Log state with SignalLogger class
-                recordState=lambda state: SignalLogger.write_string(
-                    "SysIdSteer_State", SysIdRoutineLog.stateEnumToString(state)
-                ),
-            ),
-            SysIdRoutine.Mechanism(
-                lambda output: self.set_control(
-                    self._steer_characterization.with_volts(output)
-                ),
-                lambda log: None,
-                self,
-            ),
-        )
-        """SysId routine for characterizing steer. This is used to find PID gains for the steer motors."""
-
-        self._sys_id_routine_rotation = SysIdRoutine(
-            SysIdRoutine.Config(
-                # This is in radians per second², but SysId only supports "volts per second"
-                rampRate=math.pi / 6,
-                # Use dynamic voltage of 7 V
-                stepVoltage=7.0,
-                # Use default timeout (10 s)
-                # Log state with SignalLogger class
-                recordState=lambda state: SignalLogger.write_string(
-                    "SysIdSteer_State", SysIdRoutineLog.stateEnumToString(state)
-                ),
-            ),
-            SysIdRoutine.Mechanism(
-                lambda output: (
-                    # output is actually radians per second, but SysId only supports "volts"
-                    self.set_control(
-                        self._rotation_characterization.with_rotational_rate(output)
-                    ),
-                    # also log the requested output for SysId
-                    SignalLogger.write_double("Rotational_Rate", output),
-                ),
-                lambda log: None,
-                self,
-            ),
-        )
-        """
-        SysId routine for characterizing rotation.
-        This is used to find PID gains for the FieldCentricFacingAngle HeadingController.
-        See the documentation of swerve.requests.SysIdSwerveRotation for info on importing the log to SysId.
-        """
-
-        self._sys_id_routine_to_apply = self._sys_id_routine_translation
-        """The SysId routine to test"""
         if utils.is_simulation():
             self._start_sim_thread()
+
+
     def apply_request(
         self, request: Callable[[], swerve.requests.SwerveRequest]
     ) -> Command:
@@ -249,29 +180,6 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
         """
         return self.run(lambda: self.set_control(request()))
 
-    def sys_id_quasistatic(self, direction: SysIdRoutine.Direction) -> Command:
-        """
-        Runs the SysId Quasistatic test in the given direction for the routine
-        specified by self.sys_id_routine_to_apply.
-
-        :param direction: Direction of the SysId Quasistatic test
-        :type direction: SysIdRoutine.Direction
-        :returns: Command to run
-        :rtype: Command
-        """
-        return self._sys_id_routine_to_apply.quasistatic(direction)
-
-    def sys_id_dynamic(self, direction: SysIdRoutine.Direction) -> Command:
-        """
-        Runs the SysId Dynamic test in the given direction for the routine
-        specified by self.sys_id_routine_to_apply.
-
-        :param direction: Direction of the SysId Dynamic test
-        :type direction: SysIdRoutine.Direction
-        :returns: Command to run
-        :rtype: Command
-        """
-        return self._sys_id_routine_to_apply.dynamic(direction)
 
     def periodic(self):
         # Periodically try to apply the operator perspective.
@@ -279,28 +187,50 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
         # This allows us to correct the perspective in case the robot code restarts mid-match.
         # Otherwise, only check and apply the operator perspective if the DS is disabled.
         # This ensures driving behavior doesn't change until an explicit disable event occurs during testing.nc
+
         if not self._has_applied_operator_perspective or DriverStation.isDisabled():
-            alliance_color = DriverStation.getAlliance()
-            if alliance_color is not None:
-                self.set_operator_perspective_forward(
-                    self._RED_ALLIANCE_PERSPECTIVE_ROTATION
-                    if alliance_color == DriverStation.Alliance.kRed
-                    else self._BLUE_ALLIANCE_PERSPECTIVE_ROTATION
-                )
-                self._has_applied_operator_perspective = True
+            self.previous_alliance_color = self.alliance_color    
+            self.alliance_color = DriverStation.getAlliance()
+            
+            if self.alliance_color is not None:
+           #     print("11111111111111111111111111111111 ", self.alliance_color)
+                if (self.alliance_color != self.previous_alliance_color):
+
+                    if self.alliance_color.value == 0:#DriverStation.Alliance.kRed:
+                        print("22222222222222222222222222222 ", self.alliance_color)
+                        self.set_operator_perspective_forward(self._RED_ALLIANCE_PERSPECTIVE_ROTATION)
+                        self.reset_pose(Pose2d(Translation2d(0,0),Rotation2d(math.pi)))
+                        self.seed_field_centric(Rotation2d())
+                    else:
+                        print("333333333333333333333333333333 ", self.alliance_color)                        
+                        self.set_operator_perspective_forward(self._BLUE_ALLIANCE_PERSPECTIVE_ROTATION)
+                        self.reset_pose(Pose2d(Translation2d(0,0),Rotation2d(0)))       
+                        self.seed_field_centric(Rotation2d())                               
+                    self._has_applied_operator_perspective = True
 
 
-     
-       
-#        self.operator_fwd_dir_deg = self.get_operator_forward_direction().degrees()    
-       # pose =  self.get_pose()
-       # spd = self.get_speeds()
-        #SmartDashboard.putNumber("Vx: ",round(spd.vx,3))
-        #SmartDashboard.putNumber("Vy: ",round(spd.vy,3))
-        #SmartDashboard.putNumber("Rot Rate: ",round(self.get_omega_dps(),3))   
-        #SmartDashboard.putNumber("X: ",round(pose.X(),3))
-        #SmartDashboard.putNumber("y: ",round(pose.Y(),3))
-        #SmartDashboard.putNumber("Rot: ",round(self.get_rotation_deg(),3))  
+        pose =  self.get_pose()
+        spd = self.get_speeds()
+        x =pose.X()
+        y = pose.Y()
+        rot = pose.rotation().degrees()
+        x_in = x*39.37
+        y_in = y*39.37  
+
+
+        SmartDashboard.putNumber("Vx: ",round(spd.vx,3))
+        SmartDashboard.putNumber("Vy: ",round(spd.vy,3))
+        SmartDashboard.putNumber("Rot Rate: ",round(self.get_omega_dps(),3))   
+        SmartDashboard.putNumber("X: ",round(x,3))
+        SmartDashboard.putNumber("y: ",round(y,3))
+        SmartDashboard.putNumber("Rot: ",round(rot,3))
+        SmartDashboard.putNumber("X_in: ",round(x_in,3))
+        SmartDashboard.putNumber("y_in: ",round(y_in,3))
+        SmartDashboard.putNumber("roll: ",round(self.pigeon2.get_roll().value_as_double,3) )
+        SmartDashboard.putNumber("pitch: ",round(self.pigeon2.get_pitch().value_as_double,3))
+        SmartDashboard.putNumber("roll: ",round(self.pigeon2.get_roll().value_as_double,3) )
+        SmartDashboard.putNumber("yaw: ",round(self.pigeon2.get_yaw().value_as_double,3))                                
+
 
 
     def _start_sim_thread(self):
@@ -345,6 +275,7 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
                     ConstantValues.DriveConstants.TELEOP_DEADBAND)  #squared input, so db starts at 0.05
             .with_drive_request_type(
                 swerve.SwerveModule.DriveRequestType.VELOCITY)
+                .with_rotational_deadband(0.01)
         )
         
         self.request_teleop_FC_facing = (
@@ -357,6 +288,8 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
                 ConstantValues.HeadingControllerConstants.HEADINGCONTROLLER_KP,
                 0,
                 ConstantValues.HeadingControllerConstants.HEADINGCONTROLLER_KD)    
+                .with_rotational_deadband(ConstantValues.DriveConstants.TELEOP_DEADBAND).
+                with_max_abs_rotational_rate(ConstantValues.HeadingControllerConstants.HEADINGCONTROLLER_VMAX)
         )
 
 
@@ -439,31 +372,21 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
         slot0_teleop = Slot0Configs()
 
         k_p_tele = ConstantValues.DriveConstants.TELEOP_kP
-        k_v_tele = ConstantValues.DriveConstants.TELEOP_kV
         k_s_tele = ConstantValues.DriveConstants.TELEOP_kS
-        k_a_tele = ConstantValues.DriveConstants.TELEOP_kA
         
         slot0_teleop.k_p = k_p_tele
         slot0_teleop.k_s = k_s_tele
-        slot0_teleop.k_v = k_v_tele
-        slot0_teleop.k_a = k_a_tele                        
 
         k_p_auto = ConstantValues.DriveConstants.AUTO_kP
-        k_v_auto = ConstantValues.DriveConstants.AUTO_kV
         k_s_auto = ConstantValues.DriveConstants.AUTO_kS
-        k_a_auto = ConstantValues.DriveConstants.AUTO_kA
 
         slot1_auto.k_p = k_p_auto
         slot1_auto.k_s = k_s_auto
-        slot1_auto.k_v = k_v_auto
-        slot1_auto.k_a = k_a_auto                                
-
 
         self.get_module(0).drive_motor.configurator.apply(slot0_teleop)
         self.get_module(1).drive_motor.configurator.apply(slot0_teleop)
         self.get_module(2).drive_motor.configurator.apply(slot0_teleop)
         self.get_module(3).drive_motor.configurator.apply(slot0_teleop)       
-
 
         self.get_module(0).drive_motor.configurator.apply(slot1_auto)
         self.get_module(1).drive_motor.configurator.apply(slot1_auto)
@@ -473,3 +396,30 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
         self.setup_swerve_requests()
 
 
+
+    def wait_for_can_ready(self, timeout=9.0):
+        timer = wpilib.Timer()
+        timer.start()
+
+        while timer.get() < timeout:
+
+            all_connected = True
+
+            for i in range(4):
+                module = self.get_module(i)
+
+                if not module.drive_motor.is_connected():
+                    all_connected = False
+                if not module.steer_motor.is_connected():
+                    all_connected = False
+                if not module.encoder.is_connected():
+                    all_connected = False
+
+            if all_connected:
+                print("All CAN devices ready.")
+                return True
+
+            wpilib.Timer.delay(0.02)
+
+        print("WARNING: CAN devices not fully ready!")
+        return False

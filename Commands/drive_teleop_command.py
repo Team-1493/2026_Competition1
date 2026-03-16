@@ -1,15 +1,16 @@
 import typing
 import commands2
 from math import copysign
+from wpilib import SmartDashboard
 from wpimath.geometry import Rotation2d
 from subsystems.Drive.drivetrain_generator import DrivetrainGenerator
 from generated.tuner_constants import TunerConstants
 from subsystems.Drive.heading_controller import HeadingController
 from phoenix6 import swerve
 from wpimath.units import rotationsToRadians
-from wpilib import SmartDashboard
 from  subsystems.Drive.command_swerve_drivetrain import CommandSwerveDrivetrain
 from Constants1 import ConstantValues
+
 
 
 class DriveTeleopCommand(commands2.Command):    
@@ -25,37 +26,10 @@ class DriveTeleopCommand(commands2.Command):
         self.forward = forward
         self.side = side
         self.rotate = rotate
-
         self.drivetrain = _drivetrain
-
         self.headingController = HeadingController.getInstance()
-      
-        self.request_teleop_FC = (
-            swerve.requests.FieldCentric()
-            .with_deadband(ConstantValues.DriveConstants.SPEED_AT_12_VOLTS *
-                    ConstantValues.DriveConstants.TELEOP_DEADBAND)  #squared input, so db starts at 0.05
-            .with_drive_request_type(
-                swerve.SwerveModule.DriveRequestType.VELOCITY)
-        )
-
-        self.request_teleop_FC_facing = (
-            swerve.requests.FieldCentricFacingAngle()
-            .with_deadband(ConstantValues.DriveConstants.SPEED_AT_12_VOLTS *
-                    ConstantValues.DriveConstants.TELEOP_DEADBAND)  #squared input, so db starts at 0.05
-            .with_drive_request_type(
-                swerve.SwerveModule.DriveRequestType.VELOCITY)
-            .with_heading_pid(
-                ConstantValues.HeadingControllerConstants.HEADINGCONTROLLER_KP,
-                0,
-                ConstantValues.HeadingControllerConstants.HEADINGCONTROLLER_KD)    
-        )
-
+        self.slow_mode = 1
         self.setConstants()
-
-      
-
-
-
         self.addRequirements(self.drivetrain)
 
 
@@ -74,12 +48,11 @@ class DriveTeleopCommand(commands2.Command):
         sde = copysign(sde**2,sde)
         rot = copysign(rot**2,rot)
 
-        self.requested_velocity=forw*self._max_speed*self.scale_factorXY
-        SmartDashboard.putNumber("requested velocity", self.requested_velocity)
-        dir = self.drivetrain.get_operator_forward_direction().radians()
-        state, target_angle = self.headingController.get_rotation_state(rot*self._max_angular_rate)    
-#        state =0.
-#        target_angle=0   
+        state, target_angle = self.headingController.get_rotation_state(rot*self._max_angular_rate)  
+      
+        self.scale_factorXY=self.slow_mode*SmartDashboard.getNumber("Drive Teleop Scale XY", self.scale_factorXY)
+        self.scale_factorRot=self.slow_mode*SmartDashboard.getNumber("Drive Teleop Scale Rot", self.scale_factorRot)
+
         if state==0:
             self.drivetrain.drive_FC(
                 forw*self._max_speed*self.scale_factorXY,
@@ -93,9 +66,18 @@ class DriveTeleopCommand(commands2.Command):
                 target_angle)    
         
 
+    def slow_mode_on(self):
+        self.slow_mode=.5
+
+    def slow_mode_off(self):
+        self.slow_mode=1
+
+        
+
     def setConstants(self):
         self._max_speed = (ConstantValues.DriveConstants.SPEED_AT_12_VOLTS)  
         self._max_angular_rate = rotationsToRadians(ConstantValues.DriveConstants.TELEOP_MAX_ANGULAR_RATE)  
         self.scale_factorXY = ConstantValues.DriveConstants.TELEOP_SCALE_FACTOR_XY
         self.scale_factorRot = ConstantValues.DriveConstants.TELEOP_SCALE_FACTOR_ROT
+
         

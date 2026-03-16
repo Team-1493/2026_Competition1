@@ -38,9 +38,11 @@ class MyRobot(commands2.TimedCommandRobot):
     def disabledInit(self) -> None:
         pass
 
+
     def disabledPeriodic(self) -> None:
         self.container.limelightSytem.zeroAndseedIMU()
         pass
+
 
     def autonomousInit(self) -> None:
         self.container.limelightSytem.set_IMU_Mode(self.IMU_mode)
@@ -48,8 +50,10 @@ class MyRobot(commands2.TimedCommandRobot):
         if self.autonomousCommand:
             self.autonomousCommand.schedule()
 
+
     def autonomousPeriodic(self) -> None:
         pass
+
 
     def teleopInit(self) -> None:
         # This makes sure that the autonomous stops running when
@@ -62,18 +66,21 @@ class MyRobot(commands2.TimedCommandRobot):
         
         #  0 for external IMU,  2 for internal IMU, 4 for internal + externa assist         
         self.container.limelightSytem.set_IMU_Mode(self.IMU_mode)   
-        
+
+
     def teleopPeriodic(self) -> None:
         pass
+
 
     def testInit(self) -> None:
         # Cancels all running commands at the start of test mode
         commands2.CommandScheduler.getInstance().cancelAll()
         self.container.setHeadingControlToCurrentrHeading()
     
-    """"
-    @typing.override
-    def _simulationInit(self):
-        from subsystems.Vision.photon_vision_sim import PVisionSim
-        vsim = PVisionSim()
-    """
+
+
+#    @typing.override
+#    def _simulationInit(self):
+#        from subsystems.Vision.photon_vision_sim import PVisionSim
+#        vsim = PVisionSim()
+    

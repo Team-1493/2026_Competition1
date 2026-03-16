@@ -18,7 +18,6 @@ from subsystems.Drive.heading_controller import HeadingController
 from subsystems.Vision.limelight_system import LLsystem
 from subsystems.laser_can import LaserCAN
 from subsystems.intake import IntakeSystem
-from Commands.seed_zero import SeedZero
 from Commands.drive_teleop_command import DriveTeleopCommand
 from Commands.auto_pilot_command import AutoPilotCommand
 from Commands.find_wheel_base import FindWheelBase
@@ -49,7 +48,6 @@ class RobotContainer:
 
         self.limelightSytem = LLsystem.getInstance()
         self._joystick = CommandXboxController(0)
-        self.seedZero = SeedZero(self.drivetrain,self.headingController)
 
         self._logger = Telemetry(TunerConstants.speed_at_12_volts)
 #        DataLogManager.start()
@@ -88,6 +86,7 @@ class RobotContainer:
             lambda state: self._logger.telemeterize(state)
         )
         
+
         self._joystick.button(1).onTrue(
             self.headingController.runOnce(lambda:self.headingController.rotateToZero()))
         
@@ -100,22 +99,32 @@ class RobotContainer:
         self._joystick.button(4).onTrue(
             self.headingController.runOnce(lambda:self.headingController.rotateTo270()))
 
-        self._joystick.button(7).onTrue(
-            self.intake.runOnce(lambda:self.intake.intake()))
-#        self._joystick.button(7).onFalse(
-#            self.intake.runOnce(lambda:self.intake.stop_()))        
-        
-        self._joystick.button(8).onTrue(
-            self.intake.runOnce(lambda:self.intake.stop_intake()))
-#        self._joystick.button(8).onFalse(
-#            self.intake.runOnce(lambda:self.intake.stop_arm()))                
+        self._joystick.button(5).onTrue(self.headingController.runOnce(lambda:
+            self.headingController.set_forward_direction()))
 
+        self._joystick.button(6).onTrue(InstantCommand(lambda:
+            self.drive_teleop_command.slow_mode_on()))
+        
+        self._joystick.button(6).onFalse(InstantCommand(lambda:
+            self.drive_teleop_command.slow_mode_off()))
+        
+
+
+        """    
         self._joystick.button(5).onTrue(
             self.intake.runOnce(lambda:self.intake.arm_up()))
  
         self._joystick.button(6).onTrue(
             self.intake.runOnce(lambda:self.intake.arm_down()))
+
+        self._joystick.button(7).onTrue(
+            self.intake.runOnce(lambda:self.intake.intake()))
         
+        self._joystick.button(8).onTrue(
+            self.intake.runOnce(lambda:self.intake.stop_intake()))
+            
+        """
+
         self._joystick.button(10).onTrue(
             self.intake.runOnce(lambda:self.intake.zero_position()))
 

@@ -24,7 +24,7 @@ class ConstantValues():
         TELEOP_DEADBAND = 0.0025
         TELEOP_MAX_ANGULAR_RATE = 1
         TELEOP_SCALE_FACTOR_XY = 0.3
-        TELEOP_SCALE_FACTOR_ROT = 0.3
+        TELEOP_SCALE_FACTOR_ROT = 0.2
         SPEED_AT_12_VOLTS = 3.6#TunerConstants.speed_at_12_volts 
 
 
@@ -124,7 +124,15 @@ class ConstantValues():
         ARM_FORWARDTHRESH = .285
         ARM_REVERSETHRESH = 0                
         SENSOR_TO_MECHANISM_RATIO = 50 # 1 if 1 rotation of the motor = 1 rotation of the arm
-        
+
+
+    class ShooterConstants():
+        LEADER_KP = 1
+        LEADER_KV = 0
+        SHOOTING_VELOCITY = 0
+        CONVEYOR_VOLTAGE = 0
+        TOLERANCE = 1e-3
+
     class VisionConstants():    
         
         tag1 = AprilTag()

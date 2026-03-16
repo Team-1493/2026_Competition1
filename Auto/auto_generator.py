@@ -12,7 +12,7 @@ from Constants1 import ConstantValues
 from subsystems.Drive.drivetrain_generator import DrivetrainGenerator
 from Commands.stop_drive import StopDrive
 from Commands.goal_cam_command import GoalCamCommand
-
+from subsystems.intake import IntakeSystem
 
 class AutoGenerator():
     
@@ -20,6 +20,7 @@ class AutoGenerator():
     def __init__(self):
         self.constants = ConstantValues.AutoBuilderConstants
         self.driveTrain = DrivetrainGenerator.getInstance()
+        self.intake = IntakeSystem.getInstance()
         self.driveRC=  swerve.requests.ApplyRobotSpeeds().with_drive_request_type(
             swerve.SwerveModule.DriveRequestType.VELOCITY)
         self.configAutoBuilder()
@@ -29,9 +30,22 @@ class AutoGenerator():
 
     def create_named_commands(self):
         NamedCommands.registerCommand('DriveToGoalCam', GoalCamCommand(-1,0))
-        NamedCommands.registerCommand('StopDrive', StopDrive())        
 
+        NamedCommands.registerCommand('StopDrive', StopDrive())   
 
+        NamedCommands.registerCommand('IntakeStart', 
+                        self.intake.runOnce(lambda:self.intake.intake()))
+
+        NamedCommands.registerCommand('IntakeStop', 
+                        self.intake.runOnce(lambda:self.intake.stop_intake()))
+
+        NamedCommands.registerCommand('ArmUp', 
+                        self.intake.runOnce(lambda:self.intake.arm_up()))
+
+        NamedCommands.registerCommand('ArmDown', 
+                        self.intake.runOnce(lambda:self.intake.arm_down()))
+
+    
     def configAutoBuilder(self):
         autoXY_kP = self.constants.AUTOBUILDER_XY_kP
         autoXY_kD = self.constants.AUTOBUILDER_XY_kD
