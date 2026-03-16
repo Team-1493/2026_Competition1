@@ -2,6 +2,7 @@ import typing
 from commands2 import Command
 from pathplannerlib.auto import AutoBuilder
 from pathplannerlib.path import PathPlannerPath, PathConstraints, GoalEndState,Waypoint,IdealStartingState,RotationTarget,ConstraintsZone
+from wpilib import DriverStation
 from wpimath.kinematics import ChassisSpeeds;
 from wpimath.geometry import Pose2d, Rotation2d, Translation2d
 from subsystems.Drive.drivetrain_generator import DrivetrainGenerator
@@ -22,10 +23,10 @@ class DrivePathGenerator():
                  ) -> None:
         super().__init__()
 
-        self.trench_right_pose = Pose2d(Translation2d(3.6,2.554),Rotation2d(0))
-        self.trench_right_pose2 = Pose2d(Translation2d(3.6+2,2.554),Rotation2d(0))        
-        self.trench_left_pose = Pose2d(Translation2d(3.6,8.069-2.554),Rotation2d(0))
-        self.trench_left_pose2 = Pose2d(Translation2d(3.6+2,8.069-2.554),Rotation2d(0))        
+        self.trench_right_pose = Pose2d(Translation2d(3.6+2,2.554),Rotation2d(0))
+        self.trench_right_pose2 = Pose2d(Translation2d(3.6,2.554),Rotation2d(0))        
+        self.trench_left_pose = Pose2d(Translation2d(3.6+2,8.069-2.554),Rotation2d(0))
+        self.trench_left_pose2 = Pose2d(Translation2d(3.6,8.069-2.554),Rotation2d(0))        
 
         self.driveTrain = DrivetrainGenerator.getInstance()
         self.robot = _robot
@@ -70,9 +71,9 @@ class DrivePathGenerator():
 
         iss =  IdealStartingState(
         self.getVelocityMagnitude(self.getFieldVelocity()), self.robotPose.rotation())
-        rotTarget=[]
+        rotTarget=[] 
         # complete the rotatation at the halfway point so all rotation is done
-        # well ahead of handover to the next stage
+        # well ahead of handover to the next stage 
         rotTarget.append(RotationTarget(0.5,self.targetPose.rotation()))
         self.path =  PathPlannerPath(
             self.waypoints, 
@@ -156,7 +157,7 @@ class DrivePathGenerator():
         targetpose2=Pose2d()
 #  NOT SYMETRIC!!!  If y<1/2 field width and blue, go to right trench, but if red go to left trench
 #  This is because origin is always on blue side regardless of alliance color    
-        if self.driveTrain.get_operator_forward_direction().degrees() == 0:
+        if DriverStation.getAlliance() == DriverStation.Alliance.kBlue:
             if self.driveTrain.get_Y()>8.069/2:
                 targetpose = self.trench_left_pose
                 targetpose2 = self.trench_left_pose2
@@ -173,10 +174,17 @@ class DrivePathGenerator():
 
         pose = HelperMethods.flip_pose_if_red(targetpose)
         pose2 = HelperMethods.flip_pose_if_red(targetpose2)
+        
+        
+        
+        return (
+            (self.drive_pathfind_to_pose(pose,.75))
+            .andThen(self.drive_path_to_pose(pose,pose2,0.75,0))  
+            .finallyDo(self.headingController.setTargetRotationInt)) 
 
+        """
         return (
             (self.drive_path_to_pose(None,pose,2.5, .75))
             .andThen(self.drive_path_to_pose(pose,pose2,.75,0))  
             .finallyDo(self.headingController.setTargetRotationInt))    
-        
-  
+        """
