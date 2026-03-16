@@ -18,12 +18,15 @@ from subsystems.Drive.heading_controller import HeadingController
 from subsystems.Vision.limelight_system import LLsystem
 from subsystems.laser_can import LaserCAN
 from subsystems.intake import IntakeSystem
+from subsystems.shooter import ShooterSystem
 from Commands.drive_teleop_command import DriveTeleopCommand
 from Commands.auto_pilot_command import AutoPilotCommand
 from Commands.find_wheel_base import FindWheelBase
 from Commands.find_ks import FindkS
 from Commands.find_slipCurrent import FindSlipCurrent
 from Commands.findkP_maxA import FindKP_MaxA
+from Commands.arc_drive import arcDrive
+
 
 
 class RobotContainer:
@@ -43,7 +46,8 @@ class RobotContainer:
 #            print("Creating CAN Devices",round(self.timer.get(),0))
 
         self.headingController = HeadingController.getInstance()        
-        self.intake = IntakeSystem.getInstance()           
+        self.intake = IntakeSystem.getInstance()
+        self.shooter = ShooterSystem.getInstance()                   
         LaserCAN.getInstance()
 
         self.limelightSytem = LLsystem.getInstance()
@@ -58,6 +62,8 @@ class RobotContainer:
                 lambda: -self._joystick.getRawAxis(1),
                 lambda: -self._joystick.getRawAxis(0),
                 lambda: -self._joystick.getRawAxis(4))
+        
+        self.arcdrive = arcDrive(self.drivetrain)
         self.createPPStuff()
         self.configureButtonBindings()
 
@@ -107,7 +113,30 @@ class RobotContainer:
         
         self._joystick.button(6).onFalse(InstantCommand(lambda:
             self.drive_teleop_command.slow_mode_off()))
-        
+
+        self._joystick.button(7).whileTrue(
+            InstantCommand(lambda: self.shooter.shoot(10)))
+        self._joystick.button(7).whileFalse(
+            InstantCommand(lambda: self.shooter.stop_shooter()))        
+
+        self._joystick.button(8).whileTrue(
+            InstantCommand(lambda: self.shooter.immediate_move_conveyor()))
+        self._joystick.button(8).whileFalse(
+            InstantCommand(lambda: self.shooter.stop_conveyor()))        
+
+
+
+#        self._joystick.button(7).onTrue(
+#            InstantCommand(lambda: self.limelightSytem.write_camera0_pose_to_file()))
+
+#        self._joystick.button(7).whileTrue(self.arcdrive
+#        .finallyDo(self.headingController.setTargetRotationInt) ) 
+
+                
+#        self._joystick.button(8).whileTrue(
+#            commands2.DeferredCommand(lambda:self.drive_path.drive_trench()).finallyDo
+#           (self.headingController.setTargetRotationInt))        
+
 
 
         """    
@@ -125,8 +154,8 @@ class RobotContainer:
             
         """
 
-        self._joystick.button(10).onTrue(
-            self.intake.runOnce(lambda:self.intake.zero_position()))
+#        self._joystick.button(10).onTrue(
+#            self.intake.runOnce(lambda:self.intake.zero_position()))
 
 #        self._joystick.button(7).whileTrue(FindkS())
 #        self._joystick.button(7).whileTrue(FindSlipCurrent())
@@ -137,10 +166,6 @@ class RobotContainer:
 #        self._joystick.button(7).whileTrue(
 #            commands2.DeferredCommand(lambda:self.drive_path.drive_path_to_tag(23,-.75,0)).finallyDo
 #           (self.headingController.setTargetRotationInt))
-        
-#        self._joystick.button(8).whileTrue(
-#            commands2.DeferredCommand(lambda:self.drive_path.drive_trench()).finallyDo
-#           (self.headingController.setTargetRotationInt))        
 
  #       self._joystick.button(8).whileTrue(
  #           AutoPilotCommand(26,-1.5,0,0).finallyDo((self.headingController.setTargetRotationInt)))
@@ -166,7 +191,8 @@ class RobotContainer:
 #        self.autoGenerator.configAutoBuilder()
 #        self.drivetrain.update()
 #        self.drive_teleop_command.setConstants()
-        self.intake.setup()
+#        self.intake.setup()
+        self.shooter.update_constants()
         # DriveGoal_Cam does not need to be explicitly updated, it is generated at each use
     
      
