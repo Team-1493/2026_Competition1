@@ -1,15 +1,14 @@
-import math
 from typing import override
 import commands2
-from wpilib import SmartDashboard, Timer
 from subsystems.shooter import ShooterSystem
 from subsystems.intake import IntakeSystem
 
-class IntakeAndShoot(commands2.Command):
+class ShootCommand(commands2.Command):
     def __init__(self):
         self.shooter = ShooterSystem.getInstance()
         self.intake = IntakeSystem.getInstance()
         self.addRequirements(self.shooter)
+        self.addRequirements(self.intake)
     @override
     def initialize(self, velocity):
         self.intake.arm_up()
