@@ -39,6 +39,7 @@ class ShooterSystem(Subsystem):
 
         self.cfg = configs.TalonFXConfiguration()
         self.cfg.slot0.k_v = ConstantValues.ShooterConstants.LEADER_KV
+        self.cfg.slot0.k_p = ConstantValues.ShooterConstants.LEADER_KP
         self.leader_motor.configurator.apply(self.cfg)
         self.conveyor_voltage = ConstantValues.ShooterConstants.CONVEYOR_VOLTAGE   
 
