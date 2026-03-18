@@ -1,4 +1,5 @@
 from math import pi, cos,sin
+from wpilib import DriverStation
 from wpimath.geometry import Pose2d, Rotation2d
 import math
 from Constants1 import ConstantValues
@@ -51,3 +52,24 @@ class HelperMethods():
             pose_new = Pose2d(16.541-pose.X(),8.069 - pose.Y(),    
                 pose.rotation() + Rotation2d.fromDegrees(180))
         return(pose_new)
+
+
+    def anlgeToHub(xr,yr):
+        if DriverStation.getAlliance()==DriverStation.Alliance.kBlue:
+            xh = 4.644
+            yh= 4.030
+
+        else:
+            xh = 11.92
+            yh= 4.041
+
+        xr1=(xh - xr)
+        yr1 = yh - yr
+
+        xt=-yr1
+        yt=xr1
+
+        angle_hub=math.atan2(yt,xt)-math.pi/2  
+        dist_hub=math.hypot(xt,yt) 
+                
+        return (angle_hub,dist_hub)
