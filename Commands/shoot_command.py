@@ -1,7 +1,5 @@
-import math
 from typing import override
 import commands2
-from wpilib import SmartDashboard, Timer
 from subsystems.shooter import ShooterSystem
 from subsystems.intake import IntakeSystem
 
@@ -11,14 +9,14 @@ class IntakeAndShoot(commands2.Command):
         self.intake = IntakeSystem.getInstance()
         self.addRequirements(self.shooter)
     @override
-    def initialize(self, velocity):
+    def initialize(self):
         self.intake.arm_up()
         self.intake.intake()
-        self.shooter.shoot(velocity=velocity)
+        self.shooter.shoot()
     def execute(self):
         self.shooter.move_conveyor()
     @override
-    def end(self):
+    def end(self,interrupted:bool):
         self.intake.stop_intake()
         self.intake.stop_arm()
         self.shooter.stop_conveyor()

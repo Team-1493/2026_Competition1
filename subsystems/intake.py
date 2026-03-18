@@ -11,7 +11,7 @@ class IntakeSystem(Subsystem):
     @staticmethod
     def getInstance():
         if IntakeSystem.instance == None:
-            IntakeSystem.instance = IntakeSystem(10,9,8,9)
+            IntakeSystem.instance = IntakeSystem(12,9,8,9)
             print('*' * 22 + ' INTAKE ' + '*' * 22)
         return IntakeSystem.instance
     def setup(self):

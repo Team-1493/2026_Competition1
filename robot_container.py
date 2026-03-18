@@ -26,6 +26,7 @@ from Commands.find_ks import FindkS
 from Commands.find_slipCurrent import FindSlipCurrent
 from Commands.findkP_maxA import FindKP_MaxA
 from Commands.arc_drive import arcDrive
+from Commands.shoot_command import IntakeAndShoot
 
 
 
@@ -47,7 +48,7 @@ class RobotContainer:
 
         self.headingController = HeadingController.getInstance()        
         self.intake = IntakeSystem.getInstance()
-        self.shooter = ShooterSystem.getInstance()                   
+        self.shooter = ShooterSystem.getInstance()               
         LaserCAN.getInstance()
 
         self.limelightSytem = LLsystem.getInstance()
@@ -62,7 +63,7 @@ class RobotContainer:
                 lambda: -self._joystick.getRawAxis(1),
                 lambda: -self._joystick.getRawAxis(0),
                 lambda: -self._joystick.getRawAxis(4))
-        
+        self.intake_and_shoot = IntakeAndShoot()
         self.arcdrive = arcDrive(self.drivetrain)
         self.createPPStuff()
         self.configureButtonBindings()
@@ -114,15 +115,17 @@ class RobotContainer:
         self._joystick.button(6).onFalse(InstantCommand(lambda:
             self.drive_teleop_command.slow_mode_off()))
 
-        self._joystick.button(7).whileTrue(
-            InstantCommand(lambda: self.shooter.shoot(10)))
-        self._joystick.button(7).whileFalse(
-            InstantCommand(lambda: self.shooter.stop_shooter()))        
-
+        # self._joystick.button(7).whileTrue(
+        #     InstantCommand(lambda: self.shooter.shoot(10)))
+        # self._joystick.button(7).whileFalse(
+        #     InstantCommand(lambda: self.shooter.stop_shooter()))        
+        self._joystick.button(7).whileTrue(self.intake_and_shoot)
+        
         self._joystick.button(8).whileTrue(
             InstantCommand(lambda: self.shooter.immediate_move_conveyor()))
         self._joystick.button(8).whileFalse(
-            InstantCommand(lambda: self.shooter.stop_conveyor()))        
+            InstantCommand(lambda: self.shooter.stop_conveyor()))
+                
 
 
 
