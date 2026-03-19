@@ -56,18 +56,13 @@ class ShooterSystem(Subsystem):
         self.voltage_control = controls.VoltageOut(0)
         self.brake = controls.NeutralOut()
 
-        self.conveyor_velocity = 60
+        self.conveyor_velocity = ConstantValues.ShooterConstants.CONVEYOR_VELOCITY
 
-        SmartDashboard.putNumber('Conveyor Velocity', self.conveyor_velocity)
-        SmartDashboard.putNumber('Shooter Velocity', 0)
-        SmartDashboard.putNumber('Shooter kP', 0)
-        SmartDashboard.putNumber('Shooter kV', 0)
-        SmartDashboard.putNumber('Feeder kP', 0)
-        SmartDashboard.putNumber('Feeder kV', 0.125)
-        SmartDashboard.putNumber('Shooter conveyor V', 0)        
+        SmartDashboard.putNumber('Shooter Velocity', 12.5)       
 
         
-    def periodic(self): pass
+    def periodic(self): 
+        SmartDashboard.putNumber('Leader current velocity', self.mean_shooter_velocity())
     def shoot(self):
         """
         Move the leader motor
@@ -83,7 +78,9 @@ class ShooterSystem(Subsystem):
         self.feeder2_motor.set_control(self.velocity_voltage.with_velocity(self.conveyor_velocity))        
     def move_conveyor(self):
         # If the shooter motor's velocity is around the threshold, THEN move the feeder
-        if abs((self.velocity * 0.1) - self.mean_shooter_velocity()) <= 0.1 or self.mean_shooter_velocity() >= self.velocity:
+        mean =  self.mean_shooter_velocity()
+        SmartDashboard.putNumber("ShooterCheck",abs(self.velocity  - mean)/ (mean+0.0001))
+        if abs(self.velocity  - mean)/ (mean+0.0001) <= 0.1 or mean >= self.velocity * 0.9:
             self.feeder_motor.set_control(self.velocity_voltage.with_velocity(self.conveyor_velocity))
             self.feeder2_motor.set_control(self.velocity_voltage.with_velocity(self.conveyor_velocity))            
     def stop_conveyor(self):
@@ -97,11 +94,11 @@ class ShooterSystem(Subsystem):
 
 
     def update_constants(self):
-        self.leader_cfg.slot0.k_v = SmartDashboard.getNumber('Shooter kV', 0)
-        self.leader_cfg.slot0.k_p = SmartDashboard.getNumber('Shooter kP', 0)
+        self.leader_cfg.slot0.k_v = SmartDashboard.getNumber('Leader KV', 0)
+        self.leader_cfg.slot0.k_p = SmartDashboard.getNumber('Leader KP', 0)
         self.leader_motor.configurator.apply(self.leader_cfg)
-        self.feeder_cfg.slot0.k_p = SmartDashboard.getNumber('Feeder kP', 0)
-        self.feeder_cfg.slot0.k_v = SmartDashboard.getNumber('Feeder kV', 0)
+        self.feeder_cfg.slot0.k_p = SmartDashboard.getNumber('Feeder KP', 0)
+        self.feeder_cfg.slot0.k_v = SmartDashboard.getNumber('Feeder KV', 0)
         self.feeder_motor.configurator.apply(self.feeder_cfg)
         self.feeder2_motor.configurator.apply(self.feeder_cfg)
 

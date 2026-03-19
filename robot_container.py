@@ -26,7 +26,8 @@ from Commands.find_ks import FindkS
 from Commands.find_slipCurrent import FindSlipCurrent
 from Commands.findkP_maxA import FindKP_MaxA
 from Commands.arc_drive import arcDrive
-from Commands.shoot_command import IntakeAndShoot
+from Commands.shoot_command import ShootCommand
+from Commands.intake_command import IntakeCommand
 
 
 
@@ -63,7 +64,8 @@ class RobotContainer:
                 lambda: -self._joystick.getRawAxis(1),
                 lambda: -self._joystick.getRawAxis(0),
                 lambda: -self._joystick.getRawAxis(4))
-        self.intake_and_shoot = IntakeAndShoot()
+        self.shoot_command = ShootCommand()
+        self.intake_command = IntakeCommand()
         self.arcdrive = arcDrive(self.drivetrain)
         self.createPPStuff()
         self.configureButtonBindings()
@@ -119,12 +121,8 @@ class RobotContainer:
         #     InstantCommand(lambda: self.shooter.shoot(10)))
         # self._joystick.button(7).whileFalse(
         #     InstantCommand(lambda: self.shooter.stop_shooter()))        
-        self._joystick.button(7).whileTrue(self.intake_and_shoot)
-        
-        self._joystick.button(8).whileTrue(
-            InstantCommand(lambda: self.shooter.immediate_move_conveyor()))
-        self._joystick.button(8).whileFalse(
-            InstantCommand(lambda: self.shooter.stop_conveyor()))
+        self._joystick.button(7).whileTrue(self.shoot_command)
+        self._joystick.button(8).whileTrue(self.intake_command)
                 
 
 

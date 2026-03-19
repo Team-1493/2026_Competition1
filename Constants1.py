@@ -113,6 +113,7 @@ class ConstantValues():
 
     class IntakeConstants():
         INTAKE_VOLTAGE = -7.5
+        CONVEYOR_VOLTAGE = -7.5
         MAX_UP_ROTATION = .26
         MAX_DOWN_ROTATION = 0.00
         ARM_KP = 50
@@ -127,13 +128,13 @@ class ConstantValues():
 
 
     class ShooterConstants():
-        LEADER_KP = 1
-        LEADER_KV = 0
+        LEADER_KP = 0
+        LEADER_KV = .16
         FEEDER_KP = 0
-        FEEDER_KV = 6
+        FEEDER_KV = .16
         SHOOTING_VELOCITY = 0
         CONVEYOR_VOLTAGE = 0
-        CONVEYOR_VELOCITY = 0
+        CONVEYOR_VELOCITY = 60
         TOLERANCE = 1e-3
 
     class VisionConstants():    
@@ -277,6 +278,7 @@ class ConstantValues():
         ConstantValues.IntakeConstants.INTAKE_VOLTAGE = SmartDashboard.getNumber("Intake Intake Volt",ConstantValues.IntakeConstants.INTAKE_VOLTAGE)                         
         ConstantValues.IntakeConstants.MAX_UP_ROTATION = SmartDashboard.getNumber("Intake Arm Max Up",ConstantValues.IntakeConstants.MAX_UP_ROTATION)
         ConstantValues.IntakeConstants.MAX_DOWN_ROTATION = SmartDashboard.getNumber("Intake Arm Max Down",ConstantValues.IntakeConstants.MAX_DOWN_ROTATION)   
+        ConstantValues.IntakeConstants.CONVEYOR_VOLTAGE = SmartDashboard.getNumber("Conveyor Voltage", ConstantValues.IntakeConstants.INTAKE_VOLTAGE)
         ConstantValues.IntakeConstants.ARM_KP = SmartDashboard.getNumber("Intake Arm kP",ConstantValues.IntakeConstants.ARM_KP)    
         ConstantValues.IntakeConstants.ARM_KI = SmartDashboard.getNumber("Intake Arm kI",ConstantValues.IntakeConstants.ARM_KI)
         ConstantValues.IntakeConstants.ARM_KD = SmartDashboard.getNumber("Intake Arm kD",ConstantValues.IntakeConstants.ARM_KD)                                                                           
@@ -286,6 +288,17 @@ class ConstantValues():
         ConstantValues.IntakeConstants.ARM_FORWARDTHRESH = SmartDashboard.getNumber("Intake Arm For Thresh",ConstantValues.IntakeConstants.ARM_FORWARDTHRESH)                    
         ConstantValues.IntakeConstants.ARM_REVERSETHRESH = SmartDashboard.getNumber("Intake Arm Rev Thresh",ConstantValues.IntakeConstants.ARM_REVERSETHRESH)                     
         ConstantValues.IntakeConstants.SENSOR_TO_MECHANISM_RATIO = SmartDashboard.getNumber("Intake Arm Mech Ratio",ConstantValues.IntakeConstants.SENSOR_TO_MECHANISM_RATIO)                     
+
+
+        ### Update Constants for Shooter
+        ConstantValues.ShooterConstants.LEADER_KP = SmartDashboard.getNumber("Leader KP", ConstantValues.ShooterConstants.LEADER_KP)
+        ConstantValues.ShooterConstants.LEADER_KV = SmartDashboard.getNumber("Leader KV", ConstantValues.ShooterConstants.LEADER_KV)
+        ConstantValues.ShooterConstants.CONVEYOR_VELOCITY = SmartDashboard.getNumber("Conveyor Velocity", ConstantValues.ShooterConstants.CONVEYOR_VELOCITY)
+        ConstantValues.ShooterConstants.CONVEYOR_VOLTAGE = SmartDashboard.getNumber("Conveyor Voltage", ConstantValues.ShooterConstants.CONVEYOR_VOLTAGE)
+        ConstantValues.ShooterConstants.FEEDER_KV = SmartDashboard.getNumber("Feeder KV", ConstantValues.ShooterConstants.FEEDER_KV)
+        ConstantValues.ShooterConstants.FEEDER_KP = SmartDashboard.getNumber("Feeder KP", ConstantValues.ShooterConstants.FEEDER_KP)
+        ConstantValues.ShooterConstants.SHOOTING_VELOCITY = SmartDashboard.getNumber("Shooting Velocity", ConstantValues.ShooterConstants.SHOOTING_VELOCITY)
+        
 
 
         ### Update Constants for DriveToGoalCamera
@@ -365,6 +378,7 @@ class ConstantValues():
         SmartDashboard.putNumber("Intake Intake Volt",ConstantValues.IntakeConstants.INTAKE_VOLTAGE)                         
         SmartDashboard.putNumber("Intake Arm Max Up",ConstantValues.IntakeConstants.MAX_UP_ROTATION)
         SmartDashboard.putNumber("Intake Arm Max Down",ConstantValues.IntakeConstants.MAX_DOWN_ROTATION)   
+        SmartDashboard.putNumber("Conveyor Voltage", ConstantValues.IntakeConstants.CONVEYOR_VOLTAGE)
         SmartDashboard.putNumber("Intake Arm kP",ConstantValues.IntakeConstants.ARM_KP)    
         SmartDashboard.putNumber("Intake Arm kI",ConstantValues.IntakeConstants.ARM_KI)
         SmartDashboard.putNumber("Intake Arm kD",ConstantValues.IntakeConstants.ARM_KD)                                                                           
@@ -428,4 +442,11 @@ class ConstantValues():
         SmartDashboard.putNumber("HeadingController Tol",ConstantValues.HeadingControllerConstants.HEADINGCONTROLLER_TOLERANCE)
         SmartDashboard.putNumber("HeadingController Rate Tol",ConstantValues.HeadingControllerConstants.HEADINGCONTROLLER_RATE_TOLERANCE)
 
+        SmartDashboard.putNumber("Leader KP", ConstantValues.ShooterConstants.LEADER_KP)
+        SmartDashboard.putNumber("Leader KV", ConstantValues.ShooterConstants.LEADER_KV)
+        SmartDashboard.putNumber("Feeder KV", ConstantValues.ShooterConstants.FEEDER_KV)
+        SmartDashboard.putNumber("Feeder KP", ConstantValues.ShooterConstants.FEEDER_KP)
+        SmartDashboard.putNumber("Shooting Velocity", ConstantValues.ShooterConstants.SHOOTING_VELOCITY)
+        SmartDashboard.putNumber("Conveyor Velocity", ConstantValues.ShooterConstants.CONVEYOR_VELOCITY)
+        SmartDashboard.putNumber("Conveyor Voltage", ConstantValues.ShooterConstants.CONVEYOR_VOLTAGE)
 
