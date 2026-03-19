@@ -114,15 +114,11 @@ class RobotContainer:
         self._joystick.button(6).onFalse(InstantCommand(lambda:
             self.drive_teleop_command.slow_mode_off()))
 
-        self._joystick.button(7).whileTrue(
-            InstantCommand(lambda: self.shooter.shoot(10)))
-        self._joystick.button(7).whileFalse(
-            InstantCommand(lambda: self.shooter.stop_shooter()))        
+        self._joystick.button(7).onTrue(
+            InstantCommand(lambda: self.intake.arm_down() ))
+        self._joystick.button(8).onTrue(
+            InstantCommand(lambda: self.intake.arm_up() ))        
 
-        self._joystick.button(8).whileTrue(
-            InstantCommand(lambda: self.shooter.immediate_move_conveyor()))
-        self._joystick.button(8).whileFalse(
-            InstantCommand(lambda: self.shooter.stop_conveyor()))        
 
 
 

@@ -113,7 +113,7 @@ class ConstantValues():
 
     class IntakeConstants():
         INTAKE_VOLTAGE = -7.5
-        MAX_UP_ROTATION = .26
+        MAX_UP_ROTATION = .25
         MAX_DOWN_ROTATION = 0.00
         ARM_KP = 50
         ARM_KD = 0
@@ -121,7 +121,7 @@ class ConstantValues():
         ARM_KG = .35
         ARM_PEAK_FORWARD_TORQUE_CURRENT = 40
         ARM_PEAK_REVERSE_TORQUE_CURRENT = 40
-        ARM_FORWARDTHRESH = .285
+        ARM_FORWARDTHRESH = .299
         ARM_REVERSETHRESH = 0                
         SENSOR_TO_MECHANISM_RATIO = 50 # 1 if 1 rotation of the motor = 1 rotation of the arm
 

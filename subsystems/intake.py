@@ -58,7 +58,7 @@ class IntakeSystem(Subsystem):
         self.brake = controls.NeutralOut()
 
         self.current_goal_position = ConstantValues.IntakeConstants.MAX_DOWN_ROTATION  
-
+        self.zeroed = False
         self.setup()
 
 
@@ -69,14 +69,24 @@ class IntakeSystem(Subsystem):
 #        self.current_goal_position = None
     def periodic(self):
         arm_position = self.arm_motor.get_position().value_as_double
+        if not self.zeroed:
+            if not self.down_limit_switch.get():
+                self.arm_motor.set_position(0)
+                self.zeroed = True
+            elif not self.up_limit_switch.get():
+                self.arm_motor.set_position(ConstantValues.IntakeConstants.ARM_FORWARDTHRESH)
+                self.zeroed = True
+
+            
+
         """
         rotation of the arm
         """
 
         
-        if  self.current_goal_position == self.goal_up and not self.up_limit_switch.get() :
-            self.arm_motor.set_position(ConstantValues.IntakeConstants.ARM_FORWARDTHRESH)
-            self.stop_arm()
+#        if  self.current_goal_position == self.goal_up and not self.up_limit_switch.get() :
+#            self.arm_motor.set_position(ConstantValues.IntakeConstants.ARM_FORWARDTHRESH)
+#            self.stop_arm()
             
 #        if self.down_limit_switch.get() and self.current_goal_position == self.goal_down:
 #            self.stop_arm()
@@ -102,21 +112,16 @@ class IntakeSystem(Subsystem):
         self.arm_motor.set_control(self.brake)
     def arm_up(self):
         self.current_goal_position = self.goal_up
-        self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))
-        # self.stop_intake()
-        # self.periodic()
+        if self.zeroed:
+            self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))
+            self.stop_intake()
     def arm_down(self):
         self.current_goal_position = self.goal_down
-        self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))        
-        # self.periodic()
-        # if self.down_limit_switch:
+        if self.zeroed:
+            self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))        
         #     self.intake()
 
 
-    def arm_manualUp(self):
-        self.arm_motor.set_control(self.arm_manualControl.with_output(.08)) 
-    def arm_manualDown(self):
-        self.arm_motor.set_control(self.arm_manualControl.with_output(-.08))    
     def zero_position(self):
         self.stop_arm()
         self.arm_motor.set_position(0)
