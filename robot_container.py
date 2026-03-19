@@ -187,7 +187,7 @@ class RobotContainer:
 #        self.autoGenerator.configAutoBuilder()
 #        self.drivetrain.update()
 #        self.drive_teleop_command.setConstants()
-#        self.intake.setup()
+        self.intake.setup()
         self.shooter.update_constants()
         # DriveGoal_Cam does not need to be explicitly updated, it is generated at each use
     

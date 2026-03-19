@@ -61,6 +61,7 @@ class ShooterSystem(Subsystem):
         """
         Move the leader motor
         """
+        SmartDashboard.putNumber('Shooter Lead rps', self.leader_motor.get_velocity().value_as_double)
 #        self.velocity = velocity
         self.velocity = SmartDashboard.getNumber('Shooter Velocity', 0)
         self.leader_motor.set_control(self.velocity_voltage.with_velocity(self.velocity))

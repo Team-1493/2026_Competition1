@@ -118,6 +118,7 @@ class ConstantValues():
         ARM_KP = 50
         ARM_KD = 0
         ARM_KI = 5
+        ARM_KV = 0        
         ARM_KG = .35
         ARM_PEAK_FORWARD_TORQUE_CURRENT = 40
         ARM_PEAK_REVERSE_TORQUE_CURRENT = 40
@@ -277,7 +278,8 @@ class ConstantValues():
         ConstantValues.IntakeConstants.ARM_KP = SmartDashboard.getNumber("Intake Arm kP",ConstantValues.IntakeConstants.ARM_KP)    
         ConstantValues.IntakeConstants.ARM_KI = SmartDashboard.getNumber("Intake Arm kI",ConstantValues.IntakeConstants.ARM_KI)
         ConstantValues.IntakeConstants.ARM_KD = SmartDashboard.getNumber("Intake Arm kD",ConstantValues.IntakeConstants.ARM_KD)                                                                           
-        ConstantValues.IntakeConstants.ARM_KG = SmartDashboard.getNumber("Intake Arm kG",ConstantValues.IntakeConstants.ARM_KG)                     
+        ConstantValues.IntakeConstants.ARM_KG = SmartDashboard.getNumber("Intake Arm kG",ConstantValues.IntakeConstants.ARM_KG)
+        ConstantValues.IntakeConstants.ARM_KV = SmartDashboard.getNumber("Intake Arm kV",ConstantValues.IntakeConstants.ARM_KV)                             
         ConstantValues.IntakeConstants.ARM_PEAK_FORWARD_TORQUE_CURRENT = SmartDashboard.getNumber("Intake Arm Peak Curr For",ConstantValues.IntakeConstants.ARM_PEAK_FORWARD_TORQUE_CURRENT)                     
         ConstantValues.IntakeConstants.ARM_PEAK_REVERSE_TORQUE_CURRENT = SmartDashboard.getNumber("Intake Arm Peak Curr Rev",ConstantValues.IntakeConstants.ARM_PEAK_REVERSE_TORQUE_CURRENT)                     
         ConstantValues.IntakeConstants.ARM_FORWARDTHRESH = SmartDashboard.getNumber("Intake Arm For Thresh",ConstantValues.IntakeConstants.ARM_FORWARDTHRESH)                    
@@ -364,6 +366,7 @@ class ConstantValues():
         SmartDashboard.putNumber("Intake Arm Max Down",ConstantValues.IntakeConstants.MAX_DOWN_ROTATION)   
         SmartDashboard.putNumber("Intake Arm kP",ConstantValues.IntakeConstants.ARM_KP)    
         SmartDashboard.putNumber("Intake Arm kI",ConstantValues.IntakeConstants.ARM_KI)
+        SmartDashboard.putNumber("Intake Arm kV",ConstantValues.IntakeConstants.ARM_KV)        
         SmartDashboard.putNumber("Intake Arm kD",ConstantValues.IntakeConstants.ARM_KD)                                                                           
         SmartDashboard.putNumber("Intake Arm kG",ConstantValues.IntakeConstants.ARM_KG)                     
         SmartDashboard.putNumber("Intake Arm Peak Curr For",ConstantValues.IntakeConstants.ARM_PEAK_FORWARD_TORQUE_CURRENT)                     

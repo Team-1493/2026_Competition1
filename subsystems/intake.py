@@ -25,6 +25,7 @@ class IntakeSystem(Subsystem):
         self.cfg.slot0.k_p = ConstantValues.IntakeConstants.ARM_KP
         self.cfg.slot0.k_d = ConstantValues.IntakeConstants.ARM_KD
         self.cfg.slot0.k_i = ConstantValues.IntakeConstants.ARM_KI
+        self.cfg.slot0.k_v = ConstantValues.IntakeConstants.ARM_KV
         self.cfg.slot0.gravity_type = GravityTypeValue.ARM_COSINE
         self.cfg.slot0.k_g = ConstantValues.IntakeConstants.ARM_KG
         self.cfg.motion_magic.motion_magic_cruise_velocity=1.5
@@ -69,6 +70,7 @@ class IntakeSystem(Subsystem):
 #        self.current_goal_position = None
     def periodic(self):
         arm_position = self.arm_motor.get_position().value_as_double
+        arm_velocity = self.arm_motor.get_velocity().value_as_double        
         if not self.zeroed:
             if not self.down_limit_switch.get():
                 self.arm_motor.set_position(0)
@@ -88,21 +90,21 @@ class IntakeSystem(Subsystem):
 #            self.arm_motor.set_position(ConstantValues.IntakeConstants.ARM_FORWARDTHRESH)
 #            self.stop_arm()
             
-#        if self.down_limit_switch.get() and self.current_goal_position == self.goal_down:
-#            self.stop_arm()
-
         
         if  self.current_goal_position == self.goal_down and not self.down_limit_switch.get():
             self.stop_arm()
+            # continuously rezero the arm position when arm is at the down position
+            # (in case the chain slips or something happens to throw off the position)
+            if arm_velocity==0:
+                self.arm_motor.set_position(0)
+                
             
 
         SmartDashboard.putBoolean("Up Limit Switch", self.up_limit_switch.get())
         SmartDashboard.putBoolean("Down Limit Switch", self.down_limit_switch.get())
-        SmartDashboard.putNumber("Arm Position", self.arm_motor.get_position().value_as_double) 
-        SmartDashboard.putNumber("Arm CL FeedForward", self.arm_motor.get_closed_loop_feed_forward().value_as_double)        
-        SmartDashboard.putNumber("Arm CL Output", self.arm_motor.get_closed_loop_output().value_as_double)
-        SmartDashboard.putNumber("Arm CL Error", self.arm_motor.get_closed_loop_error().value_as_double)                     
-        SmartDashboard.putNumber("Arm CL Target", self.arm_motor.get_closed_loop_reference().value_as_double)  
+        SmartDashboard.putNumber("Arm Position", arm_position) 
+        SmartDashboard.putNumber("Arm Velocity", arm_velocity)
+
 
     def intake(self):
         self.intake_motor.set_control(self.intake_duty.with_output(self.voltage))
