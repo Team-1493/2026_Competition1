@@ -48,7 +48,7 @@ class IntakeSystem(Subsystem):
         Initialize PID constants for motors
         """
         Subsystem.__init__(self)
-
+        self.zeroed = False
         self.intake_motor = hardware.TalonFX(intakeMotorID)
         self.arm_motor = hardware.TalonFX(armMotorID)
         self.conveyor_motor = hardware.TalonFX(conveyorMotorID)
@@ -131,6 +131,9 @@ class IntakeSystem(Subsystem):
         # if self.down_limit_switch:
         #     self.intake()
 
+    def arm_wag_up(self):
+        self.current_goal_position = 0.08 
+        self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))        
 
     def arm_manualUp(self):
         self.arm_motor.set_control(self.arm_manualControl.with_output(.08)) 

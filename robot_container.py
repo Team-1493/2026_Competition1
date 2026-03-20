@@ -26,7 +26,7 @@ from Commands.find_ks import FindkS
 from Commands.find_slipCurrent import FindSlipCurrent
 from Commands.findkP_maxA import FindKP_MaxA
 from Commands.arc_drive import arcDrive
-from Commands.shoot_command import IntakeAndShoot
+from Commands.shoot_command import ShootCommand
 from Commands.intake_command import IntakeCommand
 
 
@@ -49,7 +49,7 @@ class RobotContainer:
         self.headingController = HeadingController.getInstance()        
         self.intake = IntakeSystem.getInstance()
         self.shooter = ShooterSystem.getInstance()       
-        self.shoot_command = IntakeAndShoot()
+        self.shoot_command = ShootCommand()
         self.intake_command = IntakeCommand()            
         LaserCAN.getInstance()
 
