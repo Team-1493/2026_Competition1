@@ -11,7 +11,7 @@ class IntakeSystem(Subsystem):
     @staticmethod
     def getInstance():
         if IntakeSystem.instance == None:
-            IntakeSystem.instance = IntakeSystem(10,9,8,9)
+            IntakeSystem.instance = IntakeSystem(12,9,11,8,9)
             print('*' * 22 + ' INTAKE ' + '*' * 22)
         return IntakeSystem.instance
     def setup(self):
@@ -25,7 +25,6 @@ class IntakeSystem(Subsystem):
         self.cfg.slot0.k_p = ConstantValues.IntakeConstants.ARM_KP
         self.cfg.slot0.k_d = ConstantValues.IntakeConstants.ARM_KD
         self.cfg.slot0.k_i = ConstantValues.IntakeConstants.ARM_KI
-        self.cfg.slot0.k_v = ConstantValues.IntakeConstants.ARM_KV
         self.cfg.slot0.gravity_type = GravityTypeValue.ARM_COSINE
         self.cfg.slot0.k_g = ConstantValues.IntakeConstants.ARM_KG
         self.cfg.motion_magic.motion_magic_cruise_velocity=1.5
@@ -44,7 +43,7 @@ class IntakeSystem(Subsystem):
         self.arm_motor.configurator.apply(self.cfg)
 
         
-    def __init__(self, intakeMotorID, armMotorID, dioPortUp, dioPortDown):
+    def __init__(self, intakeMotorID, armMotorID, conveyorMotorID, dioPortUp, dioPortDown):
         """
         Initialize PID constants for motors
         """
@@ -52,22 +51,25 @@ class IntakeSystem(Subsystem):
 
         self.intake_motor = hardware.TalonFX(intakeMotorID)
         self.arm_motor = hardware.TalonFX(armMotorID)
+        self.conveyor_motor = hardware.TalonFX(conveyorMotorID)
         self.up_limit_switch = DigitalInput(dioPortUp)
         self.down_limit_switch = DigitalInput(dioPortDown)
         self.arm_position_torque = controls.MotionMagicVoltage(0,True).with_slot(0)        
         self.arm_manualControl = controls.DutyCycleOut(0)
         self.brake = controls.NeutralOut()
 
-        self.current_goal_position = ConstantValues.IntakeConstants.MAX_DOWN_ROTATION  
-        self.zeroed = False
+        self.current_goal_position = ConstantValues.IntakeConstants.MAX_DOWN_ROTATION
+        self.conveyor_voltage = ConstantValues.IntakeConstants.CONVEYOR_VOLTAGE
+
         self.setup()
 
 
-        self.intake_duty = controls.VoltageOut(0)
+        self.voltage_out = controls.VoltageOut(0)
         self.arm_motor.set_position(0)
         
 
 #        self.current_goal_position = None
+
     def periodic(self):
         arm_position = self.arm_motor.get_position().value_as_double
         arm_velocity = self.arm_motor.get_velocity().value_as_double        
@@ -106,24 +108,34 @@ class IntakeSystem(Subsystem):
         SmartDashboard.putNumber("Arm Velocity", arm_velocity)
 
 
+    
     def intake(self):
-        self.intake_motor.set_control(self.intake_duty.with_output(self.voltage))
+        self.intake_motor.set_control(self.voltage_out.with_output(self.voltage))
     def stop_intake(self):
-        self.intake_motor.set_control(self.intake_duty.with_output(0))
+        self.intake_motor.set_control(self.brake)
     def stop_arm(self):
         self.arm_motor.set_control(self.brake)
+    def start_conveyor(self):
+        self.conveyor_motor.set_control(self.voltage_out.with_output(self.conveyor_voltage))
+    def stop_conveyor(self):
+        self.conveyor_motor.set_control(self.brake)
     def arm_up(self):
         self.current_goal_position = self.goal_up
-        if self.zeroed:
-            self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))
-            self.stop_intake()
+        self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))
+        # self.stop_intake()
+        # self.periodic()
     def arm_down(self):
         self.current_goal_position = self.goal_down
-        if self.zeroed:
-            self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))        
+        self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))        
+        # self.periodic()
+        # if self.down_limit_switch:
         #     self.intake()
 
 
+    def arm_manualUp(self):
+        self.arm_motor.set_control(self.arm_manualControl.with_output(.08)) 
+    def arm_manualDown(self):
+        self.arm_motor.set_control(self.arm_manualControl.with_output(-.08))    
     def zero_position(self):
         self.stop_arm()
         self.arm_motor.set_position(0)

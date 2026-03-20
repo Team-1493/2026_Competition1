@@ -26,7 +26,8 @@ from Commands.find_ks import FindkS
 from Commands.find_slipCurrent import FindSlipCurrent
 from Commands.findkP_maxA import FindKP_MaxA
 from Commands.arc_drive import arcDrive
-
+from Commands.shoot_command import IntakeAndShoot
+from Commands.intake_command import IntakeCommand
 
 
 class RobotContainer:
@@ -47,7 +48,9 @@ class RobotContainer:
 
         self.headingController = HeadingController.getInstance()        
         self.intake = IntakeSystem.getInstance()
-        self.shooter = ShooterSystem.getInstance()                   
+        self.shooter = ShooterSystem.getInstance()       
+        self.shoot_command = IntakeAndShoot()
+        self.intake_command = IntakeCommand()            
         LaserCAN.getInstance()
 
         self.limelightSytem = LLsystem.getInstance()
@@ -114,11 +117,15 @@ class RobotContainer:
         self._joystick.button(6).onFalse(InstantCommand(lambda:
             self.drive_teleop_command.slow_mode_off()))
 
-        self._joystick.button(7).onTrue(
-            InstantCommand(lambda: self.intake.arm_down() ))
-        self._joystick.button(8).onTrue(
-            InstantCommand(lambda: self.intake.arm_up() ))        
+#        self._joystick.button(7).onTrue(
+#            InstantCommand(lambda: self.intake.arm_down() ))
+##        self._joystick.button(8).onTrue(
+#            InstantCommand(lambda: self.intake.arm_up() ))        
 
+
+
+        self._joystick.button(7).whileTrue(self.intake_command)
+        self._joystick.button(8).whileTrue(self.shoot_command)        
 
 
 

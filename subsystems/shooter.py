@@ -40,28 +40,33 @@ class ShooterSystem(Subsystem):
             motor.set_control(controls.Follower(leader_motor_id, motor_alignment=MotorAlignmentValue.OPPOSED))
         self.all_motors = self.followers + self.opposite_followers + [self.leader_motor]
 
-        self.cfg = configs.TalonFXConfiguration()
-        self.cfg.slot0.k_v = ConstantValues.ShooterConstants.LEADER_KV
-        self.cfg.slot0.k_p = ConstantValues.ShooterConstants.LEADER_KP        
-        self.leader_motor.configurator.apply(self.cfg)
-        self.conveyor_voltage = ConstantValues.ShooterConstants.CONVEYOR_VOLTAGE   
+        self.leader_cfg = configs.TalonFXConfiguration()
+        self.leader_cfg.slot0.k_v = ConstantValues.ShooterConstants.LEADER_KV
+        self.leader_cfg.slot0.k_p = ConstantValues.ShooterConstants.LEADER_KP        
+        self.leader_motor.configurator.apply(self.leader_cfg)
+
+        self.feeder_cfg = configs.TalonFXConfiguration()
+        self.feeder_cfg.slot0.k_v = ConstantValues.ShooterConstants.FEEDER_KV
+        self.feeder_cfg.slot0.k_p = ConstantValues.ShooterConstants.FEEDER_KP
+        
+        self.feeder_motor.configurator.apply(self.feeder_cfg)
+        self.feeder2_motor.configurator.apply(self.feeder_cfg)
 
         self.velocity_voltage = controls.VelocityVoltage(0,0)
         self.voltage_control = controls.VoltageOut(0)
         self.brake = controls.NeutralOut()
 
-        SmartDashboard.putNumber('Shooter Velocity', 0)
-        SmartDashboard.putNumber('Shooter kP', 0)
-        SmartDashboard.putNumber('Shooter kV', 0)
-        SmartDashboard.putNumber('Shooter conveyor V', 0)        
+        self.conveyor_velocity = ConstantValues.ShooterConstants.CONVEYOR_VELOCITY
+
+        SmartDashboard.putNumber('Shooter Velocity', 12.5)       
 
         
-    def periodic(self): pass
-    def shoot(self, velocity):
+    def periodic(self): 
+        SmartDashboard.putNumber('Leader current velocity', self.mean_shooter_velocity())
+    def shoot(self):
         """
         Move the leader motor
         """
-        SmartDashboard.putNumber('Shooter Lead rps', self.leader_motor.get_velocity().value_as_double)
 #        self.velocity = velocity
         self.velocity = SmartDashboard.getNumber('Shooter Velocity', 0)
         self.leader_motor.set_control(self.velocity_voltage.with_velocity(self.velocity))
@@ -69,25 +74,33 @@ class ShooterSystem(Subsystem):
         self.leader_motor.set_control(self.brake)
         # self.leader_motor.set_control(self.voltage_control.with_output(0))
     def immediate_move_conveyor(self):
-        self.feeder_motor.set_control(self.voltage_control.with_output(self.conveyor_voltage))
-        self.feeder2_motor.set_control(self.voltage_control.with_output(self.conveyor_voltage))        
+        self.feeder_motor.set_control(self.velocity_voltage.with_velocity(self.conveyor_velocity))
+        self.feeder2_motor.set_control(self.velocity_voltage.with_velocity(self.conveyor_velocity))        
     def move_conveyor(self):
         # If the shooter motor's velocity is around the threshold, THEN move the feeder
-        if abs((self.velocity * 0.1) - self.mean_shooter_velocity()) <= 0.1 or self.mean_shooter_velocity() >= self.velocity:
-            self.feeder_motor.set_control(self.voltage_control.with_output(self.conveyor_voltage))
-            self.feeder2_motor.set_control(self.voltage_control.with_output(self.conveyor_voltage))            
+        mean =  self.mean_shooter_velocity()
+        SmartDashboard.putNumber("ShooterCheck",abs(self.velocity  - mean)/ (mean+0.0001))
+        if abs(self.velocity  - mean)/ (mean+0.0001) <= 0.1 or mean >= self.velocity * 0.9:
+            self.feeder_motor.set_control(self.velocity_voltage.with_velocity(self.conveyor_velocity))
+            self.feeder2_motor.set_control(self.velocity_voltage.with_velocity(self.conveyor_velocity))            
     def stop_conveyor(self):
         # self.feeder_motor.set_control(self.voltage_control.with_output(0))
         self.feeder_motor.set_control(self.brake)
         self.feeder2_motor.set_control(self.brake)
         print("!!!!!!!!!!!!!!!!!!!!!  STOPPING CONVEYOR !!!!!!!!!!!!!!!!!!!!!")
     def mean_shooter_velocity(self):
-        return sum(abs([m.get_velocity().value for m in self.all_motors])) / len(self.all_motors)
+        return sum([abs(m.get_velocity().value_as_double) for m in self.all_motors]) / len(self.all_motors)
 
 
 
     def update_constants(self):
-        self.cfg.slot0.k_v = SmartDashboard.getNumber('Shooter kV', 0)
-        self.cfg.slot0.k_p = SmartDashboard.getNumber('Shooter kP', 0)
-        self.leader_motor.configurator.apply(self.cfg)
-        self.conveyor_voltage = SmartDashboard.getNumber('Shooter conveyor V', 0)   
+        self.leader_cfg.slot0.k_v = SmartDashboard.getNumber('Leader KV', 0)
+        self.leader_cfg.slot0.k_p = SmartDashboard.getNumber('Leader KP', 0)
+        self.leader_motor.configurator.apply(self.leader_cfg)
+        self.feeder_cfg.slot0.k_p = SmartDashboard.getNumber('Feeder KP', 0)
+        self.feeder_cfg.slot0.k_v = SmartDashboard.getNumber('Feeder KV', 0)
+        self.feeder_motor.configurator.apply(self.feeder_cfg)
+        self.feeder2_motor.configurator.apply(self.feeder_cfg)
+
+        self.conveyor_velocity = SmartDashboard.getNumber('Conveyor Velocity', 0)
+        self.conveyor_voltage = SmartDashboard.getNumber('Shooter conveyor V', 0)
