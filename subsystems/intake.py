@@ -11,7 +11,7 @@ class IntakeSystem(Subsystem):
     @staticmethod
     def getInstance():
         if IntakeSystem.instance == None:
-            IntakeSystem.instance = IntakeSystem(12,9,11,8,9)
+            IntakeSystem.instance = IntakeSystem(10,9,11,8,9)
             print('*' * 22 + ' INTAKE ' + '*' * 22)
         return IntakeSystem.instance
     def setup(self):
@@ -110,7 +110,7 @@ class IntakeSystem(Subsystem):
 
     
     def intake(self):
-        self.intake_motor.set_control(self.voltage_out.with_output(self.voltage))
+        self.intake_motor.set_control(self.voltage_out.with_output(-7.5))
     def stop_intake(self):
         self.intake_motor.set_control(self.brake)
     def stop_arm(self):
@@ -132,8 +132,14 @@ class IntakeSystem(Subsystem):
         #     self.intake()
 
     def arm_wag_up(self):
-        self.current_goal_position = 0.08 
+        self.current_goal_position = 0.07 
         self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))        
+
+    def arm_to_position(self, position: float):
+        self.current_goal_position = position 
+        self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))        
+
+
 
     def arm_manualUp(self):
         self.arm_motor.set_control(self.arm_manualControl.with_output(.08)) 

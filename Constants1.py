@@ -113,7 +113,7 @@ class ConstantValues():
 
     class IntakeConstants():
         INTAKE_VOLTAGE = -7.5
-        CONVEYOR_VOLTAGE = -7.5
+        CONVEYOR_VOLTAGE = -10
         MAX_UP_ROTATION = .26
         MAX_DOWN_ROTATION = 0.00
         ARM_KP = 50
@@ -128,13 +128,13 @@ class ConstantValues():
 
 
     class ShooterConstants():
-        LEADER_KP = 0
-        LEADER_KV = .16
-        FEEDER_KP = 0
-        FEEDER_KV = .16
-        SHOOTING_VELOCITY = 0
+        LEADER_KP = 1
+        LEADER_KV = .18
+        FEEDER_KP = 1
+        FEEDER_KV = .18
+        SHOOTING_VELOCITY = 10
         CONVEYOR_VOLTAGE = 0
-        CONVEYOR_VELOCITY = 60
+        CONVEYOR_VELOCITY = 67
         TOLERANCE = 1e-3
 
     class VisionConstants():    
@@ -278,7 +278,7 @@ class ConstantValues():
         ConstantValues.IntakeConstants.INTAKE_VOLTAGE = SmartDashboard.getNumber("Intake Intake Volt",ConstantValues.IntakeConstants.INTAKE_VOLTAGE)                         
         ConstantValues.IntakeConstants.MAX_UP_ROTATION = SmartDashboard.getNumber("Intake Arm Max Up",ConstantValues.IntakeConstants.MAX_UP_ROTATION)
         ConstantValues.IntakeConstants.MAX_DOWN_ROTATION = SmartDashboard.getNumber("Intake Arm Max Down",ConstantValues.IntakeConstants.MAX_DOWN_ROTATION)   
-        ConstantValues.IntakeConstants.CONVEYOR_VOLTAGE = SmartDashboard.getNumber("Conveyor Voltage", ConstantValues.IntakeConstants.INTAKE_VOLTAGE)
+        ConstantValues.IntakeConstants.CONVEYOR_VOLTAGE = SmartDashboard.getNumber("Conveyor Voltage", ConstantValues.IntakeConstants.CONVEYOR_VOLTAGE)
         ConstantValues.IntakeConstants.ARM_KP = SmartDashboard.getNumber("Intake Arm kP",ConstantValues.IntakeConstants.ARM_KP)    
         ConstantValues.IntakeConstants.ARM_KI = SmartDashboard.getNumber("Intake Arm kI",ConstantValues.IntakeConstants.ARM_KI)
         ConstantValues.IntakeConstants.ARM_KD = SmartDashboard.getNumber("Intake Arm kD",ConstantValues.IntakeConstants.ARM_KD)                                                                           

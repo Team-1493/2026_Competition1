@@ -42,7 +42,9 @@ class ShooterSystem(Subsystem):
 
         self.leader_cfg = configs.TalonFXConfiguration()
         self.leader_cfg.slot0.k_v = ConstantValues.ShooterConstants.LEADER_KV
-        self.leader_cfg.slot0.k_p = ConstantValues.ShooterConstants.LEADER_KP        
+        self.leader_cfg.slot0.k_p = ConstantValues.ShooterConstants.LEADER_KP
+        self.leader_cfg.current_limits.stator_current_limit_enable=True
+        self.leader_cfg.current_limits.stator_current_limit=100                
         self.leader_motor.configurator.apply(self.leader_cfg)
 
         self.feeder_cfg = configs.TalonFXConfiguration()
@@ -58,11 +60,16 @@ class ShooterSystem(Subsystem):
 
         self.conveyor_velocity = ConstantValues.ShooterConstants.CONVEYOR_VELOCITY
 
-        SmartDashboard.putNumber('Shooter Velocity', 12.5)       
+        SmartDashboard.putNumber('Shooter Velocity', 10)       
 
         
     def periodic(self): 
-        SmartDashboard.putNumber('Leader current velocity', self.mean_shooter_velocity())
+        self.shooterActualVel = self.leader_motor.get_velocity().value_as_double
+        SmartDashboard.putNumber('Leader actual velocity',self.shooterActualVel)
+
+        self.feeder1_actual_vel = self.feeder_motor.get_velocity().value_as_double
+        SmartDashboard.putNumber('Feeder1 actual velocity',self.shooterActualVel)
+
     def shoot(self):
         """
         Move the leader motor
