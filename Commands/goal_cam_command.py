@@ -24,7 +24,7 @@ class GoalCamCommand(commands2.Command):
         self.rot = 0
         self.endTriggerDebounced: Trigger
 
-        self.LC = LaserCAN.getInstance()
+#        self.LC = LaserCAN.getInstance()
         self.llh = LimelightHelpers
         self.goalFor = -goalFor
         self.goalLat = goalLat     
@@ -89,13 +89,15 @@ class GoalCamCommand(commands2.Command):
             self.angle = 0
             vy = 0
 
+
+# Not using LaserCan for distance measurement right now, but leaving the code in place in case we want to use it later.
         # get distance from lasercam and calculate vx id measurement is valid,  set vx = 0        
-        self.dist = self.LC.get_distance_meters()          
-        if self.LC.status==0:  # status = 0 for valid measurement
-            vx = -self.controllerFor.calculate(self.dist)
-            vx = self.cap(vx,self.kForVmax) 
-        else:
-            vx = 0
+#        self.dist = self.LC.get_distance_meters()          
+#        if self.LC.status==0:  # status = 0 for valid measurement
+#            vx = -self.controllerFor.calculate(self.dist)
+#            vx = self.cap(vx,self.kForVmax) 
+#        else:
+        vx = 0
 
         # get robot current rotation and calculate omega
         self.rot = self.driveTrain.get_rotation_rad()

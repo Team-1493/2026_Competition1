@@ -61,6 +61,23 @@ class IntakeSystem(Subsystem):
         self.current_goal_position = ConstantValues.IntakeConstants.MAX_DOWN_ROTATION
         self.conveyor_voltage = ConstantValues.IntakeConstants.CONVEYOR_VOLTAGE
 
+        self.arm_motor.get_position().set_update_frequency(200)
+        self.arm_motor.get_velocity().set_update_frequency(200)
+        self.arm_motor.get_motor_voltage().set_update_frequency(200)
+        self.arm_motor.get_closed_loop_error().set_update_frequency(200)
+        self.arm_motor.get_closed_loop_reference().set_update_frequency(200)
+        self.arm_motor.get_motion_magic_at_target().set_update_frequency(200)
+        self.arm_motor.get_motion_magic_is_running().set_update_frequency(200)                                
+        self.arm_motor.optimize_bus_utilization()
+
+        self.intake_motor.get_motor_voltage().set_update_frequency(50)
+        self.intake_motor.optimize_bus_utilization()
+
+        self.conveyor_motor.get_motor_voltage().set_update_frequency(50)
+        self.conveyor_motor.optimize_bus_utilization()                
+
+        
+        
         self.setup()
 
 

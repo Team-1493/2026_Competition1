@@ -226,10 +226,10 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
         SmartDashboard.putNumber("Rot: ",round(rot,3))
         SmartDashboard.putNumber("X_in: ",round(x_in,3))
         SmartDashboard.putNumber("y_in: ",round(y_in,3))
-        SmartDashboard.putNumber("roll: ",round(self.pigeon2.get_roll().value_as_double,3) )
-        SmartDashboard.putNumber("pitch: ",round(self.pigeon2.get_pitch().value_as_double,3))
-        SmartDashboard.putNumber("roll: ",round(self.pigeon2.get_roll().value_as_double,3) )
-        SmartDashboard.putNumber("yaw: ",round(self.pigeon2.get_yaw().value_as_double,3))                                
+#        SmartDashboard.putNumber("roll: ",round(self.pigeon2.get_roll().value_as_double,3) )
+#        SmartDashboard.putNumber("pitch: ",round(self.pigeon2.get_pitch().value_as_double,3))
+#        SmartDashboard.putNumber("roll: ",round(self.pigeon2.get_roll().value_as_double,3) )
+#        SmartDashboard.putNumber("yaw: ",round(self.pigeon2.get_yaw().value_as_double,3))                                
 
 
 

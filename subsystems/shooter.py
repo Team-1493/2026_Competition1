@@ -60,6 +60,17 @@ class ShooterSystem(Subsystem):
 
         self.conveyor_velocity = ConstantValues.ShooterConstants.CONVEYOR_VELOCITY
 
+        for motor in self.all_motors:
+            motor.get_velocity().set_update_frequency(200)
+            motor.get_motor_voltage().set_update_frequency(100)        
+            motor.optimize_bus_utilization()
+        
+        self.feeder_motor.get_velocity().set_update_frequency(100)
+        self.feeder2_motor.get_velocity().set_update_frequency(100)
+        self.feeder_motor.get_motor_voltage().set_update_frequency(100)
+        self.feeder2_motor.get_motor_voltage().set_update_frequency(100)        
+        self.feeder_motor.optimize_bus_utilization_for_all([self.feeder2_motor,self.feeder2_motor])
+
         SmartDashboard.putNumber('Shooter Velocity', 10)       
 
         

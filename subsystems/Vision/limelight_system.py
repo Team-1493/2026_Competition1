@@ -130,11 +130,11 @@ class LLsystem(Subsystem):
                     SmartDashboard.putNumber(label+"pose Y(in)",round(current_estimate[i].pose.translation().Y()*39.37,3))
 
                     SmartDashboard.putNumber(label+"Dist avg",round(current_estimate[i].avg_tag_dist,3))                
-                    SmartDashboard.putNumber(label+"Area avg",round(current_estimate[i].avg_tag_area,3))    
-                    SmartDashboard.putNumber(label+"Pitch_ty",LimelightHelpers.get_ty(self.constants.CAM_NAME[i]))                                 
-                    SmartDashboard.putNumber(label+"Pitch_tync",LimelightHelpers.get_tync(self.constants.CAM_NAME[i]))
-                    SmartDashboard.putNumber(label+"Yaw_tx",LimelightHelpers.get_tx(self.constants.CAM_NAME[i]))                                 
-                    SmartDashboard.putNumber(label+"Yaw_txnc",LimelightHelpers.get_txnc(self.constants.CAM_NAME[i]))                
+#                    SmartDashboard.putNumber(label+"Area avg",round(current_estimate[i].avg_tag_area,3))    
+#                    SmartDashboard.putNumber(label+"Pitch_ty",LimelightHelpers.get_ty(self.constants.CAM_NAME[i]))                                 
+#                    SmartDashboard.putNumber(label+"Pitch_tync",LimelightHelpers.get_tync(self.constants.CAM_NAME[i]))
+#                    SmartDashboard.putNumber(label+"Yaw_tx",LimelightHelpers.get_tx(self.constants.CAM_NAME[i]))                                 
+#                    SmartDashboard.putNumber(label+"Yaw_txnc",LimelightHelpers.get_txnc(self.constants.CAM_NAME[i]))                
                     SmartDashboard.putNumber(label+"Std Dev XY",round(stdXY[i],3))  
                     SmartDashboard.putNumber(label+"Std Dev Theta",round(stdRot[i],3))  
 

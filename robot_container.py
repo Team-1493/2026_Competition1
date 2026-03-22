@@ -16,7 +16,7 @@ from subsystems.Drive.drivetrain_generator import DrivetrainGenerator
 from telemetry import Telemetry
 from subsystems.Drive.heading_controller import HeadingController
 from subsystems.Vision.limelight_system import LLsystem
-from subsystems.laser_can import LaserCAN
+#from subsystems.laser_can import LaserCAN
 from subsystems.intake import IntakeSystem
 from subsystems.shooter import ShooterSystem
 from Commands.drive_teleop_command import DriveTeleopCommand
@@ -51,7 +51,7 @@ class RobotContainer:
         self.shooter = ShooterSystem.getInstance()       
         self.shoot_command = ShootCommand()
         self.intake_command = IntakeCommand()            
-        LaserCAN.getInstance()
+#        LaserCAN.getInstance()
 
         self.limelightSytem = LLsystem.getInstance()
         self._joystick = CommandXboxController(0)
