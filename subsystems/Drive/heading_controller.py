@@ -49,7 +49,6 @@ class HeadingController(Subsystem):
         self.setTargetRotation(0)
         self.state=2
 
-
     def rotateTo90(self):
         self.setTargetRotation(pi/2)    
         self.state=2
@@ -65,12 +64,28 @@ class HeadingController(Subsystem):
         self.state=2        
 
 
+    def rotateToZeroCommand(self):
+        return self.runOnce(lambda: self.rotateToZero())
+        
+    
+    def rotateTo90Command(self):
+        return self.runOnce(lambda: self.rotateTo90())
+
+    def rotateTo180Command(self):
+        return self.runOnce(lambda: self.rotateTo180())
+
+    def rotateTo270Command(self):
+        return self.runOnce(lambda: self.rotateTo270())
+
     def set_forward_direction(self):
         self.driveTrain.drive_RC(0,0,0)
         self.state=0
         self.driveTrain.set_operator_perspective_forward(
                 self.driveTrain.pose.rotation())
                 
+
+    def set_forward_directionCommand(self):
+        return self.runOnce(self.set_forward_direction())
 
     def setTargetRotation(self,angle : float):
         self.targetRotation = angle

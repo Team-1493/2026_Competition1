@@ -1,7 +1,7 @@
 from commands2 import Subsystem
 from wpilib import SmartDashboard, DigitalInput
 import wpilib
-from phoenix6 import hardware, configs, controls,signals
+from phoenix6 import BaseStatusSignal, hardware, configs, controls,signals
 from phoenix6.signals import GravityTypeValue
 from Constants1 import ConstantValues
 
@@ -61,6 +61,10 @@ class IntakeSystem(Subsystem):
         self.current_goal_position = ConstantValues.IntakeConstants.MAX_DOWN_ROTATION
         self.conveyor_voltage = ConstantValues.IntakeConstants.CONVEYOR_VOLTAGE
 
+        self.pos_signal = self.arm_motor.get_position()
+        self.vel_signal = self.arm_motor.get_velocity()
+        self.signals=[self.pos_signal,self.vel_signal]
+
         self.arm_motor.get_position().set_update_frequency(200)
         self.arm_motor.get_velocity().set_update_frequency(200)
         self.arm_motor.get_motor_voltage().set_update_frequency(200)
@@ -88,8 +92,9 @@ class IntakeSystem(Subsystem):
 #        self.current_goal_position = None
 
     def periodic(self):
-        arm_position = self.arm_motor.get_position().value_as_double
-        arm_velocity = self.arm_motor.get_velocity().value_as_double      
+        BaseStatusSignal.refresh_all(self.signals)
+        arm_position = self.pos_signal.value_as_double
+        arm_velocity = self.vel_signal.value_as_double      
         lsd = not self.down_limit_switch.get()
         lsu = not self.up_limit_switch.get()          
         if not self.zeroed:

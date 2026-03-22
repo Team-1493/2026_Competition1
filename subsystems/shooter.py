@@ -1,6 +1,5 @@
 from commands2 import Subsystem
-from wpilib import SmartDashboard, DigitalInput
-import wpilib
+from wpilib import SmartDashboard
 from phoenix6 import hardware, configs, controls
 from phoenix6.signals import MotorAlignmentValue
 from Constants1 import ConstantValues
@@ -97,7 +96,7 @@ class ShooterSystem(Subsystem):
     def move_conveyor(self):
         # If the shooter motor's velocity is around the threshold, THEN move the feeder
         mean =  self.mean_shooter_velocity()
-        SmartDashboard.putNumber("ShooterCheck",abs(self.velocity  - mean)/ (mean+0.0001))
+#        SmartDashboard.putNumber("ShooterCheck",abs(self.velocity  - mean)/ (mean+0.0001))
         if abs(self.velocity  - mean)/ (mean+0.0001) <= 0.1 or mean >= self.velocity * 0.9:
             self.feeder_motor.set_control(self.velocity_voltage.with_velocity(self.conveyor_velocity))
             self.feeder2_motor.set_control(self.velocity_voltage.with_velocity(self.conveyor_velocity))            
