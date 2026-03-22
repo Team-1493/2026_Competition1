@@ -33,19 +33,19 @@ class AutoPilotCommand(commands2.Command):
 
     @override
     def initialize(self):
-        print("****STARTING AUTOPILOT")
+#        print("****STARTING AUTOPILOT")
         pose=HelperMethods.calculate_pose_goal_from_tag(self.i,self.x_offset,self.y_offset)
         self.ap_drive = ap_driver.getInstance()
         self.m_target = ap_target(pose).with_entry_angle(pose.rotation()).with_velocity(0)
         self.index_actions = 0
-        print("************",self.m_target.get_reference().X(),"  ",self.m_target.get_reference().Y())
+ #       print("************",self.m_target.get_reference().X(),"  ",self.m_target.get_reference().Y())
   
 
     @override
     def execute(self):
 
         out,disp = self.ap_drive.kAutopilot.calculate(
-            self.m_drivetrain.get_pose(), self.m_drivetrain.get_speeds(), self.m_target)
+            self.m_drivetrain.pose, self.m_drivetrain.speeds, self.m_target)
         
         if self.hasActions:
             if self.index_actions<self.actions_length:
@@ -59,11 +59,11 @@ class AutoPilotCommand(commands2.Command):
     @override
     def isFinished(self):
         return self.ap_drive.kAutopilot.atTarget(
-            self.m_drivetrain.get_pose(), 
+            self.m_drivetrain.pose, 
             self.m_target)
   
 
     @override
     def end(self,interrupted:bool):
         self.m_drivetrain.drive_RC(0,0,0)
-        print("done with autopilot")
+#        print("done with autopilot")

@@ -122,7 +122,7 @@ class DrivePathGenerator():
 
     def getFieldVelocity(self):
         robotRelativeSpeeds = self.driveTrain.kinematics.toChassisSpeeds(
-            self.driveTrain.get_state().module_states)
+            self.driveTrain.state.module_states)
         return ChassisSpeeds.fromRobotRelativeSpeeds(robotRelativeSpeeds, 
                                                     self.robotPose.rotation())
     

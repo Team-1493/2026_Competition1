@@ -45,15 +45,13 @@ class GoalCamCommand(commands2.Command):
         #  If no tag ID sent, use the closest visible ID  
         if self.id == 0:
             self.id = int(self.llh.get_fiducial_id(self.CamName))
-            print("AAAAAA  ",self.id)
         # if we have a valid tag ID, use that tag's rotation as the target rotation
         # if not, use the current robot rotatation as the target (maintain current rotation)
         if self.id >0:
             dir = self.driveTrain.get_operator_forward_direction().radians()
             self.goalRot = self.constantsVision.tags_list[self.id-1].pose.toPose2d().rotation().radians()-pi+dir
-            print("BBBBBB  ",self.goalRot)
         else: 
-            pose = self.driveTrain.get_pose()
+            pose = self.driveTrain.pose
             self.goalRot = pose.rotation().radians()
 
         # adjust for wraparound
@@ -70,7 +68,6 @@ class GoalCamCommand(commands2.Command):
         self.timer.reset() 
         self.timer.start()      
 
-        print("Goals: ",self.id,self.goalFor,self.goalLat,self.goalRot) 
         
     
 
@@ -100,26 +97,16 @@ class GoalCamCommand(commands2.Command):
         vx = 0
 
         # get robot current rotation and calculate omega
-        self.rot = self.driveTrain.get_rotation_rad()
+        self.rot = self.driveTrain.pose.rotation().radians()
         omega = self.controllerRot.calculate(self.rot)
         omega = self.cap(omega,self.kRotVmax)                          
                  
-        print("tv: ",self.llh.get_tv(self.CamName),
-              "   dist: ",round(self.dist,3),
-              "   tx: ",round(self.angle,3),
-              "   rot: ",round(self.rot,3),              
-              "   vx: ",round(vx,3),
-              "   vy: ",round(vy,3),
-              "   om: ",round(omega,3)              
-            )
-
         self.driveTrain.drive_RC(vx,vy,omega)
 
 
     @override
     def end(self, interrupted: bool) :
         self.timer.stop()
-        print("Time:  ",self.timer.get())
         self.driveTrain.drive_RC(0,0,0)
 
     @override
@@ -171,7 +158,6 @@ class GoalCamCommand(commands2.Command):
         self.controllerFor = PIDController(self.kForP, 0, self.kForD) #8        
         self.controllerFor.setTolerance(self.kForwardTolerance);  
 
-        print("vmax = ",self.kLatVmax,"amax = ",self.kLatAmax)
         self.tpLat = TrapezoidProfile.Constraints(self.kLatVmax, self.kLatAmax) #1,2
         self.controllerLat = PIDController(self.kLatP , 0, self.kLatD) #8
         self.controllerLat.setTolerance(self.kLateralTolerance)

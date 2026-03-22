@@ -41,7 +41,7 @@ class FindSlipCurrent(commands2.Command):
 
 
         self.drivetrain.set_control(self.driveKS.with_volts(self.voltage))
-        chassisSpeed = self.drivetrain.get_state().speeds
+        chassisSpeed = self.drivetrain.speeds
         self.spd = math.sqrt(chassisSpeed.vx**2+chassisSpeed.vy**2)
   
 

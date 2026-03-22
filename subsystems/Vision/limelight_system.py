@@ -43,7 +43,7 @@ class LLsystem(Subsystem):
         SmartDashboard.putNumber("Y actual",0)
 
     def periodic(self):
-        self.currentPose = self.driveTrain.get_pose()
+        self.currentPose = self.driveTrain.pose
 #        rot =  self.currentPose.rotation().degrees()+self.headingController.rotation_offset*math.pi/180.
         rot =  self.currentPose.rotation().degrees()
         for i in range(self.numCams):    
@@ -201,7 +201,7 @@ class LLsystem(Subsystem):
     
     def zeroAndseedIMU(self,rot=None):
         if rot is None:
-            rot=self.driveTrain.get_rotation_deg()  # LLH set_robot_orientation uses degrees
+            rot=self.driveTrain.rotation_deg  # LLH set_robot_orientation uses degrees
 
         for i in range(self.numCams):
             # send the current robot pose to the limelight

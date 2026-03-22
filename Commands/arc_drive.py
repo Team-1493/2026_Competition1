@@ -40,7 +40,7 @@ class arcDrive(commands2.Command):
 
     @override
     def initialize(self):
-        currentPose = self.driveTrain.get_state().pose
+        currentPose = self.driveTrain.pose
         xr = currentPose.X()
         yr = currentPose.Y()
 
@@ -80,11 +80,11 @@ class arcDrive(commands2.Command):
         self.goalPose = Pose2d(self.x_goal,self.y_goal,Rotation2d(self.angle_goal)) 
         self.goalState = PathPlannerTrajectoryState()
         self.goalState.pose = self.goalPose
-        print(xr,"  ",yr,"  ",xr1,"  ",yr1,"  ",self.x_goal,"  ",self.y_goal,"  ",self.angle_goal )
+#        print(xr,"  ",yr,"  ",xr1,"  ",yr1,"  ",self.x_goal,"  ",self.y_goal,"  ",self.angle_goal )
 
     def execute(self):
         speeds =self.controller.calculateRobotRelativeSpeeds(
-            self.driveTrain.get_pose(), self.goalState)
+            self.driveTrain.pose, self.goalState)
 
         speeds = ChassisSpeeds(math.sqrt(self.m)*(speeds.vx/(math.sqrt(speeds.vx**2 + speeds.vy**2))),math.sqrt(self.m)*(speeds.vy/(math.sqrt(speeds.vx**2 + speeds.vy**2))),
                 speeds.omega)
@@ -98,7 +98,7 @@ class arcDrive(commands2.Command):
         if self.validLocation is False:
             return True
 
-        current = self.driveTrain.get_pose()
+        current = self.driveTrain.pose
         xyErr =math.hypot(current.X() - self.x_goal,current.Y() - self.y_goal) 
         okXY = xyErr <= .04
        
@@ -112,5 +112,5 @@ class arcDrive(commands2.Command):
     @override
     def end(self,interrupted:bool):
         self.driveTrain.drive_RC(0,0,0)
-        print("done with arcDrive")
+#        print("done with arcDrive")
 

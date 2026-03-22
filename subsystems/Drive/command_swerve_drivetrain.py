@@ -1,3 +1,4 @@
+from tracemalloc import start
 from commands2 import Command, Subsystem
 from commands2.sysid import SysIdRoutine
 import math
@@ -5,7 +6,7 @@ from phoenix6 import SignalLogger, swerve, units, utils, hardware
 from phoenix6.swerve.requests import ForwardPerspectiveValue
 from phoenix6.configs import Slot0Configs, Slot1Configs
 from typing import Callable, overload
-from wpilib import DriverStation, Notifier, RobotController, SmartDashboard
+from wpilib import DriverStation, Notifier, RobotController, SmartDashboard, Timer
 import wpilib
 from wpilib.sysid import SysIdRoutineLog
 from wpimath.geometry import Pose2d, Rotation2d, Translation2d
@@ -149,6 +150,14 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
             self, drive_motor_type, steer_motor_type, encoder_type,
             drivetrain_constants, arg0, arg1, arg2, arg3
         )
+        self.time_start = 0
+        self.state = self.get_state()
+        self.pose =  self.state.pose
+        self.rotation_rad = self.pose.rotation().radians()
+        self.rotation_deg = self.pose.rotation().degrees()        
+        self.speeds = self.state.speeds
+
+        self.timing_counter = 1
         self.reset_pose(Pose2d())
         self._sim_notifier: Notifier | None = None
         self._last_sim_time: units.second = 0.0
@@ -193,45 +202,60 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
             self.alliance_color = DriverStation.getAlliance()
             
             if self.alliance_color is not None:
-           #     print("11111111111111111111111111111111 ", self.alliance_color)
                 if (self.alliance_color != self.previous_alliance_color):
 
                     if self.alliance_color.value == 0:#DriverStation.Alliance.kRed:
-                        print("22222222222222222222222222222 ", self.alliance_color)
                         self.set_operator_perspective_forward(self._RED_ALLIANCE_PERSPECTIVE_ROTATION)
                         self.reset_pose(Pose2d(Translation2d(0,0),Rotation2d(math.pi)))
                         self.seed_field_centric(Rotation2d())
                     else:
-                        print("333333333333333333333333333333 ", self.alliance_color)                        
                         self.set_operator_perspective_forward(self._BLUE_ALLIANCE_PERSPECTIVE_ROTATION)
                         self.reset_pose(Pose2d(Translation2d(0,0),Rotation2d(0)))       
                         self.seed_field_centric(Rotation2d())                               
                     self._has_applied_operator_perspective = True
 
+#       retrieve and store the pose and speeds once per loop for use in 
+#        dashboard and other systems, so we don't have to call get_state() 
+#       multiple times per loop
+        self.state = self.get_state()
+        self.pose =  self.state.pose
+        self.rotation_rad = self.pose.rotation().radians()
+        self.speeds = self.state.speeds
 
-        pose =  self.get_pose()
-        spd = self.get_speeds()
-        x =pose.X()
-        y = pose.Y()
-        rot = pose.rotation().degrees()
+
+# every 10 loops, print the avg loop time and write pose data to dashboard
+        if (self.timing_counter==10):
+            time = Timer.getFPGATimestamp()
+            delta_time = time - self.time_start
+            print("CSD Loop Time:", delta_time/10)
+            self.time_start = time
+            self.timing_counter = 0
+            self.write_to_dashboard()
+
+        self.timing_counter = self.timing_counter+1
+
+
+    def write_to_dashboard(self):
+
+        x =self.pose.X()
+        y = self.pose.Y()
+        rot_deg = self.rotation_deg
         x_in = x*39.37
         y_in = y*39.37  
 
-
-        SmartDashboard.putNumber("Vx: ",round(spd.vx,3))
-        SmartDashboard.putNumber("Vy: ",round(spd.vy,3))
-        SmartDashboard.putNumber("Rot Rate: ",round(self.get_omega_dps(),3))   
+#        SmartDashboard.putNumber("Vx: ",round(self.spd.vx,3))
+#        SmartDashboard.putNumber("Vy: ",round(self.spd.vy,3))
+#        SmartDashboard.putNumber("Rot Rate: ",round(self.get_omega_dps(),3))   
         SmartDashboard.putNumber("X: ",round(x,3))
         SmartDashboard.putNumber("y: ",round(y,3))
-        SmartDashboard.putNumber("Rot: ",round(rot,3))
+        SmartDashboard.putNumber("Rot: ",round(rot_deg,3))
         SmartDashboard.putNumber("X_in: ",round(x_in,3))
-        SmartDashboard.putNumber("y_in: ",round(y_in,3))
+        SmartDashboard.putNumber("y_in: ",round(y_in,3))       
+
 #        SmartDashboard.putNumber("roll: ",round(self.pigeon2.get_roll().value_as_double,3) )
 #        SmartDashboard.putNumber("pitch: ",round(self.pigeon2.get_pitch().value_as_double,3))
 #        SmartDashboard.putNumber("roll: ",round(self.pigeon2.get_roll().value_as_double,3) )
 #        SmartDashboard.putNumber("yaw: ",round(self.pigeon2.get_yaw().value_as_double,3))                                
-
-
 
     def _start_sim_thread(self):
         def _sim_periodic():
@@ -337,34 +361,27 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
                 .with_velocity_y(y_vel)
                 .with_rotational_rate(rot_vel)
                 )
+
+#  need a callable method that returns state for autogenerator 
+    def state_supplier(self):
+        return self.state
     
-    def get_speeds(self):
-        return self.get_state().speeds
-    
-    def get_pose(self):
-        return self.get_state().pose
-    
+#  need a callable method that returns pose 
+    def pose_supplier(self):
+        return self.pose
+
+#  need a callable method that returns speeds for autogenerator    
+    def speeds_supplier(self):
+        return self.speeds
+   
     def get_speeds_norm(self):
-        speed = self.get_state().speeds
-        return  math.hypot(speed.vx,speed.vy)       
-
-    def get_X(self):
-        return  self.get_state().pose.X()
-
-    def get_Y(self):
-        return  self.get_state().pose.Y()                  
-
-    def get_rotation_deg(self):
-        return  self.get_state().pose.rotation().degrees()
-
-    def get_rotation_rad(self):
-        return  self.get_state().pose.rotation().radians()   
+        return  math.hypot(self.speeds.vx,self.speeds.vy)       
 
     def get_omega_rps(self):
-        return self.get_state().speeds.omega
+        return self.speeds.omega
     
     def get_omega_dps(self):
-        return self.get_state().speeds.omega_dps                   
+        return self.speeds.omega_dps                   
 
     
     def update(self):
@@ -397,29 +414,3 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
 
 
 
-    def wait_for_can_ready(self, timeout=9.0):
-        timer = wpilib.Timer()
-        timer.start()
-
-        while timer.get() < timeout:
-
-            all_connected = True
-
-            for i in range(4):
-                module = self.get_module(i)
-
-                if not module.drive_motor.is_connected():
-                    all_connected = False
-                if not module.steer_motor.is_connected():
-                    all_connected = False
-                if not module.encoder.is_connected():
-                    all_connected = False
-
-            if all_connected:
-                print("All CAN devices ready.")
-                return True
-
-            wpilib.Timer.delay(0.02)
-
-        print("WARNING: CAN devices not fully ready!")
-        return False

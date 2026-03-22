@@ -13,7 +13,7 @@ from wpilib import DataLogManager, SmartDashboard, Timer
 from Constants1 import ConstantValues
 from generated.tuner_constants import TunerConstants
 from subsystems.Drive.drivetrain_generator import DrivetrainGenerator 
-from telemetry import Telemetry
+#from telemetry import Telemetry
 from subsystems.Drive.heading_controller import HeadingController
 from subsystems.Vision.limelight_system import LLsystem
 #from subsystems.laser_can import LaserCAN
@@ -56,7 +56,7 @@ class RobotContainer:
         self.limelightSytem = LLsystem.getInstance()
         self._joystick = CommandXboxController(0)
 
-        self._logger = Telemetry(TunerConstants.speed_at_12_volts)
+#        self._logger = Telemetry(TunerConstants.speed_at_12_volts)
 #        DataLogManager.start()
 
         # speed_at_12_volts desired top speed
@@ -91,9 +91,9 @@ class RobotContainer:
 #            self.drivetrain.runOnce(lambda:self.drivetrain.reset_pose(Pose2d())))
 
         
-        self.drivetrain.register_telemetry(
-            lambda state: self._logger.telemeterize(state)
-        )
+#        self.drivetrain.register_telemetry(
+#            lambda state: self._logger.telemeterize(state)
+#        )
         
 
         self._joystick.button(1).onTrue(
@@ -124,8 +124,8 @@ class RobotContainer:
 
 
 
-        self._joystick.button(7).whileTrue(self.intake_command)
-        self._joystick.button(8).whileTrue(self.shoot_command)        
+#        self._joystick.button(7).whileTrue(self.intake_command)
+#        self._joystick.button(8).whileTrue(self.shoot_command)        
 
 
 
@@ -166,12 +166,12 @@ class RobotContainer:
 #        self._joystick.button(8).whileTrue(FindKP_MaxA())        
 
 
-#        self._joystick.button(7).whileTrue(
-#            commands2.DeferredCommand(lambda:self.drive_path.drive_path_to_tag(23,-.75,0)).finallyDo
-#           (self.headingController.setTargetRotationInt))
+        self._joystick.button(7).whileTrue(
+            commands2.DeferredCommand(lambda:self.drive_path.drive_path_to_tag(23,-.75,0)).finallyDo
+           (self.headingController.setTargetRotationInt))
 
- #       self._joystick.button(8).whileTrue(
- #           AutoPilotCommand(26,-1.5,0,0).finallyDo((self.headingController.setTargetRotationInt)))
+        self._joystick.button(8).whileTrue(
+            AutoPilotCommand(26,-1.5,0,0).finallyDo((self.headingController.setTargetRotationInt)))
  
         self._joystick.button(9).onTrue(
               InstantCommand(lambda:self.update_constants()))
@@ -208,4 +208,4 @@ class RobotContainer:
         self.autoChooser = AutoBuilder.buildAutoChooser("DoNothing")
         SmartDashboard.putData("Auto Chooser", self.autoChooser)
         self.drive_path = DrivePathGenerator(
-                 lambda: self.drivetrain.get_state().pose)
+                 lambda: self.drivetrain.pose_supplier())

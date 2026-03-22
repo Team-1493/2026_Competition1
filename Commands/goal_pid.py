@@ -46,7 +46,7 @@ class GoalPID(commands2.Command):
         goalState.pose = self.goalPose
 
         speeds =self.controller.calculateRobotRelativeSpeeds(
-            self.driveTrain.get_pose(), goalState)
+            self.driveTrain.pose, goalState)
 
         speeds = ChassisSpeeds(min(speeds.vx, 1.0),min(speeds.vy, 1.0),
                 speeds.omega)
@@ -96,7 +96,7 @@ class GoalPID(commands2.Command):
 
     def get_end_trigger(self):
         def condition():
-            diff = (self.driveTrain.get_pose()).relativeTo(self.goalPose)
+            diff = (self.driveTrain.pose).relativeTo(self.goalPose)
 
             position = diff.translation().norm() < self.kPositionTolerance
 

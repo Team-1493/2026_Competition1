@@ -105,7 +105,6 @@ class ShooterSystem(Subsystem):
         # self.feeder_motor.set_control(self.voltage_control.with_output(0))
         self.feeder_motor.set_control(self.brake)
         self.feeder2_motor.set_control(self.brake)
-        print("!!!!!!!!!!!!!!!!!!!!!  STOPPING CONVEYOR !!!!!!!!!!!!!!!!!!!!!")
     def mean_shooter_velocity(self):
         return sum([abs(m.get_velocity().value_as_double) for m in self.all_motors]) / len(self.all_motors)
 

@@ -71,7 +71,7 @@ class PVisionSim(Subsystem):
        if RobotBase.isSimulation():
             estimatedRobotPose = None
 
-            self.visionSim.update(self.driveTrain.get_pose())
+            self.visionSim.update(self.driveTrain.pose)
             mindist=999
             results = self.dummyCam.getAllUnreadResults()
             length=len(results)

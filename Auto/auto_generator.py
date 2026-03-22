@@ -54,9 +54,9 @@ class AutoGenerator():
         config = RobotConfig.fromGUISettings()
 
         AutoBuilder.configure(
-            self.getPose, # Robot pose supplier
+            self.driveTrain.pose_supplier, # Robot pose supplier
             self.driveTrain.reset_pose, # Method to reset odometry (will be called if your auto has a starting pose)
-            self.getSpeeds, # ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+            self.driveTrain.speeds_supplier, # ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
 #            lambda speeds, feedforwards: self.driveRobotRelative(speeds), # Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also outputs individual module feedforwards
             
             lambda speeds, feedforwards: self.driveTrain.set_control(
@@ -78,12 +78,6 @@ class AutoGenerator():
         # THE ORIGIN WILL REMAIN ON THE BLUE SIDE
         return DriverStation.getAlliance() == DriverStation.Alliance.kRed
     
-
-    def getPose(self):
-        return self.driveTrain.get_state().pose
-    
-    def getSpeeds(self):
-        return self.driveTrain.get_state().speeds    
 
 
 

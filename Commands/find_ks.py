@@ -39,7 +39,7 @@ class FindkS(commands2.Command):
 
 
         self.drivetrain.set_control(self.driveKS.with_volts(self.voltage))
-        chassisSpeed = self.drivetrain.get_speeds()
+        chassisSpeed = self.drivetrain.speeds
         self.spd = math.sqrt(chassisSpeed.vx**2+chassisSpeed.vy**2)
 
         mod0 = self.get_torque_current(0)
