@@ -77,6 +77,7 @@ class RobotContainer:
         self.createPPStuff()
         self.set_up_telemetry()
         self.configureButtonBindings()
+        self.configureShooterSysId()        
 
 
     def configureButtonBindings(self) -> None:
@@ -101,13 +102,32 @@ class RobotContainer:
         self._joystick.button(5).onTrue(self.headingController.runOnce(
             lambda:self.headingController.set_forward_direction()))
 
-        self._joystick.button(6).onTrue(self.slow_mode_on)
+ #       self._joystick.button(6).onTrue(self.slow_mode_on)
         
-        self._joystick.button(6).onFalse(self.slow_mode_off)
+ #       self._joystick.button(6).onFalse(self.slow_mode_off)
 
-        self._joystick.button(7).whileTrue(self.intake_command)
+ #       self._joystick.button(7).whileTrue(self.intake_command)
 
-        self._joystick.button(8).whileTrue(self.shoot_command)        
+ #       self._joystick.button(8).whileTrue(self.shoot_command)        
+
+
+        self._joystick.button(6).whileTrue(
+            self.shooter.shooter_sysid_quasistatic(SysIdRoutine.Direction.kForward)
+        )
+        self._joystick.button(7).whileTrue(
+            self.shooter.shooter_sysid_quasistatic(SysIdRoutine.Direction.kReverse)
+        )
+        self._joystick.button(8).whileTrue(
+            self.shooter.shooter_sysid_dynamic(SysIdRoutine.Direction.kForward)
+        )
+        self._joystick.button(9).whileTrue(
+            self.shooter.shooter_sysid_dynamic(SysIdRoutine.Direction.kReverse)
+        )
+
+#        self._joystick.button(9).onTrue(
+#              InstantCommand(lambda:self.update_constants()))
+
+
 
 
 #        self._joystick.button(7).onTrue(
@@ -153,14 +173,11 @@ class RobotContainer:
 #        self._joystick.button(8).whileTrue(
 #            AutoPilotCommand(26,-1.5,0,0).finallyDo((self.headingController.setTargetRotationInt)))
  
-        self._joystick.button(9).onTrue(
-              InstantCommand(lambda:self.update_constants()))
-
 
     def getAutonomousCommand(self):
         return  self.autoChooser.getSelected()
 
-    
+
     def setHeadingControlToCurrentrHeading(self):
         self.headingController.setTargetRotationInt(True)  
     
@@ -168,7 +185,7 @@ class RobotContainer:
         self.drivetrain.write_to_dashboard()
         self.intake.write_to_dashboard()
         self.shooter.write_to_dashboard()
-        
+
         
     
     def update_constants(self):
@@ -202,3 +219,21 @@ class RobotContainer:
             lambda state: self._logger.telemeterize(state)
         )
 
+    
+    def configureShooterSysId(self):
+        SmartDashboard.putData(
+            "Shooter SysId Quasistatic Forward",
+            self.shooter.shooter_sysid_quasistatic(SysIdRoutine.Direction.kForward),
+        )
+        SmartDashboard.putData(
+            "Shooter SysId Quasistatic Reverse",
+            self.shooter.shooter_sysid_quasistatic(SysIdRoutine.Direction.kReverse),
+        )
+        SmartDashboard.putData(
+            "Shooter SysId Dynamic Forward",
+            self.shooter.shooter_sysid_dynamic(SysIdRoutine.Direction.kForward),
+        )
+        SmartDashboard.putData(
+            "Shooter SysId Dynamic Reverse",
+            self.shooter.shooter_sysid_dynamic(SysIdRoutine.Direction.kReverse),
+        )

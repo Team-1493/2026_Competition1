@@ -227,7 +227,7 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
         if (self.timing_counter==10):
             time = Timer.getFPGATimestamp()
             delta_time = time - self.time_start
-            print("CSD Loop Time:", delta_time/10)
+#            print("CSD Loop Time:", delta_time/10)
             self.time_start = time
             self.timing_counter = 0
 
