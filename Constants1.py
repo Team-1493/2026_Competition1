@@ -343,7 +343,7 @@ class ConstantValues():
         ConstantValues.LimelightConstants.STD_DEV_COEFF_THETA = SmartDashboard.getNumber("LL StdDevCoeff_theta",ConstantValues.LimelightConstants.STD_DEV_COEFF_THETA)
         ConstantValues.LimelightConstants.CAMERA_CUTOFF_DISTANCE_1 = SmartDashboard.getNumber("LL CutoffDist_1",ConstantValues.LimelightConstants.CAMERA_CUTOFF_DISTANCE_1)
         ConstantValues.LimelightConstants.CAMERA_CUTOFF_DISTANCE_2 = SmartDashboard.getNumber("LL CutoffDist_2",ConstantValues.LimelightConstants.CAMERA_CUTOFF_DISTANCE_2)
-        ConstantValues.LimelightConstants.CAMERA_CUTOFF_DIFFERENCE = SmartDashboard.getNumber("LL CutoffDifference",ConstantValues.LimelightConstants.CAMERA_CUTOFF_DI)
+        ConstantValues.LimelightConstants.CAMERA_CUTOFF_DIFFERENCE = SmartDashboard.getNumber("LL CutoffDifference",ConstantValues.LimelightConstants.CAMERA_CUTOFF_DIFFERENCE)
 
         # Update values for autobuilder
         ConstantValues.AutoBuilderConstants.AUTOBUILDER_XY_kP=  SmartDashboard.getNumber("AutoBuilder XY_kP",ConstantValues.AutoBuilderConstants.AUTOBUILDER_XY_kP)

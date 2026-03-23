@@ -224,10 +224,10 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
 
 
 # every 10 loops, print the avg loop time and write pose data to dashboard
-        if (self.timing_counter==10):
+        if (self.timing_counter==25):
             time = Timer.getFPGATimestamp()
             delta_time = time - self.time_start
-#            print("CSD Loop Time:", delta_time/10)
+#            print("CSD Loop Time:", delta_time/25)
             self.time_start = time
             self.timing_counter = 0
 

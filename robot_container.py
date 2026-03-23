@@ -73,9 +73,12 @@ class RobotContainer:
         self.slow_mode_on = InstantCommand(lambda:self.drive_teleop_command.slow_mode_on())
         self.slow_mode_off = InstantCommand(lambda:self.drive_teleop_command.slow_mode_off())        
 #        self.setForwardDirection = self.headingController.set_forward_directionCommand()                     
-
+        self.shooterSysID_quasi_for = self.shooter.shooter_sysid_quasistatic(SysIdRoutine.Direction.kForward)
+        self.shooterSysID_quasi_rev = self.shooter.shooter_sysid_quasistatic(SysIdRoutine.Direction.kReverse)        
+        self.shooterSysID_dyn_for = self.shooter.shooter_sysid_dynamic(SysIdRoutine.Direction.kForward)
+        self.shooterSysID_dyn_rev = self.shooter.shooter_sysid_dynamic(SysIdRoutine.Direction.kReverse)        
         self.createPPStuff()
-        self.set_up_telemetry()
+#        self.set_up_telemetry()
         self.configureButtonBindings()
         self.configureShooterSysId()        
 
@@ -111,21 +114,13 @@ class RobotContainer:
  #       self._joystick.button(8).whileTrue(self.shoot_command)        
 
 
-        self._joystick.button(6).whileTrue(
-            self.shooter.shooter_sysid_quasistatic(SysIdRoutine.Direction.kForward)
-        )
-        self._joystick.button(7).whileTrue(
-            self.shooter.shooter_sysid_quasistatic(SysIdRoutine.Direction.kReverse)
-        )
-        self._joystick.button(8).whileTrue(
-            self.shooter.shooter_sysid_dynamic(SysIdRoutine.Direction.kForward)
-        )
-        self._joystick.button(9).whileTrue(
-            self.shooter.shooter_sysid_dynamic(SysIdRoutine.Direction.kReverse)
-        )
+        self._joystick.button(6).whileTrue(self.shooterSysID_quasi_for)
+        self._joystick.button(7).whileTrue(self.shooterSysID_quasi_rev)
+        self._joystick.button(8).whileTrue(self.shooterSysID_dyn_for)
+#        self._joystick.button(9).whileTrue(self.shooterSysID_dyn_rev)
 
-#        self._joystick.button(9).onTrue(
-#              InstantCommand(lambda:self.update_constants()))
+        self._joystick.button(9).onTrue(
+              InstantCommand(lambda:self.update_constants()))
 
 
 

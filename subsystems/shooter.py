@@ -30,7 +30,6 @@ class ShooterSystem(Subsystem):
         Subsystem.__init__(self)
         "sam was here"
 
-        SmartDashboard.putNumber('Shooter Velocity', 10)       
         self.leader_motor = hardware.TalonFX(leader_motor_id)
         self.feeder_motor = hardware.TalonFX(feeder_id)
         self.feeder2_motor = hardware.TalonFX(feeder2_id)        
@@ -57,12 +56,12 @@ class ShooterSystem(Subsystem):
         self.feeder_motor.configurator.apply(self.feeder_cfg)
         self.feeder2_motor.configurator.apply(self.feeder_cfg)
 
-        self.velocity_voltage = controls.VelocityVoltage(0,0).with_slot(0)
+        self.velocity_voltage = controls.VelocityVoltage(0,0)
         self.voltage_control = controls.VoltageOut(0)
         self.brake = controls.NeutralOut()
 
         self.conveyor_velocity = ConstantValues.ShooterConstants.CONVEYOR_VELOCITY
-
+        self.velocity = ConstantValues.ShooterConstants.SHOOTING_VELOCITY
         self.sysid_routine = SysIdRoutine(
             SysIdRoutine.Config(),
             SysIdRoutine.Mechanism(
@@ -89,14 +88,16 @@ class ShooterSystem(Subsystem):
         """
 
     def periodic(self): 
-        pass
+        if self.velocity is not None: print("shoot vel: ",self.velocity)
+        print("shoot kp: ",self.leader_cfg.slot0.k_p)
+        print("shoot kv: ",self.leader_cfg.slot0.k_v)        
 
     def shoot(self):
         """
         Move the leader motor
         """
 #        self.velocity = velocity
-        self.velocity = SmartDashboard.getNumber('Shooter Velocity', 0)
+        self.velocity = SmartDashboard.getNumber('Shooting Velocity', 0)
         self.leader_motor.set_control(self.velocity_voltage.with_velocity(self.velocity))
   
     def stop_shooter(self):
