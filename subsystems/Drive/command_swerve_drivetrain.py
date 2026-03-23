@@ -327,9 +327,15 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
                 ConstantValues.HeadingControllerConstants.HEADINGCONTROLLER_KD)    
         )        
 
+        self.request_autogenerator =  (
+            swerve.requests.ApplyRobotSpeeds().with_drive_request_type(
+            swerve.SwerveModule.DriveRequestType.VELOCITY)
+        )
+
+        
         self.request_RC = (swerve.requests.RobotCentric().with_drive_request_type(
                 swerve.SwerveModule.DriveRequestType.VELOCITY))
-
+        
 
     def drive_FC(self,x_vel,y_vel,rot_vel):
         self.set_control(
@@ -337,6 +343,8 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
                 with_velocity_x(x_vel).
                 with_velocity_y(y_vel).
                 with_rotational_rate(rot_vel))
+        
+    
 
         
     def drive_FC_facing(self,x_vel,y_vel,angle):

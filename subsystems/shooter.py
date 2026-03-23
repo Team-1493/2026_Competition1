@@ -57,7 +57,7 @@ class ShooterSystem(Subsystem):
         self.feeder_motor.configurator.apply(self.feeder_cfg)
         self.feeder2_motor.configurator.apply(self.feeder_cfg)
 
-        self.velocity_voltage = controls.VelocityVoltage(0,0)
+        self.velocity_voltage = controls.VelocityVoltage(0,0).with_slot(0)
         self.voltage_control = controls.VoltageOut(0)
         self.brake = controls.NeutralOut()
 
