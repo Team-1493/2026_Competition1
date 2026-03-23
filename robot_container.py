@@ -164,6 +164,11 @@ class RobotContainer:
     def setHeadingControlToCurrentrHeading(self):
         self.headingController.setTargetRotationInt(True)  
     
+    def write_to_dashboard(self):
+        self.drivetrain.write_to_dashboard()
+        self.intake.write_to_dashboard()
+        self.shooter.write_to_dashboard()
+        
         
     
     def update_constants(self):

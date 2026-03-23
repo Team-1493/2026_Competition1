@@ -230,7 +230,6 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
             print("CSD Loop Time:", delta_time/10)
             self.time_start = time
             self.timing_counter = 0
-            self.write_to_dashboard()
 
         self.timing_counter = self.timing_counter+1
 

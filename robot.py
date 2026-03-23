@@ -21,6 +21,7 @@ class MyRobot(commands2.TimedCommandRobot):
     def robotInit(self) -> None:
         self.container = RobotContainer()  
         self.IMU_mode = 0
+        self.print_counter=0
 
     def robotPeriodic(self) -> None:
         """This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
@@ -34,7 +35,11 @@ class MyRobot(commands2.TimedCommandRobot):
         # and running subsystem periodic() methods.  This must be called from the robot's periodic
         # block in order for anything in the Command-based framework to work.
         commands2.CommandScheduler.getInstance().run()
-
+        self.print_counter=self.print_counter+1
+        if self.print_counter==25:
+            self.print_counter=0
+            self.container.write_to_dashboard()
+            
     def disabledInit(self) -> None:
         pass
 

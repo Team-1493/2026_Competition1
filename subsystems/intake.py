@@ -93,54 +93,50 @@ class IntakeSystem(Subsystem):
 
     def periodic(self):
         BaseStatusSignal.refresh_all(self.signals)
-        arm_position = self.pos_signal.value_as_double
-        arm_velocity = self.vel_signal.value_as_double      
-        lsd = not self.down_limit_switch.get()
-        lsu = not self.up_limit_switch.get()          
+        self.arm_position = self.pos_signal.value_as_double
+        self.arm_velocity = self.vel_signal.value_as_double      
+        self.lsd = not self.down_limit_switch.get()
+        self.lsu = not self.up_limit_switch.get()          
         if not self.zeroed:
-            if lsd:
+            if self.lsd:
                 self.arm_motor.set_position(0)
                 self.zeroed = True
-            elif not lsu:
+            elif not self.lsu:
                 self.arm_motor.set_position(ConstantValues.IntakeConstants.ARM_FORWARDTHRESH)
                 self.zeroed = True
-
-            
 
 #        if  self.current_goal_position == self.goal_up and not self.up_limit_switch.get() :
 #            self.arm_motor.set_position(ConstantValues.IntakeConstants.ARM_FORWARDTHRESH)
 #            self.stop_arm()
-            
-        
-        if  self.current_goal_position == self.goal_down and lsd:
-            if arm_velocity !=0:
+        if  self.current_goal_position == self.goal_down and self.lsd:
+            if self.arm_velocity !=0:
                 self.stop_arm()
             # continuously rezero the arm position when arm is at the down position
             # (in case the chain slips or something happens to throw off the position)
-            if arm_velocity==0 and arm_position != 0:
+            if self.arm_velocity==0 and self.arm_position != 0:
                 self.arm_motor.set_position(0)
-                
-        SmartDashboard.putBoolean("Up Limit Switch", lsu)
-        SmartDashboard.putBoolean("Down Limit Switch", lsd)
-        SmartDashboard.putNumber("Arm Position", arm_position) 
-#        SmartDashboard.putNumber("Arm Velocity", arm_velocity)
-
 
     
     def intake(self):
         self.intake_motor.set_control(self.voltage_out.with_output(-7.5))
+
     def stop_intake(self):
         self.intake_motor.set_control(self.brake)
+
     def stop_arm(self):
         self.arm_motor.set_control(self.brake)
+
     def start_conveyor(self):
         self.conveyor_motor.set_control(self.voltage_out.with_output(self.conveyor_voltage))
+
     def stop_conveyor(self):
         self.conveyor_motor.set_control(self.brake)
+
     def arm_up(self):
         self.current_goal_position = self.goal_up
         self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))
         # self.stop_intake()
+
     def arm_down(self):
         self.current_goal_position = self.goal_down
         self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))        
@@ -155,12 +151,19 @@ class IntakeSystem(Subsystem):
         self.current_goal_position = position 
         self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))        
 
-
-
     def arm_manualUp(self):
         self.arm_motor.set_control(self.arm_manualControl.with_output(.08)) 
+
     def arm_manualDown(self):
         self.arm_motor.set_control(self.arm_manualControl.with_output(-.08))    
+
     def zero_position(self):
         self.stop_arm()
         self.arm_motor.set_position(0)
+
+    def write_to_dashboard(self):
+        SmartDashboard.putBoolean("Up Limit Switch", self.lsu)
+        SmartDashboard.putBoolean("Down Limit Switch", self.lsd)
+        SmartDashboard.putNumber("Arm Position", self.arm_position) 
+#        SmartDashboard.putNumber("Arm Velocity", arm_velocity)
+    
