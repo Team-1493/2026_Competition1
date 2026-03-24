@@ -2,6 +2,7 @@ from commands2 import Subsystem
 from wpilib import SmartDashboard, DigitalInput
 import wpilib
 from phoenix6 import BaseStatusSignal, hardware, configs, controls,signals
+from phoenix6.signals import MotorAlignmentValue
 from phoenix6.signals import GravityTypeValue
 from Constants1 import ConstantValues
 
@@ -11,7 +12,7 @@ class IntakeSystem(Subsystem):
     @staticmethod
     def getInstance():
         if IntakeSystem.instance == None:
-            IntakeSystem.instance = IntakeSystem(10,9,11,8,9)
+            IntakeSystem.instance = IntakeSystem(10,18,9,11,8,9)
             print('*' * 22 + ' INTAKE ' + '*' * 22)
         return IntakeSystem.instance
     def setup(self):
@@ -43,13 +44,15 @@ class IntakeSystem(Subsystem):
         self.arm_motor.configurator.apply(self.cfg)
 
         
-    def __init__(self, intakeMotorID, armMotorID, conveyorMotorID, dioPortUp, dioPortDown):
+    def __init__(self, intakeMotorID, intakeFollowerMotorID,armMotorID, conveyorMotorID, dioPortUp, dioPortDown):
         """
         Initialize PID constants for motors
         """
         Subsystem.__init__(self)
         self.zeroed = False
         self.intake_motor = hardware.TalonFX(intakeMotorID)
+        self.intake_follower_motor = hardware.TalonFX(intakeFollowerMotorID) 
+        self.intake_follower_motor.set_control(controls.Follower(intakeMotorID, motor_alignment=MotorAlignmentValue.OPPOSED))               
         self.arm_motor = hardware.TalonFX(armMotorID)
         self.conveyor_motor = hardware.TalonFX(conveyorMotorID)
         self.up_limit_switch = DigitalInput(dioPortUp)
@@ -65,6 +68,7 @@ class IntakeSystem(Subsystem):
         self.vel_signal = self.arm_motor.get_velocity()
         self.signals=[self.pos_signal,self.vel_signal]
 
+        """"
         self.arm_motor.get_position().set_update_frequency(200)
         self.arm_motor.get_velocity().set_update_frequency(200)
         self.arm_motor.get_motor_voltage().set_update_frequency(200)
@@ -79,7 +83,7 @@ class IntakeSystem(Subsystem):
 
         self.conveyor_motor.get_motor_voltage().set_update_frequency(50)
         self.conveyor_motor.optimize_bus_utilization()                
-
+        """
         
         
         self.setup()
