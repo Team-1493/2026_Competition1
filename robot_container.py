@@ -78,7 +78,7 @@ class RobotContainer:
         self.shooterSysID_dyn_for = self.shooter.shooter_sysid_dynamic(SysIdRoutine.Direction.kForward)
         self.shooterSysID_dyn_rev = self.shooter.shooter_sysid_dynamic(SysIdRoutine.Direction.kReverse)        
         self.createPPStuff()
-#        self.set_up_telemetry()
+        self.set_up_telemetry()
         self.configureButtonBindings()
         self.configureShooterSysId()        
 
@@ -105,20 +105,20 @@ class RobotContainer:
         self._joystick.button(5).onTrue(self.headingController.runOnce(
             lambda:self.headingController.set_forward_direction()))
 
- #       self._joystick.button(6).onTrue(self.slow_mode_on)
+        self._joystick.button(6).onTrue(self.slow_mode_on)
         
- #       self._joystick.button(6).onFalse(self.slow_mode_off)
+        self._joystick.button(6).onFalse(self.slow_mode_off)
 
- #       self._joystick.button(7).whileTrue(self.intake_command)
+        self._joystick.button(7).whileTrue(self.intake_command)
 
- #       self._joystick.button(8).whileTrue(self.shoot_command)        
+        self._joystick.button(8).whileTrue(self.shoot_command)        
 
-
-        self._joystick.button(6).whileTrue(self.shooterSysID_quasi_for)
-        self._joystick.button(7).whileTrue(self.shooterSysID_quasi_rev)
-        self._joystick.button(8).whileTrue(self.shooterSysID_dyn_for)
+        
+#        self._joystick.button(6).whileTrue(self.shooterSysID_quasi_for)
+#        self._joystick.button(7).whileTrue(self.shooterSysID_quasi_rev)
+#        self._joystick.button(8).whileTrue(self.shooterSysID_dyn_for)
 #        self._joystick.button(9).whileTrue(self.shooterSysID_dyn_rev)
-
+        
         self._joystick.button(9).onTrue(
               InstantCommand(lambda:self.update_constants()))
 
@@ -209,7 +209,7 @@ class RobotContainer:
         
     def set_up_telemetry(self):
         self._logger = Telemetry(TunerConstants.speed_at_12_volts)
-#        DataLogManager.start()
+        DataLogManager.start()
         self.drivetrain.register_telemetry(
             lambda state: self._logger.telemeterize(state)
         )

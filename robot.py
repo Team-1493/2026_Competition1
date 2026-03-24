@@ -36,7 +36,7 @@ class MyRobot(commands2.TimedCommandRobot):
         # block in order for anything in the Command-based framework to work.
         commands2.CommandScheduler.getInstance().run()
         self.print_counter=self.print_counter+1
-        if self.print_counter==25:
+        if self.print_counter>=0:
             self.print_counter=0
             self.container.write_to_dashboard()
             

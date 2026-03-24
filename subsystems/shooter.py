@@ -88,14 +88,13 @@ class ShooterSystem(Subsystem):
         """
 
     def periodic(self): 
-        if self.velocity is not None: print("shoot vel: ",self.velocity)
-        print("shoot kp: ",self.leader_cfg.slot0.k_p)
-        print("shoot kv: ",self.leader_cfg.slot0.k_v)        
+        pass
 
     def shoot(self):
         """
         Move the leader motor
         """
+        
 #        self.velocity = velocity
         self.velocity = SmartDashboard.getNumber('Shooting Velocity', 0)
         self.leader_motor.set_control(self.velocity_voltage.with_velocity(self.velocity))
@@ -112,7 +111,7 @@ class ShooterSystem(Subsystem):
         # If the shooter motor's velocity is around the threshold, THEN move the feeder
         mean =  self.mean_shooter_velocity()
 #        SmartDashboard.putNumber("ShooterCheck",abs(self.velocity  - mean)/ (mean+0.0001))
-        if abs(self.velocity  - mean)/ (mean+0.0001) <= 0.1 or mean >= self.velocity * 0.9:
+        if abs(self.velocity  - mean)/ (mean+0.0001) <= 0.08 or mean >= self.velocity * 0.98:
             self.feeder_motor.set_control(self.velocity_voltage.with_velocity(self.conveyor_velocity))
             self.feeder2_motor.set_control(self.velocity_voltage.with_velocity(self.conveyor_velocity))            
   
@@ -128,7 +127,7 @@ class ShooterSystem(Subsystem):
         self.shooterActualVel = self.leader_motor.get_velocity().value_as_double
         self.feeder1_actual_vel = self.feeder_motor.get_velocity().value_as_double        
         SmartDashboard.putNumber('Leader actual velocity',self.shooterActualVel)
-        SmartDashboard.putNumber('Feeder1 actual velocity',self.shooterActualVel)
+        SmartDashboard.putNumber('Feeder1 actual velocity',self.feeder1_actual_vel)
 
 
     def _run_shooter_sysid(self, voltage) -> None:

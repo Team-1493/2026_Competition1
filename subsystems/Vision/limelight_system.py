@@ -28,7 +28,7 @@ class LLsystem(Subsystem):
 
         self.print_counter = 0
         self.print_interval = 25
-        self.numCams = 1   # number of cameras on robot
+        self.numCams = 2   # number of cameras on robot
 
 
 
@@ -55,7 +55,6 @@ class LLsystem(Subsystem):
 
 
     def periodic(self):
-        self.print_counter=self.print_counter+1
        # Run vision at 20 Hz
         if self.visionTimer.advanceIfElapsed(0.05):
             self.currentPose = self.driveTrain.pose
@@ -93,7 +92,6 @@ class LLsystem(Subsystem):
 
             self.previous_estimate[i],self.current_estimate[i] = self.pollLL(self.constants.CAM_NAME[i], 
                 self.previous_estimate[i])    
-#            if self.current_estimate[i] is not None: print(self.current_estimate[i].tag_count)                
             if self.current_estimate[i] is not None and self.current_estimate[i].tag_count>0:
                 numTags = self.current_estimate[i].tag_count
                 closestTagID[i],closestTagDist[i] = (
@@ -106,13 +104,12 @@ class LLsystem(Subsystem):
                         
                     if difference_check and distance_check: 
                         acceptEstimate[i] = True
-#                    print("1:  ",acceptEstimate[i])   
 
                 else:
                     distance_check = closestTagDist[i] < self.constants.CAMERA_CUTOFF_DISTANCE_2
                     if distance_check : 
                         acceptEstimate[i] = True
-                       
+
                 if acceptEstimate[i]:
                     distance = closestTagDist[i]
                     numTags = self.current_estimate[i].tag_count
@@ -135,7 +132,7 @@ class LLsystem(Subsystem):
                         self.driveTrain.add_vision_measurement(
                             self.current_estimate[i].pose,
 # Use for PV !          utils.fpga_to_current_time(self.estimate.timestamp_seconds),
-                            estimate.timestamp_seconds,
+                            self.current_estimate[i].timestamp_seconds,
                         (stdXY[i], stdXY[i], stdRot[i]))
 
 
