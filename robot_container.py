@@ -105,6 +105,10 @@ class RobotContainer:
         self._joystick.button(5).onTrue(self.headingController.runOnce(
             lambda:self.headingController.set_forward_direction()))
 
+        self._joystick.button(6).onTrue(self.drivetrain.runOnce(
+            lambda:self.drivetrain.reset_pose(Pose2d())))
+
+
         self._joystick.button(6).onTrue(self.slow_mode_on)
         
         self._joystick.button(6).onFalse(self.slow_mode_off)
