@@ -185,7 +185,14 @@ class RobotContainer:
         self.intake.write_to_dashboard()
         self.shooter.write_to_dashboard()
 
-        
+    def apply_teleop_gains(self):
+        self.drivetrain.apply_teleop_gains()
+
+    
+    def apply_auto_gains(self):
+        self.drivetrain.apply_auto_gains()
+
+
     
     def update_constants(self):
         # transfer constants from smartdashbaord to constants class        

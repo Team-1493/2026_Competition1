@@ -391,32 +391,37 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
         return self.speeds.omega_dps                   
 
     
-    def update(self):
-        slot1_auto = Slot1Configs()
-        slot0_teleop = Slot0Configs()
+    def define_gain_slots(self):
+        self.slot0_auto = Slot0Configs()
+        self.slot0_teleop = Slot0Configs()
 
         k_p_tele = ConstantValues.DriveConstants.TELEOP_kP
         k_s_tele = ConstantValues.DriveConstants.TELEOP_kS
-        
-        slot0_teleop.k_p = k_p_tele
-        slot0_teleop.k_s = k_s_tele
-
         k_p_auto = ConstantValues.DriveConstants.AUTO_kP
         k_s_auto = ConstantValues.DriveConstants.AUTO_kS
-
-        slot1_auto.k_p = k_p_auto
-        slot1_auto.k_s = k_s_auto
-
-        self.get_module(0).drive_motor.configurator.apply(slot0_teleop)
-        self.get_module(1).drive_motor.configurator.apply(slot0_teleop)
-        self.get_module(2).drive_motor.configurator.apply(slot0_teleop)
-        self.get_module(3).drive_motor.configurator.apply(slot0_teleop)       
-
-        self.get_module(0).drive_motor.configurator.apply(slot1_auto)
-        self.get_module(1).drive_motor.configurator.apply(slot1_auto)
-        self.get_module(2).drive_motor.configurator.apply(slot1_auto)
-        self.get_module(3).drive_motor.configurator.apply(slot1_auto)        
         
+        self.slot0_teleop.k_p = k_p_tele
+        self.slot0_teleop.k_s = k_s_tele
+        self.slot0_auto.k_p = k_p_auto
+        self.slot0_auto.k_s = k_s_auto
+
+    def apply_teleop_gains(self):
+        self.get_module(0).drive_motor.configurator.apply(self.slot0_teleop)
+        self.get_module(1).drive_motor.configurator.apply(self.slot0_teleop)
+        self.get_module(2).drive_motor.configurator.apply(self.slot0_teleop)
+        self.get_module(3).drive_motor.configurator.apply(self.slot0_teleop)       
+
+
+    def apply_auto_gains(self):
+        self.get_module(0).drive_motor.configurator.apply(self.slot0_auto)
+        self.get_module(1).drive_motor.configurator.apply(self.slot0_auto)
+        self.get_module(2).drive_motor.configurator.apply(self.slot0_auto)
+        self.get_module(3).drive_motor.configurator.apply(self.slot0_auto)        
+        
+
+    def update(self):
+        self.define_gain_slots()
+        self.apply_teleop_gains()
         self.setup_swerve_requests()
 
 

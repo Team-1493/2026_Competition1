@@ -50,11 +50,11 @@ class MyRobot(commands2.TimedCommandRobot):
 
 
     def autonomousInit(self) -> None:
+        self.container.apply_auto_gains()
         self.container.limelightSytem.set_IMU_Mode(self.IMU_mode)
         self.autonomousCommand = self.container.getAutonomousCommand()
         if self.autonomousCommand:
             self.autonomousCommand.schedule()
-
 
     def autonomousPeriodic(self) -> None:
         pass
@@ -68,6 +68,7 @@ class MyRobot(commands2.TimedCommandRobot):
         if self.autonomousCommand:
             self.autonomousCommand.cancel()
         self.container.setHeadingControlToCurrentrHeading()
+        self.container.apply_teleop_gains()
         
         #  0 for external IMU,  2 for internal IMU, 4 for internal + externa assist         
         self.container.limelightSytem.set_IMU_Mode(self.IMU_mode)   
