@@ -187,7 +187,7 @@ class RobotContainer:
         # transfer constants from smartdashbaord to constants class        
         self.constants.update_constants()
         # update limelight, autobuilder, and heading controller constants  
-#        self.limelightSytem.configfureLimelights()
+        self.limelightSytem.configfureLimelights()
 #        self.autoGenerator.configAutoBuilder()
 #        self.drivetrain.update()
 #        self.drive_teleop_command.setConstants()

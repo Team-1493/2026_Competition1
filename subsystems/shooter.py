@@ -29,7 +29,7 @@ class ShooterSystem(Subsystem):
         """
         Subsystem.__init__(self)
         "sam was here"
-
+        SmartDashboard.putNumber("Shooter Cal Volt",0)
         self.leader_motor = hardware.TalonFX(leader_motor_id)
         self.feeder_motor = hardware.TalonFX(feeder_id)
         self.feeder2_motor = hardware.TalonFX(feeder2_id)        
@@ -96,8 +96,10 @@ class ShooterSystem(Subsystem):
         """
         
 #        self.velocity = velocity
-        self.velocity = SmartDashboard.getNumber('Shooting Velocity', 0)
-        self.leader_motor.set_control(self.velocity_voltage.with_velocity(self.velocity))
+        self.leader_motor.set_control(
+            self.voltage_control.with_output(SmartDashboard.getNumber("Shooter Cal Volt",0)))   
+#        self.velocity = SmartDashboard.getNumber('Shooting Velocity', 0)
+#        self.leader_motor.set_control(self.velocity_voltage.with_velocity(self.velocity))
   
     def stop_shooter(self):
         self.leader_motor.set_control(self.brake)

@@ -56,6 +56,7 @@ class LLsystem(Subsystem):
 
     def periodic(self):
        # Run vision at 20 Hz
+        self.print_counter = self.print_counter+1
         if self.visionTimer.advanceIfElapsed(0.05):
             self.currentPose = self.driveTrain.pose
 #           rot =  self.currentPose.rotation().degrees()+self.headingController.rotation_offset*math.pi/180.
