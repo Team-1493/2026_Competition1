@@ -293,9 +293,10 @@ class ConstantValues():
         ConstantValues.IntakeConstants.SENSOR_TO_MECHANISM_RATIO = SmartDashboard.getNumber("Intake Arm Mech Ratio",ConstantValues.IntakeConstants.SENSOR_TO_MECHANISM_RATIO)                     
 
 
-        ### Update Constants for Shooter
+        ### Update Constants for Shoot
         ConstantValues.ShooterConstants.LEADER_KP = SmartDashboard.getNumber("Leader KP", ConstantValues.ShooterConstants.LEADER_KP)
         ConstantValues.ShooterConstants.LEADER_KV = SmartDashboard.getNumber("Leader KV", ConstantValues.ShooterConstants.LEADER_KV)
+        ConstantValues.ShooterConstants.LEADER_KS = SmartDashboard.getNumber("Leader KS", ConstantValues.ShooterConstants.LEADER_KS)        
         ConstantValues.ShooterConstants.CONVEYOR_VELOCITY = SmartDashboard.getNumber("Conveyor Velocity", ConstantValues.ShooterConstants.CONVEYOR_VELOCITY)
         ConstantValues.ShooterConstants.CONVEYOR_VOLTAGE = SmartDashboard.getNumber("Conveyor Voltage", ConstantValues.ShooterConstants.CONVEYOR_VOLTAGE)
         ConstantValues.ShooterConstants.FEEDER_KV = SmartDashboard.getNumber("Feeder KV", ConstantValues.ShooterConstants.FEEDER_KV)
@@ -451,6 +452,7 @@ class ConstantValues():
 
         SmartDashboard.putNumber("Leader KP", ConstantValues.ShooterConstants.LEADER_KP)
         SmartDashboard.putNumber("Leader KV", ConstantValues.ShooterConstants.LEADER_KV)
+        SmartDashboard.putNumber("Leader KS", ConstantValues.ShooterConstants.LEADER_KS)        
         SmartDashboard.putNumber("Feeder KV", ConstantValues.ShooterConstants.FEEDER_KV)
         SmartDashboard.putNumber("Feeder KP", ConstantValues.ShooterConstants.FEEDER_KP)
         SmartDashboard.putNumber("Shooting Velocity", ConstantValues.ShooterConstants.SHOOTING_VELOCITY)

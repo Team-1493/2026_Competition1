@@ -45,6 +45,7 @@ class ShooterSystem(Subsystem):
         self.leader_cfg = configs.TalonFXConfiguration()
         self.leader_cfg.slot0.k_v = ConstantValues.ShooterConstants.LEADER_KV
         self.leader_cfg.slot0.k_p = ConstantValues.ShooterConstants.LEADER_KP
+        self.leader_cfg.slot0.k_s = ConstantValues.ShooterConstants.LEADER_KS 
         self.leader_cfg.current_limits.stator_current_limit_enable=True
         self.leader_cfg.current_limits.stator_current_limit=100                
         self.leader_motor.configurator.apply(self.leader_cfg)
@@ -148,6 +149,7 @@ class ShooterSystem(Subsystem):
     def update_constants(self):
         self.leader_cfg.slot0.k_v = SmartDashboard.getNumber('Leader KV', 0)
         self.leader_cfg.slot0.k_p = SmartDashboard.getNumber('Leader KP', 0)
+        self.leader_cfg.slot0.k_s = ConstantValues.ShooterConstants.LEADER_KS         
         self.leader_motor.configurator.apply(self.leader_cfg)
         self.feeder_cfg.slot0.k_p = SmartDashboard.getNumber('Feeder KP', 0)
         self.feeder_cfg.slot0.k_v = SmartDashboard.getNumber('Feeder KV', 0)
