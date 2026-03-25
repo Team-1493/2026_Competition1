@@ -134,10 +134,10 @@ class ConstantValues():
         LEADER_KS = 0.32 ##Caliberated by Sai & Mohammed
         LEADER_KV = 0.1237   ##Caliberated by Sai & Mohammed
         FEEDER_KP = 1
-        FEEDER_KV = 0.18
-        SHOOTING_VELOCITY = 10
+        FEEDER_KV = 0.124
+        SHOOTING_VELOCITY = 8
         CONVEYOR_VOLTAGE = 0
-        CONVEYOR_VELOCITY = 67
+        CONVEYOR_VELOCITY = 80
         TOLERANCE = 1e-3
 
     class VisionConstants():    
