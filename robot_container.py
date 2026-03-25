@@ -200,7 +200,7 @@ class RobotContainer:
         # update limelight, autobuilder, and heading controller constants  
 #        self.limelightSytem.configfureLimelights()
 #        self.autoGenerator.configAutoBuilder()
-#        self.drivetrain.update()
+        self.drivetrain.update()
 #        self.drive_teleop_command.setConstants()
         self.intake.setup()
         self.shooter.update_constants()

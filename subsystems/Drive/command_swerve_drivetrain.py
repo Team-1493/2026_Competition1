@@ -168,7 +168,11 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
         self.set_operator_perspective_forward(self._BLUE_ALLIANCE_PERSPECTIVE_ROTATION)
         
         self.previous_alliance_color = None
-        self.alliance_color = None        
+        self.alliance_color = None     
+
+        self.define_gain_slots()
+        self.apply_teleop_gains()
+        self.setup_swerve_requests()           
         
         self.setup_swerve_requests()
 
