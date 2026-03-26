@@ -18,13 +18,13 @@ class ConstantValues():
         
         # modify these in tuner_constants also!
         TELEOP_kP =  3.45 #5.5 TunerConstants._drive_gains.k_p
-        TELEOP_kS = 0 #TunerConstants._drive_gains.k_s
+        TELEOP_kS = 2 #TunerConstants._drive_gains.k_s
         TELEOP_kV = 0 # TunerConstants._drive_gains.k_v
         TELEOP_kA = 0 # TunerConstants._drive_gains.k_a
         TELEOP_DEADBAND = 0.0025
         TELEOP_MAX_ANGULAR_RATE = 1
-        TELEOP_SCALE_FACTOR_XY = 0.3
-        TELEOP_SCALE_FACTOR_ROT = 0.2
+        TELEOP_SCALE_FACTOR_XY = 0.6
+        TELEOP_SCALE_FACTOR_ROT = 0.4
         SPEED_AT_12_VOLTS = 3.6#TunerConstants.speed_at_12_volts 
 
 
@@ -131,8 +131,8 @@ class ConstantValues():
 
     class ShooterConstants():
         LEADER_KP = 1
-        LEADER_KS = 0.32 ##Caliberated by Sai & Mohammed
-        LEADER_KV = 0.1237   ##Caliberated by Sai & Mohammed
+        LEADER_KS = 0.6 ##Caliberated by Sai & Mohammed
+        LEADER_KV = 0.15   ##Caliberated by Sai & Mohammed
         FEEDER_KP = 1
         FEEDER_KV = 0.124
         SHOOTING_VELOCITY = 8

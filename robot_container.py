@@ -49,7 +49,8 @@ class RobotContainer:
         self.headingController = HeadingController.getInstance()        
         self.intake = IntakeSystem.getInstance()
         self.shooter = ShooterSystem.getInstance()       
-        self.shoot_command = ShootCommand()
+        self.shoot_command1 = ShootCommand()
+        self.shoot_command2 = ShootCommand()        
         self.intake_command = IntakeCommand()            
 #        LaserCAN.getInstance()
 
@@ -65,22 +66,19 @@ class RobotContainer:
                 lambda: -self._joystick.getRawAxis(4))
         
         self.arcdrive = arcDrive(self.drivetrain)
+#        self.trigger_arc_drive_near = Trigger(lambda: self.arcdrive.get_is_near())
 
         self.rotateToZero = self.headingController.rotateToZeroCommand()
         self.rotateTo90 = self.headingController.rotateTo90Command()
         self.rotateTo180 = self.headingController.rotateTo180Command()
         self.rotateTo270 = self.headingController.rotateTo270Command()   
+        
         self.slow_mode_on = InstantCommand(lambda:self.drive_teleop_command.slow_mode_on())
         self.slow_mode_off = InstantCommand(lambda:self.drive_teleop_command.slow_mode_off())        
 #        self.setForwardDirection = self.headingController.set_forward_directionCommand()                     
-        self.shooterSysID_quasi_for = self.shooter.shooter_sysid_quasistatic(SysIdRoutine.Direction.kForward)
-        self.shooterSysID_quasi_rev = self.shooter.shooter_sysid_quasistatic(SysIdRoutine.Direction.kReverse)        
-        self.shooterSysID_dyn_for = self.shooter.shooter_sysid_dynamic(SysIdRoutine.Direction.kForward)
-        self.shooterSysID_dyn_rev = self.shooter.shooter_sysid_dynamic(SysIdRoutine.Direction.kReverse)        
         self.createPPStuff()
         self.set_up_telemetry()
         self.configureButtonBindings()
-        self.configureShooterSysId()        
 
 
     def configureButtonBindings(self) -> None:
@@ -90,7 +88,7 @@ class RobotContainer:
         # Idle while the robot is disabled. This ensures the configured
         # neutral mode is applied to the drive motors while disabled.
 #        idle = swerve.requests.Idle()
-##        Trigger(DriverStation.isDisabled).whileTrue(
+##        Triggerc(DriverStation.isDisabled).whileTrue(
 #            self.drivetrain.apply_request(lambda: idle).ignoringDisable(True)
 #        )
 
@@ -115,7 +113,17 @@ class RobotContainer:
 
         self._joystick.button(7).whileTrue(self.intake_command)
 
-        self._joystick.button(8).whileTrue(self.shoot_command)        
+        self._joystick.button(10).whileTrue(self.arcdrive.
+            andThen(self.shoot_command2)    
+            .finallyDo(self.headingController.setTargetRotationInt) ) 
+
+        self._joystick.button(8).whileTrue(self.shoot_command1)        
+
+
+#        self.trigger_arc_drive_near.onTrue(self.shoot_command)
+
+
+
 
         
 #        self._joystick.button(6).whileTrue(self.shooterSysID_quasi_for)
@@ -132,8 +140,6 @@ class RobotContainer:
 #        self._joystick.button(7).onTrue(
 #            InstantCommand(lambda: self.limelightSytem.write_camera0_pose_to_file()))
 
-#        self._joystick.button(7).whileTrue(self.arcdrive
-#        .finallyDo(self.headingController.setTargetRotationInt) ) 
 
                 
 #        self._joystick.button(8).whileTrue(
@@ -198,7 +204,7 @@ class RobotContainer:
         # transfer constants from smartdashbaord to constants class        
         self.constants.update_constants()
         # update limelight, autobuilder, and heading controller constants  
-#        self.limelightSytem.configfureLimelights()
+        self.limelightSytem.configfureLimelights()
 #        self.autoGenerator.configAutoBuilder()
         self.drivetrain.update()
 #        self.drive_teleop_command.setConstants()
@@ -225,21 +231,3 @@ class RobotContainer:
             lambda state: self._logger.telemeterize(state)
         )
 
-    
-    def configureShooterSysId(self):
-        SmartDashboard.putData(
-            "Shooter SysId Quasistatic Forward",
-            self.shooter.shooter_sysid_quasistatic(SysIdRoutine.Direction.kForward),
-        )
-        SmartDashboard.putData(
-            "Shooter SysId Quasistatic Reverse",
-            self.shooter.shooter_sysid_quasistatic(SysIdRoutine.Direction.kReverse),
-        )
-        SmartDashboard.putData(
-            "Shooter SysId Dynamic Forward",
-            self.shooter.shooter_sysid_dynamic(SysIdRoutine.Direction.kForward),
-        )
-        SmartDashboard.putData(
-            "Shooter SysId Dynamic Reverse",
-            self.shooter.shooter_sysid_dynamic(SysIdRoutine.Direction.kReverse),
-        )

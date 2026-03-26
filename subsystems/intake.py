@@ -133,6 +133,10 @@ class IntakeSystem(Subsystem):
     def start_conveyor(self):
         self.conveyor_motor.set_control(self.voltage_out.with_output(self.conveyor_voltage))
 
+    def start_conveyor_reverse(self):
+        self.conveyor_motor.set_control(self.voltage_out.with_output(4))
+
+
     def stop_conveyor(self):
         self.conveyor_motor.set_control(self.brake)
 

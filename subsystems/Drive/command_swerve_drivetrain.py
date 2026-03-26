@@ -242,7 +242,7 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
 
         x =self.pose.X()
         y = self.pose.Y()
-        rot_deg = self.rotation_deg
+        rot_deg = self.pose.rotation().degrees()
         x_in = x*39.37
         y_in = y*39.37  
 
@@ -319,6 +319,18 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
                 with_max_abs_rotational_rate(ConstantValues.HeadingControllerConstants.HEADINGCONTROLLER_VMAX)
         )
 
+        self.request_auto_RC_facing = (
+            swerve.requests.RobotCentricFacingAngle()
+            .with_drive_request_type(
+                swerve.SwerveModule.DriveRequestType.VELOCITY)
+            .with_heading_pid(
+                ConstantValues.HeadingControllerConstants.HEADINGCONTROLLER_KP,
+                0,
+                ConstantValues.HeadingControllerConstants.HEADINGCONTROLLER_KD).    
+                with_max_abs_rotational_rate(ConstantValues.HeadingControllerConstants.HEADINGCONTROLLER_VMAX)
+        )
+
+
 
         self.request_autopilot = (
             swerve.requests.FieldCentricFacingAngle()
@@ -333,8 +345,8 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
 
         self.request_autogenerator =  (
             swerve.requests.ApplyRobotSpeeds().with_drive_request_type(
-            swerve.SwerveModule.DriveRequestType.VELOCITY)
-        )
+            swerve.SwerveModule.DriveRequestType.VELOCITY).
+            with_desaturate_wheel_speeds(True))
 
         
         self.request_RC = (swerve.requests.RobotCentric().with_drive_request_type(
@@ -349,6 +361,14 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
                 with_rotational_rate(rot_vel))
         
     
+
+    def drive_RC_facing(self,x_vel,y_vel,angle):
+        self.set_control(
+                self.request_auto_RC_facing
+                .with_velocity_x(x_vel)
+                .with_velocity_y(y_vel)
+                .with_target_direction(Rotation2d(angle)))
+
 
         
     def drive_FC_facing(self,x_vel,y_vel,angle):

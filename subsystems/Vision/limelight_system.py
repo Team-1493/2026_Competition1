@@ -63,6 +63,7 @@ class LLsystem(Subsystem):
             for i in range(self.numCams):    
                 LimelightHelpers.set_robot_orientation(
                    self.constants.CAM_NAME[i],rot, 0, 0, 0, 0, 0)
+            self.print_counter = self.print_counter+1
             self.update()
 
 

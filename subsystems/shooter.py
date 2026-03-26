@@ -75,29 +75,26 @@ class ShooterSystem(Subsystem):
 
 
 
-        """
+        
         for motor in self.all_motors:
             motor.get_velocity().set_update_frequency(200)
-            motor.get_motor_voltage().set_update_frequency(100)        
-            motor.optimize_bus_utilization()
         
-        self.feeder_motor.get_velocity().set_update_frequency(100)
-        self.feeder2_motor.get_velocity().set_update_frequency(100)
-        self.feeder_motor.get_motor_voltage().set_update_frequency(100)
-        self.feeder2_motor.get_motor_voltage().set_update_frequency(100)        
-        self.feeder_motor.optimize_bus_utilization_for_all([self.feeder2_motor,self.feeder2_motor])
-        """
+#        self.feeder_motor.get_velocity().set_update_frequency(100)
+#        self.feeder2_motor.get_velocity().set_update_frequency(100)
+#        self.feeder_motor.get_motor_voltage().set_update_frequency(100)
+#        self.feeder2_motor.get_motor_voltage().set_update_frequency(100)        
+#        self.feeder_motor.optimize_bus_utilization_for_all([self.feeder2_motor,self.feeder2_motor])
+        
 
     def periodic(self): 
         pass
 
-    def shoot(self):
+    def shoot(self,vel):
         """
         Move the leader motor
         """
         
-#        self.velocity = velocity
-        self.velocity = SmartDashboard.getNumber('Shooting Velocity', 0)
+        self.velocity = vel
         self.leader_motor.set_control(self.velocity_voltage.with_velocity(self.velocity))
   
     def stop_shooter(self):
@@ -125,10 +122,15 @@ class ShooterSystem(Subsystem):
         return sum([abs(m.get_velocity().value_as_double) for m in self.all_motors]) / len(self.all_motors)
 
     def write_to_dashboard(self):
-        self.shooterActualVel = self.leader_motor.get_velocity().value_as_double
-        self.feeder1_actual_vel = self.feeder_motor.get_velocity().value_as_double        
-        SmartDashboard.putNumber('Leader actual velocity',self.shooterActualVel)
-        SmartDashboard.putNumber('Feeder1 actual velocity',self.feeder1_actual_vel)
+        i=1
+        for motor in self.all_motors:
+            v=motor.get_velocity().value_as_double
+            SmartDashboard.putNumber("Shooter"+str(i)+" Actual",v)
+            i=i+1
+
+
+        SmartDashboard.putNumber('Shooter mean velocity',self.mean_shooter_velocity())
+        SmartDashboard.putNumber('Feeder1 actual velocity',self.feeder_motor.get_velocity().value_as_double)
 
 
     def _run_shooter_sysid(self, voltage) -> None:
@@ -158,3 +160,4 @@ class ShooterSystem(Subsystem):
 
         self.conveyor_velocity = SmartDashboard.getNumber('Conveyor Velocity', 0)
         self.conveyor_voltage = SmartDashboard.getNumber('Shooter conveyor V', 0)
+

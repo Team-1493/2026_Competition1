@@ -1,5 +1,5 @@
 from math import pi, cos,sin
-from wpilib import DriverStation
+from wpilib import DriverStation, SmartDashboard
 from wpimath.geometry import Pose2d, Rotation2d
 import math
 from Constants1 import ConstantValues
@@ -53,9 +53,18 @@ class HelperMethods():
                 pose.rotation() + Rotation2d.fromDegrees(180))
         return(pose_new)
 
+    def calculate_shoot_speed():
+        angle,dist = HelperMethods.dist_to_hub()
+        return (dist*39.37)*.0337+4.65
 
-    def anlgeToHub(xr,yr):
-        if DriverStation.getAlliance()==DriverStation.Alliance.kBlue:
+    def dist_to_hub():
+        pose = HelperMethods.dt.pose
+        xr = pose.X()
+        yr = pose.Y()
+        
+        color = HelperMethods.dt.alliance_color
+        if color == None: color = DriverStation.Alliance.kBlue
+        if color==DriverStation.Alliance.kBlue:
             xh = 4.644
             yh= 4.030
 
@@ -71,5 +80,5 @@ class HelperMethods():
 
         angle_hub=math.atan2(yt,xt)-math.pi/2  
         dist_hub=math.hypot(xt,yt) 
-                
-        return (angle_hub,dist_hub)
+        SmartDashboard.putNumber("Distance To Hub",dist_hub)        
+        return angle_hub,dist_hub
