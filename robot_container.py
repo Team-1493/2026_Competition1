@@ -56,7 +56,7 @@ class RobotContainer:
 
         self.limelightSytem = LLsystem.getInstance()
         self._joystick = CommandXboxController(0)
-
+        self._joystick_op = CommandXboxController(1)
 
         # speed_at_12_volts desired top speed
         self._max_speed = (TunerConstants.speed_at_12_volts) 
@@ -111,13 +111,13 @@ class RobotContainer:
         
         self._joystick.button(6).onFalse(self.slow_mode_off)
 
-        self._joystick.button(7).whileTrue(self.intake_command)
+        self._joystick_op.button(5).whileTrue(self.intake_command)
 
-        self._joystick.button(10).whileTrue(self.arcdrive.
+        self._joystick.button(8).whileTrue(self.arcdrive.
             andThen(self.shoot_command2)    
             .finallyDo(self.headingController.setTargetRotationInt) ) 
 
-        self._joystick.button(8).whileTrue(self.shoot_command1)        
+        self._joystick_op.button(6).whileTrue(self.shoot_command1)        
 
 
 #        self.trigger_arc_drive_near.onTrue(self.shoot_command)
@@ -131,8 +131,8 @@ class RobotContainer:
 #        self._joystick.button(8).whileTrue(self.shooterSysID_dyn_for)
 #        self._joystick.button(9).whileTrue(self.shooterSysID_dyn_rev)
         
-        self._joystick.button(9).onTrue(
-              InstantCommand(lambda:self.update_constants()))
+#        self._joystick.button(9).onTrue(
+#              InstantCommand(lambda:self.update_constants()))
 
 
 
@@ -187,10 +187,11 @@ class RobotContainer:
         self.headingController.setTargetRotationInt(True)  
     
     def write_to_dashboard(self):
-        self.drivetrain.write_to_dashboard()
-        self.intake.write_to_dashboard()
-        self.shooter.write_to_dashboard()
-
+#        self.drivetrain.write_to_dashboard()
+#        self.intake.write_to_dashboard()
+#        self.shooter.write_to_dashboard()
+        pass
+       
     def apply_teleop_gains(self):
         self.drivetrain.apply_teleop_gains()
 

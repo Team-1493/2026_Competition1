@@ -27,7 +27,7 @@ class LLsystem(Subsystem):
     def __init__(self):
 
         self.print_counter = 0
-        self.print_interval = 25
+        self.print_interval = 10000
         self.numCams = 2   # number of cameras on robot
 
 

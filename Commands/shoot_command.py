@@ -31,7 +31,9 @@ class ShootCommand(commands2.Command):
 
         if self.timer.get()>1:
             self.intake.start_conveyor()            
-            self.intake.arm_to_position(0.1 + 0.1*math.sin(1.5*self.timer.get()*math.pi) )
+#            self.intake.arm_to_position(0.1 + 0.1*math.sin(1.5*self.timer.get()*math.pi) )
+            pos = min(0.18,0.18*self.timer.get()/2)
+            self.intake.arm_to_position(pos )
 
     @override
     def end(self,interrupted:bool):
