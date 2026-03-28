@@ -44,6 +44,7 @@ class ConstantValues():
         CAM_THETA_Y_OFFSET=[None,None,None,None]
         CAM_THETA_Z_OFFSET=[None,None,None,None]
 
+        """
         # limelight 4 on practice robot
         CAM_NAME[0] =  "limelight-b"  
         CAM_X_OFFSET[0] = -.127 # forward positive
@@ -51,7 +52,18 @@ class ConstantValues():
         CAM_Z_OFFSET[0] = .762 # up positive
         CAM_THETA_X_OFFSET[0] = 0 # roll
         CAM_THETA_Y_OFFSET[0] = 20 # pitch
+        CAM_THETA_Z_OFFSET[0] = 0 # yaw"""
+
+        # limelight 4 on practice robot
+        CAM_NAME[0] =  "limelight-b"  
+        CAM_X_OFFSET[0] = 0 # forward positive
+        CAM_Y_OFFSET[0] = 0 # right positive
+        CAM_Z_OFFSET[0] = 9 # up positive
+        CAM_THETA_X_OFFSET[0] = 0 # roll
+        CAM_THETA_Y_OFFSET[0] = 0 # pitch
         CAM_THETA_Z_OFFSET[0] = 0 # yaw
+
+
 
         CAM_NAME[1] =  "limelight-a"
         CAM_X_OFFSET[1] = -0.292 # forward positive

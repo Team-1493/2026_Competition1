@@ -27,7 +27,7 @@ class LLsystem(Subsystem):
     def __init__(self):
 
         self.print_counter = 0
-        self.print_interval = 10000
+        self.print_interval = 0
         self.numCams = 2   # number of cameras on robot
 
 
@@ -252,29 +252,32 @@ class LLsystem(Subsystem):
     def write_camera0_pose_to_file(self):
         if self.numCams < 1:
             return
-
         cam_name = self.constants.CAM_NAME[0]
         estimate = LimelightHelpers.get_botpose_estimate_wpiblue_megatag2(cam_name)
-
         if estimate is None or estimate.tag_count <= 0:
             return
 
-        closest_tag_id = 0
-        closest_tag_distance = 0.0
+        robotPose = self.driveTrain.pose
+        closest_id = 0
+        closest_distance = 0.0
         if estimate.raw_fiducials is not None and len(estimate.raw_fiducials) > 0:
-            closest_tag_id, closest_tag_distance = self.minDist(estimate.raw_fiducials)
+            closest_id, closest_distance = self.minDist(estimate.raw_fiducials)
 
-        pose_x = estimate.pose.translation().X()*39.37  
-        pose_y = estimate.pose.translation().Y()*39.37
-        pose_rot = estimate.pose.rotation().degrees()
-        x_act = SmartDashboard.getNumber("X actual", 0)*12
-        y_act = SmartDashboard.getNumber("Y actual", 0)*12
+        poseCam_x = estimate.pose.translation().X()  
+        poseCam_y = estimate.pose.translation().Y()
+        poseCam_thetaRadians = estimate.pose.rotation().radians()
+        poseCam_thetaDegrees = estimate.pose.rotation().degrees()
+        poseRobot_x = robotPose.X()
+        poseRobot_y = robotPose.Y()
+        poseRobot_theta = robotPose.rotation().radians()
+        poseRobot_thetaDegrees = robotPose.rotation().degrees()        
 
-        with open("/home/lvuser/limelight_camera0_pose_log.txt", "a", encoding="utf-8") as pose_file:
-#        with open("limelight_camera0_pose_log.txt", "a", encoding="utf-8") as pose_file:
+#        with open("/home/lvuser/limelight_camera0_pose_log.txt", "a", encoding="utf-8") as pose_file:
+        with open("limelight_camera0_pose_log.txt", "a", encoding="utf-8") as pose_file:
             pose_file.write(
-                f"{x_act:.3f}\t{y_act:.3f}\t{pose_x:.3f}\t{pose_y:.3f}\t"
-                f"{pose_rot:.3f}\t{closest_tag_id}\t{closest_tag_distance:.3f}\t"
+                f"{poseRobot_x:.3f}\t{poseRobot_y:.3f}\t{poseRobot_theta:.3f}\t{poseRobot_thetaDegrees:.3f}\t"
+                f"{poseCam_x:.3f}\t{poseCam_y:.3f}\t{poseCam_thetaRadians:.3f}\t{poseCam_thetaDegrees:.3f}\t"                
+                f"{closest_id}\t{closest_distance:.3f}\t"
                 f"{estimate.tag_count}\n"
             )
 
