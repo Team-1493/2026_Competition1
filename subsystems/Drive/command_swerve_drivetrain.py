@@ -1,6 +1,5 @@
 from tracemalloc import start
 from commands2 import Command, Subsystem
-from commands2.sysid import SysIdRoutine
 import math
 from phoenix6 import SignalLogger, swerve, units, utils, hardware
 from phoenix6.swerve.requests import ForwardPerspectiveValue
@@ -8,7 +7,6 @@ from phoenix6.configs import Slot0Configs, Slot1Configs
 from typing import Callable, overload
 from wpilib import DriverStation, Notifier, RobotController, SmartDashboard, Timer
 import wpilib
-from wpilib.sysid import SysIdRoutineLog
 from wpimath.geometry import Pose2d, Rotation2d, Translation2d
 from Constants1 import ConstantValues
 

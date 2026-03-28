@@ -6,7 +6,6 @@
 from commands2 import DeferredCommand, InstantCommand
 import commands2
 from commands2.button import CommandXboxController, Trigger
-from commands2.sysid import SysIdRoutine
 from wpimath.geometry import Pose2d
 from wpilib import DataLogManager, SmartDashboard, Timer
 
@@ -116,22 +115,9 @@ class RobotContainer:
 
         self._joystick_op.button(5).whileTrue(self.intake_command)
         self._joystick_op.button(6).whileTrue(self.shoot_command2)        
-
-
-
-
-
-
-        
-#        self._joystick.button(6).whileTrue(self.shooterSysID_quasi_for)
-#        self._joystick.button(7).whileTrue(self.shooterSysID_quasi_rev)
-#        self._joystick.button(8).whileTrue(self.shooterSysID_dyn_for)
-#        self._joystick.button(9).whileTrue(self.shooterSysID_dyn_rev)
         
 #        self._joystick.button(9).onTrue(
-#              InstantCommand(lambda:self.update_constants()))
-
-
+#              InstantCommand(lambda:self.update_constants()))\
 
 
 #        self._joystick.button(7).onTrue(
