@@ -106,18 +106,17 @@ class RobotContainer:
         self._joystick.button(6).onTrue(self.drivetrain.runOnce(
             lambda:self.drivetrain.reset_pose(Pose2d())))
 
-
         self._joystick.button(6).onTrue(self.slow_mode_on)
         
         self._joystick.button(6).onFalse(self.slow_mode_off)
 
-        self._joystick_op.button(5).whileTrue(self.intake_command)
 
         self._joystick.button(8).whileTrue(self.arcdrive.
-            andThen(self.shoot_command2)    
+            andThen(self.shoot_command1)    
             .finallyDo(self.headingController.setTargetRotationInt) ) 
 
-        self._joystick_op.button(6).whileTrue(self.shoot_command1)        
+        self._joystick_op.button(5).whileTrue(self.intake_command)
+        self._joystick_op.button(6).whileTrue(self.shoot_command2)        
 
 
 #        self.trigger_arc_drive_near.onTrue(self.shoot_command)
