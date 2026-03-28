@@ -5,7 +5,7 @@
 
 from commands2 import DeferredCommand, InstantCommand
 import commands2
-from commands2.button import CommandXboxController, Trigger
+from commands2.button import CommandXboxController
 from wpimath.geometry import Pose2d
 from wpilib import DataLogManager, SmartDashboard, Timer
 
