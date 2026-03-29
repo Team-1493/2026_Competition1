@@ -264,7 +264,7 @@ class LLsystem(Subsystem):
         if estimate.raw_fiducials is not None and len(estimate.raw_fiducials) > 0:
             closest_tag_id, closest_tag_distance = self.minDist(estimate.raw_fiducials)
 
-        pose_x = estimate.pose.translation().X()*39.37  
+        pose_x = estimate.pose.translation().X()*39.37   
         pose_y = estimate.pose.translation().Y()*39.37
         pose_rot = estimate.pose.rotation().degrees()
         x_act = SmartDashboard.getNumber("X actual", 0)*12
