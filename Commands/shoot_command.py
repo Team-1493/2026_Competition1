@@ -8,7 +8,8 @@ from Utilities.helper_methods import HelperMethods
 
 class ShootCommand(commands2.Command):
     def __init__(self):
-        SmartDashboard.putNumber("Shooter Speed Calculated",0)        
+        SmartDashboard.putNumber("Shooter Speed Calculated",0)   
+        SmartDashboard.putNumber("Shooter Speed SF",1)                
         self.shooter = ShooterSystem.getInstance()
         self.intake = IntakeSystem.getInstance()
         self.timer = Timer()
@@ -49,6 +50,7 @@ class ShootCommand(commands2.Command):
         shooter_speed= SmartDashboard.getNumber('Shooting Velocity', 0)
         if shooter_speed<0: 
              shooter_speed = HelperMethods.calculate_shoot_speed()
+             shooter_speed=shooter_speed*SmartDashboard.getNumber("Shooter Speed SF",1)
         SmartDashboard.putNumber("Shooter Speed Calculated",shooter_speed)        
 
         return shooter_speed
