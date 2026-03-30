@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.000242510699001,
-        "y": -0.00833095577746007
+        "x": 0.0,
+        "y": 0.0
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.000242510699002,
-        "y": -0.00833095577746007
+        "x": 5.467198227899386e-17,
+        "y": 0.8928612285119044
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "square_pt1"
     },
     {
       "anchor": {
-        "x": 4.000242510699001,
-        "y": 6.448059914407988
+        "x": 0.0,
+        "y": 1.5
       },
       "prevControl": {
-        "x": 3.0002425106990014,
-        "y": 6.448059914407988
+        "x": 4.952761358805132e-17,
+        "y": 0.6911526879009626
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "square_pt2"
     }
   ],
   "rotationTargets": [],
@@ -42,10 +42,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 90.0
   },
   "reversed": false,
-  "folder": "Left_Depot_Out",
+  "folder": "Squaers",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

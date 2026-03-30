@@ -1,0 +1,25 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "outback_2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "outback_1"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "OutBack",
+  "choreoAuto": false
+}

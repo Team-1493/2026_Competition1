@@ -7,31 +7,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "square_1"
+            "pathName": "CenterLeft3_1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "square_2"
+            "pathName": "CenterLeft3_2"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.5
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "square_3"
+            "pathName": "CenterLeft3_3"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "square_4"
+            "pathName": "CenterLeft3_4"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Squares",
+  "folder": null,
   "choreoAuto": false
 }

@@ -7,31 +7,43 @@
         {
           "type": "path",
           "data": {
-            "pathName": "square_1"
+            "pathName": "LDO_1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "square_2"
+            "pathName": "LDO_2"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 1.5
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "square_3"
+            "pathName": "LDO_3"
           }
         },
         {
-          "type": "path",
+          "type": "wait",
           "data": {
-            "pathName": "square_4"
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SetHeadingToCurrent"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Squares",
+  "folder": null,
   "choreoAuto": false
 }

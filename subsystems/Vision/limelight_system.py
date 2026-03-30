@@ -42,7 +42,7 @@ class LLsystem(Subsystem):
         self.cam_label = [" "]*self.numCams
         self.previous_estimate = [None]*self.numCams
         self.current_estimate = [PoseEstimate()]*self.numCams                
-        SmartDashboard.putBoolean("Vision Active",False)
+        SmartDashboard.putBoolean("Vision Active",True)
         for i in range(self.numCams):
                 self.cam_label[i]="LL Cam "+str(i)+" "
 

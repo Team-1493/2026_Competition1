@@ -135,7 +135,7 @@ class ConstantValues():
         LEADER_KV = 0.15   ##Caliberated by Sai & Mohammed
         FEEDER_KP = 1
         FEEDER_KV = 0.124
-        SHOOTING_VELOCITY = 8
+        SHOOTING_VELOCITY = -1
         CONVEYOR_VOLTAGE = 0
         CONVEYOR_VELOCITY = 80
         TOLERANCE = 1e-3

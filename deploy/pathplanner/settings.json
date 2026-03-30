@@ -2,11 +2,22 @@
   "robotWidth": 0.9,
   "robotLength": 0.9,
   "holonomicMode": true,
-  "pathFolders": [],
-  "autoFolders": [],
-  "defaultMaxVel": 1.0,
-  "defaultMaxAccel": 2.0,
-  "defaultMaxAngVel": 540.0,
+  "pathFolders": [
+    "Auto1",
+    "CenterLeft",
+    "CenterLeft3",
+    "Left_Depot_Out",
+    "Get_Shoot",
+    "OutBack",
+    "Squaers"
+  ],
+  "autoFolders": [
+    "OutBack",
+    "Squares"
+  ],
+  "defaultMaxVel": 2.25,
+  "defaultMaxAccel": 2.5,
+  "defaultMaxAngVel": 360.0,
   "defaultMaxAngAccel": 720.0,
   "defaultNominalVoltage": 12.0,
   "robotMass": 74.088,

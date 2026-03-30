@@ -21,12 +21,6 @@
           "data": {
             "pathName": "square_3"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "square_4"
-          }
         }
       ]
     }

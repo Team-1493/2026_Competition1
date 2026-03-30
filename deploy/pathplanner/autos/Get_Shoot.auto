@@ -7,31 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "square_1"
+            "pathName": "depot_1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "square_2"
+            "pathName": "outpost_2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "square_3"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "square_4"
+            "pathName": "shoot_3"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Squares",
+  "folder": null,
   "choreoAuto": false
 }

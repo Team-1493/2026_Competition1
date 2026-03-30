@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.000242510699001,
-        "y": -0.00833095577746007
+        "x": 0.6750071326676179,
+        "y": 6.046961483594864
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.000242510699002,
-        "y": -0.00833095577746007
+        "x": 2.9522111269614832,
+        "y": 5.9952068473609135
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "z"
     },
     {
       "anchor": {
-        "x": 4.000242510699001,
-        "y": 6.448059914407988
+        "x": 1.050228245363765,
+        "y": 0.7421112696148362
       },
       "prevControl": {
-        "x": 3.0002425106990014,
-        "y": 6.448059914407988
+        "x": 3.2239229671897287,
+        "y": 0.7679885877318122
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "zz"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Left_Depot_Out",
+  "folder": "Get_Shoot",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }
