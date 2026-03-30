@@ -1023,4 +1023,18 @@ class LimelightHelpers:
 		array.extend(raw_fiducials)
 		return 1.0 == LimelightHelpers.set_limelight_NTDoubleArray(name, "botpose_orb_wpiblue",array)
 
+	@staticmethod
+	def set_camerapose_targetspace(limelight_name: str, pose: Pose3d) -> bool:
+		array = LimelightHelpers.pose_3d_to_array(pose)	
+		# Convert to Limelight coordinate space (X forward, Y left, Z up) and swap roll/pitch/yaw to match Limelight's convention 
+		x = array[0]
+		y = array[1]
+		z = array[2]
+		roll = array[3]
+		pitch = array[4]
+		yaw = array[5]
+		array[3] = pitch
+		array[4] = yaw
+		array[5] = roll
+		return 1.0 == LimelightHelpers.set_limelight_NTDoubleArray(limelight_name, "camerapose_targetspace", array)
 		

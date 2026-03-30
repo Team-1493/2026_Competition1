@@ -11,6 +11,9 @@ from wpilib import SmartDashboard
 from subsystems.Drive.drivetrain_generator import DrivetrainGenerator
 from subsystems.Drive.heading_controller import HeadingController
 
+from datetime import datetime
+
+
 
 
 class LLsystem(Subsystem):
@@ -246,39 +249,102 @@ class LLsystem(Subsystem):
         yaws = [t.txyc for t in rf]  # normalized yaw
         return max(yaws) - min(yaws)
 
+    def ambiguity_distance_primary(self,name,rawFiducials: List[RawFiducial], primary_id: int):
+        primary_id = LimelightHelpers.get_fiducial_id(name)
+        primary_ambiguity = None
 
+        for f in rawFiducials:
+            if f.id == primary_id:
+                primary_ambiguity = f.ambiguity
+                primary_dist = f.dist_to_camera
+                return primary_ambiguity, primary_dist
+        return None
+
+    def primary_tag_pose(self,id):
+
+        tagPoses = [
+            [183.19, 132.69, 46.32, 0, -90.0, 0],
+            [184.80, 178.98, 46.44, 0, 90.0, 0],
+            [181.65, 288.90, 36.51, 0, -179.2, 0],
+            [170.67, 179.45, 46.37, 0, 87.7, 0],
+            [159.88, 170.24, 46.50, 0, 176.6, 0],
+            [159.37, 156.26, 46.33, 0, 179.1, 0],
+            [169.22, 132.65, 46.36, 0, -88.2, 0],
+            [182.13, 23.15, 36.24, 0, 179.3, 0],
+            [0.31, 26.22, 21.75, 0, 0.0, 0],
+            [0.51, 40.91, 21.82, 0, -1.1, 0],
+            [4.21, 137.32, 23.76, 0, -0.4, 0],
+            [4.76, 154.69, 23.64, 0, -0.7, 0]
+            ]
+        tagIDs = [18, 21, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32]
+        return tagPoses[tagIDs.index(id)]
 
 
     def write_camera0_pose_to_file(self):
         if self.numCams < 1:
             return
+#        now = datetime.now()
+#        timestamp = now.strftime("%Y-%m-%d_%H-%M-%S")
+    # Filename A used to store cam-tag pose and robot odometry pose
+    # for calibrating cam-robot transform.
+    # Filename B used to store robot odometry pose and megatag pose for verifacation
+    # of limelight calibrations
+ #       filenameA = f"LLcalA_{timestamp}.txt"
+ #       filenameB = f"LLcalA_{timestamp}.txt"        
+
+        filenameA = "LLcallibrationData_A.txt"
+        filenameB = "LLcallibrationData_B.txt"        
+
+
+        estimate = None
         cam_name = self.constants.CAM_NAME[0]
+        cam_to_target = LimelightHelpers.get_camerapose_targetspace(cam_name)
+        primary_id = LimelightHelpers.get_fiducial_id(cam_name)
         estimate = LimelightHelpers.get_botpose_estimate_wpiblue_megatag2(cam_name)
-        if estimate is None or estimate.tag_count <= 0:
+        robotPose = self.driveTrain.pose
+
+
+        if primary_id<1 or estimate is None or estimate.tag_count<1:
             return
 
-        robotPose = self.driveTrain.pose
-        closest_id = 0
-        closest_distance = 0.0
-        if estimate.raw_fiducials is not None and len(estimate.raw_fiducials) > 0:
-            closest_id, closest_distance = self.minDist(estimate.raw_fiducials)
+      
+        cam_target_x = cam_to_target[0]  
+        cam_target_y = cam_to_target[1]
+        cam_target_z = cam_to_target[2]
+        cam_target_pitch = cam_to_target[3]*math.pi/180.0
+        cam_target_yaw = cam_to_target[4]*math.pi/180.0
+        cam_target_roll = cam_to_target[5]*math.pi/180.0
 
-        poseCam_x = estimate.pose.translation().X()  
-        poseCam_y = estimate.pose.translation().Y()
-        poseCam_thetaRadians = estimate.pose.rotation().radians()
-        poseCam_thetaDegrees = estimate.pose.rotation().degrees()
+        pose_tag = self.primary_tag_pose(primary_id)
+        tag_x = pose_tag[0] 
+        tag_y = pose_tag[1]
+        tag_z = pose_tag[2]
+        tag_pitch = pose_tag[3]*math.pi/180.0
+        tag_yaw = pose_tag[4]*math.pi/180.0
+        tag_roll = pose_tag[5]*math.pi/180.0
+
+        mega_x = estimate.pose.translation().X()
+        mega_y = estimate.pose.translation().Y()    
+        mega_thetaDegrees = estimate.pose.rotation().degrees()
+        mega_tag_count = estimate.tag_count
+        primary_ambiguity, primary_dist = self.ambiguity_distance_primary(cam_name,estimate.raw_fiducials, primary_id)
+
         poseRobot_x = robotPose.X()
         poseRobot_y = robotPose.Y()
         poseRobot_theta = robotPose.rotation().radians()
         poseRobot_thetaDegrees = robotPose.rotation().degrees()        
 
-#        with open("/home/lvuser/limelight_camera0_pose_log.txt", "a", encoding="utf-8") as pose_file:
-        with open("limelight_camera0_pose_log.txt", "a", encoding="utf-8") as pose_file:
-            pose_file.write(
-                f"{poseRobot_x:.3f}\t{poseRobot_y:.3f}\t{poseRobot_theta:.3f}\t{poseRobot_thetaDegrees:.3f}\t"
-                f"{poseCam_x:.3f}\t{poseCam_y:.3f}\t{poseCam_thetaRadians:.3f}\t{poseCam_thetaDegrees:.3f}\t"                
-                f"{closest_id}\t{closest_distance:.3f}\t"
-                f"{estimate.tag_count}\n"
+        with open(filenameA, "a", encoding="utf-8") as fileA:
+            fileA.write(
+                f"{cam_target_x:.3f}\t{cam_target_y:.3f}\t{cam_target_z:.3f}\t{cam_target_pitch:.3f}\t{cam_target_yaw:.3f}\t{cam_target_roll:.3f}\t"                
+                f"{tag_x/39.37:.3f}\t{tag_y/39.37:.3f}\t{tag_z/39.37:.3f}\t{tag_pitch:.3f}\t{tag_yaw:.3f}\t{tag_roll:.3f}\t"
+                f"{poseRobot_x:.3f}\t{poseRobot_y:.3f}\t{poseRobot_theta:.3f}\t"
+                f"{primary_id}\t{primary_ambiguity:.3f}\t{primary_dist:.3f}\t{mega_tag_count}\n"
             )
 
- 
+        with open(filenameB, "a", encoding="utf-8") as fileB:
+            fileB.write(
+                f"{poseRobot_x:.3f}\t{poseRobot_y:.3f}\t{poseRobot_thetaDegrees:.3f}\t"
+                f"{mega_x:.3f}\t{mega_y:.3f}\t{mega_thetaDegrees:.3f}\t"
+                f"{primary_ambiguity:.3f}\t{primary_dist:.3f}\n"
+            ) 

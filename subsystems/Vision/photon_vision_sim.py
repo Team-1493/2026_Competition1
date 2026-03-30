@@ -10,7 +10,7 @@ from photonlibpy.photonCamera import PhotonCamera
 from photonlibpy.simulation import VisionSystemSim, PhotonCameraSim,SimCameraProperties
 from Utilities.LLH import LimelightHelpers
 from wpilib import RobotBase
-from wpimath.geometry import Rotation2d,Translation3d,Rotation3d, Transform3d
+from wpimath.geometry import Rotation2d,Translation3d,Rotation3d, Transform3d, Pose3d
 from Constants1 import ConstantValues
 from math import radians
 from wpilib import SmartDashboard
@@ -103,7 +103,9 @@ class PVisionSim(Subsystem):
                           minYaw = target.getYaw()                          
                           minID=target.getFiducialId()
                           minArea = target.getArea()
-                
+                          camToTarget = target.getBestCameraToTarget()
+                          camToTargetPos3d = Pose3d(camToTarget.translation(), camToTarget.rotation())  
+                          
                 if length>0: 
                     avg_dist=avg_dist/length
                     avg_area=avg_area/length
@@ -150,7 +152,8 @@ class PVisionSim(Subsystem):
                 LimelightHelpers.set_tx(self.camName, minYaw)                 
                 LimelightHelpers.set_tync(self.camName, minPitch) 
                 LimelightHelpers.set_txnc(self.camName, minYaw)  
-                LimelightHelpers.set_fiducialid_id(self.camName,minID)                               
+                LimelightHelpers.set_fiducialid_id(self.camName,minID)
+                LimelightHelpers.set_camerapose_targetspace(self.camName, camToTargetPos3d)                               
 #                print("PV ",length)
                 LimelightHelpers.set_botpose_estimate_wpiblue_megatag2(
                     estimatedRobotPose.estimatedPose.toPose2d(),
