@@ -6,7 +6,7 @@
 from commands2 import DeferredCommand, InstantCommand
 import commands2
 from commands2.button import CommandXboxController
-from wpimath.geometry import Pose2d
+from wpimath.geometry import Pose2d, Rotation2d,Translation2d
 from wpilib import DataLogManager, SmartDashboard, Timer
 
 from Constants1 import ConstantValues
@@ -109,15 +109,8 @@ class RobotContainer:
         self._joystick.button(6).onFalse(self.slow_mode_off)
 
 
-        self._joystick.button(8).whileTrue(self.arcdrive.
-            andThen(self.shoot_command1)    
-            .finallyDo(self.headingController.setTargetRotationInt) ) 
-
-        self._joystick_op.button(5).whileTrue(self.intake_command)
-        self._joystick_op.button(6).whileTrue(self.shoot_command2)        
-        
-#        self._joystick.button(9).onTrue(
-#              InstantCommand(lambda:self.update_constants()))
+        self._joystick.button(9).onTrue(
+              InstantCommand(lambda:self.update_constants()))
 
 
 
@@ -125,11 +118,10 @@ class RobotContainer:
         self._joystick.button(7).onTrue(
             InstantCommand(lambda: self.limelightSytem.write_camera0_pose_to_file()))
 
+        self._joystick.button(8).whileTrue(
+            commands2.DeferredCommand(lambda:self.drivetrain.reset_pose(Pose2d(Translation2d(0.3,0.66),Rotation2d(0)))).finallyDo
+           (self.headingController.setTargetRotationInt))
 
-                
-#        self._joystick.button(8).whileTrue(
-#            commands2.DeferredCommand(lambda:self.drive_path.drive_trench()).finallyDo
-#           (self.headingController.setTargetRotationInt))        
 
 
 
@@ -156,9 +148,6 @@ class RobotContainer:
 #        self._joystick.button(7).whileTrue(FindWheelBase())        
 #        self._joystick.button(8).whileTrue(FindKP_MaxA())        
 
-#        self._joystick.button(7).whileTrue(
-#            commands2.DeferredCommand(lambda:self.drive_path.drive_path_to_tag(23,-.75,0)).finallyDo
-#           (self.headingController.setTargetRotationInt))
 
 #        self._joystick.button(8).whileTrue(
 #            AutoPilotCommand(26,-1.5,0,0).finallyDo((self.headingController.setTargetRotationInt)))

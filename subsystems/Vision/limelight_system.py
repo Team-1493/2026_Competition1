@@ -292,8 +292,8 @@ class LLsystem(Subsystem):
  #       filenameA = f"LLcalA_{timestamp}.txt"
  #       filenameB = f"LLcalA_{timestamp}.txt"        
 
-        filenameA = "LLcallibrationData_A.txt"
-        filenameB = "LLcallibrationData_B.txt"        
+        filenameA = "/home/lvuser/LLcallibrationData_A.txt"
+        filenameB = "/home/lvuser/LLcallibrationData_B.txt"        
 
 
         estimate = None
