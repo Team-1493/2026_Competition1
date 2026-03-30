@@ -240,16 +240,19 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
         y = self.pose.Y()
         rot_deg = self.rotation_deg
         x_in = x*39.37
-        y_in = y*39.37  
+        y_in = y*39.37
+        spd_x = self.get_state().speeds.vx
+        spd_y = self.get_state().speeds.vy        
+          
 
-#        SmartDashboard.putNumber("Vx: ",round(self.spd.vx,3))
-#        SmartDashboard.putNumber("Vy: ",round(self.spd.vy,3))
-#        SmartDashboard.putNumber("Rot Rate: ",round(self.get_omega_dps(),3))   
-        SmartDashboard.putNumber("X: ",round(x,3))
-        SmartDashboard.putNumber("y: ",round(y,3))
-        SmartDashboard.putNumber("Rot: ",round(rot_deg,3))
-        SmartDashboard.putNumber("X_in: ",round(x_in,3))
-        SmartDashboard.putNumber("y_in: ",round(y_in,3))       
+        SmartDashboard.putNumber("Vx",round(spd_x,3))
+        SmartDashboard.putNumber("Vy",round(spd_y,3))
+        SmartDashboard.putNumber("Rot Rate",round(self.get_omega_dps(),3))   
+        SmartDashboard.putNumber("X",round(x,3))
+        SmartDashboard.putNumber("Y",round(y,3))
+        SmartDashboard.putNumber("Rot",round(rot_deg,3))
+        SmartDashboard.putNumber("X_in",round(x_in,3))
+        SmartDashboard.putNumber("y_in",round(y_in,3))       
 
 #        SmartDashboard.putNumber("roll: ",round(self.pigeon2.get_roll().value_as_double,3) )
 #        SmartDashboard.putNumber("pitch: ",round(self.pigeon2.get_pitch().value_as_double,3))

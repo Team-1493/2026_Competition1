@@ -94,13 +94,13 @@ class RobotContainer:
 #            self.drivetrain.apply_request(lambda: idle).ignoringDisable(True)
 #        )
 
-        self._joystick.button(4).onTrue(self.rotateToZero)
+#        self._joystick.button(4).onTrue(self.rotateToZero)
         
-        self._joystick.button(3).onTrue(self.rotateTo90)
+#        self._joystick.button(3).onTrue(self.rotateTo90)
 
-        self._joystick.button(1).onTrue(self.rotateTo180)
+#        self._joystick.button(1).onTrue(self.rotateTo180)
 
-        self._joystick.button(2).onTrue(self.rotateTo270)
+#        self._joystick.button(2).onTrue(self.rotateTo270)
 
         self._joystick.button(5).onTrue(self.headingController.runOnce(
             lambda:self.headingController.set_forward_direction()))
@@ -156,10 +156,10 @@ class RobotContainer:
 #        self._joystick.button(10).onTrue(
 #            self.intake.runOnce(lambda:self.intake.zero_position()))
 
-#        self._joystick.button(7).whileTrue(FindkS())
-#        self._joystick.button(7).whileTrue(FindSlipCurrent())
-#        self._joystick.button(7).whileTrue(FindWheelBase())        
-#        self._joystick.button(8).whileTrue(FindKP_MaxA())        
+        self._joystick.button(1).whileTrue(FindkS())
+        self._joystick.button(2).whileTrue(FindSlipCurrent())
+        self._joystick.button(3).whileTrue(FindWheelBase())        
+        self._joystick.button(4).whileTrue(FindKP_MaxA())        
 
 #        self._joystick.button(7).whileTrue(
 #            commands2.DeferredCommand(lambda:self.drive_path.drive_path_to_tag(23,-.75,0)).finallyDo
@@ -189,8 +189,8 @@ class RobotContainer:
         # update limelight, autobuilder, and heading controller constants  
         self.limelightSytem.configfureLimelights()
 #        self.autoGenerator.configAutoBuilder()
-#        self.drivetrain.update()
-#        self.drive_teleop_command.setConstants()
+        self.drivetrain.update()
+        self.drive_teleop_command.setConstants()
         self.intake.setup()
         self.shooter.update_constants()
         # DriveGoal_Cam does not need to be explicitly updated, it is generated at each use

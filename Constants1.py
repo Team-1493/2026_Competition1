@@ -17,8 +17,8 @@ class ConstantValues():
     class DriveConstants():
         
         # modify these in tuner_constants also!
-        TELEOP_kP = 5.5 #TunerConstants._drive_gains.k_p
-        TELEOP_kS = 2 #TunerConstants._drive_gains.k_s
+        TELEOP_kP = 3.45 #  TunerConstants._drive_gains.k_p
+        TELEOP_kS = 0.5 #TunerConstants._drive_gains.k_s
         TELEOP_kV = 0 # TunerConstants._drive_gains.k_v
         TELEOP_kA = 0 # TunerConstants._drive_gains.k_a
         TELEOP_DEADBAND = 0.0025
@@ -28,8 +28,8 @@ class ConstantValues():
         SPEED_AT_12_VOLTS = 3.6#TunerConstants.speed_at_12_volts 
 
 
-        AUTO_kP = 3.45
-        AUTO_kS = 0
+        AUTO_kP = 5.5 #3.45
+        AUTO_kS = 0.5  #2
         AUTO_kV = 0
         AUTO_kA = 0    
 
