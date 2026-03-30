@@ -172,7 +172,7 @@ class RobotContainer:
         self.headingController.setTargetRotationInt(True)  
     
     def write_to_dashboard(self):
-#        self.drivetrain.write_to_dashboard()
+        self.drivetrain.write_to_dashboard()
 #        self.intake.write_to_dashboard()
         self.shooter.write_to_dashboard()
         pass
@@ -191,7 +191,7 @@ class RobotContainer:
         self.constants.update_constants()
         # update limelight, autobuilder, and heading controller constants  
         self.limelightSytem.configfureLimelights()
-#        self.autoGenerator.configAutoBuilder()
+        self.autoGenerator.configAutoBuilder()
         self.drivetrain.update()
 #        self.drive_teleop_command.setConstants()
         self.intake.setup()
