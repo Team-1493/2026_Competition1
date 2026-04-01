@@ -123,7 +123,9 @@ class ConstantValues():
         ARM_PEAK_FORWARD_TORQUE_CURRENT = 40
         ARM_PEAK_REVERSE_TORQUE_CURRENT = 40
         ARM_FORWARDTHRESH = .285
-        ARM_REVERSETHRESH = 0                
+        ARM_REVERSETHRESH = 0         
+        AGITATE_AMPLITUDE = 1.0
+        AGITATE_FREQUENCY = 0.5       
         SENSOR_TO_MECHANISM_RATIO = 50 # 1 if 1 rotation of the motor = 1 rotation of the arm
 
 
@@ -288,7 +290,8 @@ class ConstantValues():
         ConstantValues.IntakeConstants.ARM_FORWARDTHRESH = SmartDashboard.getNumber("Intake Arm For Thresh",ConstantValues.IntakeConstants.ARM_FORWARDTHRESH)                    
         ConstantValues.IntakeConstants.ARM_REVERSETHRESH = SmartDashboard.getNumber("Intake Arm Rev Thresh",ConstantValues.IntakeConstants.ARM_REVERSETHRESH)                     
         ConstantValues.IntakeConstants.SENSOR_TO_MECHANISM_RATIO = SmartDashboard.getNumber("Intake Arm Mech Ratio",ConstantValues.IntakeConstants.SENSOR_TO_MECHANISM_RATIO)                     
-
+        ConstantValues.IntakeConstants.AGITATE_AMPLITUDE = SmartDashboard.getNumber("Agitate Amplitude", ConstantValues.IntakeConstants.AGITATE_AMPLITUDE)
+        ConstantValues.IntakeConstants.AGITATE_FREQUENCY = SmartDashboard.getNumber("Agitate Frequency", ConstantValues.IntakeConstants.AGITATE_FREQUENCY)
 
         ### Update Constants for Shooter
         ConstantValues.ShooterConstants.LEADER_KP = SmartDashboard.getNumber("Leader KP", ConstantValues.ShooterConstants.LEADER_KP)
@@ -387,7 +390,10 @@ class ConstantValues():
         SmartDashboard.putNumber("Intake Arm Peak Curr Rev",ConstantValues.IntakeConstants.ARM_PEAK_REVERSE_TORQUE_CURRENT)                     
         SmartDashboard.putNumber("Intake Arm For Thresh",ConstantValues.IntakeConstants.ARM_FORWARDTHRESH)                     
         SmartDashboard.putNumber("Intake Arm Rev Thresh",ConstantValues.IntakeConstants.ARM_REVERSETHRESH)                     
-        SmartDashboard.putNumber("Intake Arm Mech Ratio",ConstantValues.IntakeConstants.SENSOR_TO_MECHANISM_RATIO)                     
+        SmartDashboard.putNumber("Intake Arm Mech Ratio",ConstantValues.IntakeConstants.SENSOR_TO_MECHANISM_RATIO)
+        SmartDashboard.putNumber("Agitate Amplitude", ConstantValues.IntakeConstants.AGITATE_AMPLITUDE)
+        SmartDashboard.putNumber("Agitate Frequency", ConstantValues.IntakeConstants.AGITATE_FREQUENCY)
+
 
 
         SmartDashboard.putNumber("DTG_Cam LatTol",ConstantValues.DriveToGoalCameraConstants.kLateralTolerance)      
