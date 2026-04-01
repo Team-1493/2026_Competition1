@@ -6,18 +6,15 @@ from AutoPilot_py.APTarget import ap_target
 from AutoPilot_py.AP_Driver import ap_driver
 from subsystems.Drive.drivetrain_generator import DrivetrainGenerator
 from Utilities.helper_methods import HelperMethods
-
-
-
+from wpimath.geometry import Pose2d, Rotation2d
 
 class AutoPilotCommand(commands2.Command):
 
-    def __init__(self,i:int, x_offset = 0, y_offset = 0,velFInal = 0,
+    def __init__(self,pose:Pose2d,entryAngle,velFInal = 0,
                  positions:list = None,actions:list[commands2.Command]=None):
         print("******* AUTOPILOT COMMAND   ********")
-        self.i=i
-        self.x_offset = x_offset
-        self.y_offset = y_offset
+        self.pose = pose
+        self.entryAngle = Rotation2d(entryAngle)
         self.velFinal = velFInal
         self.m_drivetrain = DrivetrainGenerator.getInstance()
         self.actions = actions
@@ -34,9 +31,8 @@ class AutoPilotCommand(commands2.Command):
     @override
     def initialize(self):
 #        print("****STARTING AUTOPILOT")
-        pose=HelperMethods.calculate_pose_goal_from_tag(self.i,self.x_offset,self.y_offset)
         self.ap_drive = ap_driver.getInstance()
-        self.m_target = ap_target(pose).with_entry_angle(pose.rotation()).with_velocity(0)
+        self.m_target = ap_target(self.pose).with_entry_angle(self.entryAngle).with_velocity(self.velFinal)
         self.index_actions = 0
  #       print("************",self.m_target.get_reference().X(),"  ",self.m_target.get_reference().Y())
   

@@ -24,7 +24,7 @@ class ConstantValues():
         TELEOP_DEADBAND = 0.0025
         TELEOP_MAX_ANGULAR_RATE = 1
         TELEOP_SCALE_FACTOR_XY = 0.6
-        TELEOP_SCALE_FACTOR_ROT = 0.4
+        TELEOP_SCALE_FACTOR_ROT = 0.8
         SPEED_AT_12_VOLTS = 3.3#TunerConstants.speed_at_12_volts 
 
 
@@ -46,17 +46,17 @@ class ConstantValues():
 
         # limelight 4 on practice robot
         CAM_NAME[0] =  "limelight-b"  
-        CAM_X_OFFSET[0] = -.127 # forward positive
-        CAM_Y_OFFSET[0] = 0 # right positive
-        CAM_Z_OFFSET[0] = .762 # up positive
+        CAM_X_OFFSET[0] = -0.038 #-.127 # forward positive
+        CAM_Y_OFFSET[0] = 0 # left positive
+        CAM_Z_OFFSET[0] = 0.7588 #.7 # up positive
         CAM_THETA_X_OFFSET[0] = 0 # roll
-        CAM_THETA_Y_OFFSET[0] = 20 # pitch
+        CAM_THETA_Y_OFFSET[0] = 23 # pitch
         CAM_THETA_Z_OFFSET[0] = 0 # yaw
 
         CAM_NAME[1] =  "limelight-a"
-        CAM_X_OFFSET[1] = -0.292 # forward positive
-        CAM_Y_OFFSET[1] = -0.292 # right positive
-        CAM_Z_OFFSET[1] = .609 # up positive
+        CAM_X_OFFSET[1] = -0.28 #-0.292 # forward positive
+        CAM_Y_OFFSET[1] = 0.3 #-0.3 # left positive
+        CAM_Z_OFFSET[1] = 0.606 #0.8 # up positive
         CAM_THETA_X_OFFSET[1] = 0 # roll
         CAM_THETA_Y_OFFSET[1] = 0 # pitch
         CAM_THETA_Z_OFFSET[1] = 180 # yaw
@@ -85,9 +85,9 @@ class ConstantValues():
 
     class HeadingControllerConstants():
         
-        HEADINGCONTROLLER_KP = 2.5
+        HEADINGCONTROLLER_KP = 4#2.5
         HEADINGCONTROLLER_KD = 0.0
-        HEADINGCONTROLLER_VMAX = 2.0
+        HEADINGCONTROLLER_VMAX = 5#2.0
         HEADINGCONTROLLER_AMAX = 3.0 
         HEADINGCONTROLLER_TOLERANCE = 0.017
         HEADINGCONTROLLER_RATE_TOLERANCE = 0.03                 

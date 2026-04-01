@@ -6,7 +6,7 @@
 from commands2 import DeferredCommand, InstantCommand
 import commands2
 from commands2.button import CommandXboxController
-from wpimath.geometry import Pose2d
+from wpimath.geometry import Pose2d,Rotation2d,Translation2d
 from wpilib import DataLogManager, SmartDashboard, Timer
 
 from Constants1 import ConstantValues
@@ -116,8 +116,8 @@ class RobotContainer:
         self._joystick_op.button(5).whileTrue(self.intake_command)
         self._joystick_op.button(6).whileTrue(self.shoot_command2)        
         
-#        self._joystick.button(9).onTrue(
-#              InstantCommand(lambda:self.update_constants()))
+        self._joystick.button(9).onTrue(
+              InstantCommand(lambda:self.update_constants()))
 
 
 
@@ -127,9 +127,9 @@ class RobotContainer:
 
 
                 
-#        self._joystick.button(8).whileTrue(
-#            commands2.DeferredCommand(lambda:self.drive_path.drive_trench()).finallyDo
-#           (self.headingController.setTargetRotationInt))        
+        self._joystick.button(10).whileTrue(
+            commands2.DeferredCommand(lambda:self.drivetrain.reset_pose(Pose2d(Translation2d(0.419,0.66),Rotation2d(0)))).finallyDo
+           (self.headingController.setTargetRotationInt))        
 
 
 
@@ -160,8 +160,10 @@ class RobotContainer:
 #            commands2.DeferredCommand(lambda:self.drive_path.drive_path_to_tag(23,-.75,0)).finallyDo
 #           (self.headingController.setTargetRotationInt))
 
-#        self._joystick.button(8).whileTrue(
-#            AutoPilotCommand(26,-1.5,0,0).finallyDo((self.headingController.setTargetRotationInt)))
+        self._joystick.button(7).whileTrue(
+            AutoPilotCommand(Pose2d(Translation2d(7.5,6.5),Rotation2d(-3.14/4)),-.2,1 ).
+            andThen (AutoPilotCommand(Pose2d(Translation2d(7.5,4.5),Rotation2d(-3.14/2)),-3.14/2,0 ))
+            .finallyDo((self.headingController.setTargetRotationInt)))
  
 
     def getAutonomousCommand(self):
@@ -173,7 +175,7 @@ class RobotContainer:
     
     def write_to_dashboard(self):
         self.drivetrain.write_to_dashboard()
-#        self.intake.write_to_dashboard()
+        self.intake.write_to_dashboard()
         self.shooter.write_to_dashboard()
         pass
        
@@ -193,7 +195,7 @@ class RobotContainer:
         self.limelightSytem.configfureLimelights()
         self.autoGenerator.configAutoBuilder()
         self.drivetrain.update()
-#        self.drive_teleop_command.setConstants()
+        self.drive_teleop_command.setConstants()
         self.intake.setup()
         self.shooter.update_constants()
         # DriveGoal_Cam does not need to be explicitly updated, it is generated at each use

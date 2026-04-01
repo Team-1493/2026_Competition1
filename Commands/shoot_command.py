@@ -26,14 +26,15 @@ class ShootCommand(commands2.Command):
         self.timer.start()
 
     def execute(self):
+        curretTime = self.timer.get()
         self.shooter.move_conveyor()
-        if self.timer.get()>0.05 and self.timer.get()<1:
+        if curretTime>0.05 and curretTime<1:
             self.intake.stop_conveyor()
 
         if self.timer.get()>1:
             self.intake.start_conveyor()            
 #            self.intake.arm_to_position(0.1 + 0.1*math.sin(1.5*self.timer.get()*math.pi) )
-            pos = min(0.18,0.18*self.timer.get()/2)
+            pos = min(0.18,0.18*self.timer.get()/4.5)
             self.intake.arm_to_position(pos )
 
     @override

@@ -40,7 +40,7 @@ class HeadingController(Subsystem):
             self.state = 1
             # Capture heading when transitioning from manual rotation to hold mode.
             # This also handles first enable when no rotation has happened yet.
-            if prev_state == 0 or self.timer.get() - self.time1 < 0.1:
+            if prev_state == 0 or self.timer.get() - self.time1 < 1:
                 self.targetRotation = self.rotation
         return self.state, self.targetRotation
 

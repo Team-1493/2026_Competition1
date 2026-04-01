@@ -7,6 +7,7 @@ from Utilities.LLH import PoseEstimate
 from Utilities.LLH import RawFiducial
 from  Constants1 import ConstantValues
 from wpilib import SmartDashboard
+from wpimath.geometry import Pose2d,Rotation2d,Translation2d
 
 from subsystems.Drive.drivetrain_generator import DrivetrainGenerator
 from subsystems.Drive.heading_controller import HeadingController
@@ -25,10 +26,11 @@ class LLsystem(Subsystem):
 
 
     def __init__(self):
-
+        SmartDashboard.putNumber("CAM0 xoff",0)
+        SmartDashboard.putNumber("CAM0 yoff",0)        
         self.print_counter = 0
         self.print_interval = 5
-        self.numCams = 2   # number of cameras on robot
+        self.numCams = 1   # number of cameras on robot
 
 
 
@@ -55,15 +57,15 @@ class LLsystem(Subsystem):
 
 
     def periodic(self):
-       # Run vision at 20 Hz
-        if self.visionTimer.advanceIfElapsed(0.05):
+       # Run vision at 50 Hz
+        if self.visionTimer.advanceIfElapsed(0.02):
             self.currentPose = self.driveTrain.pose
-#           rot =  self.currentPose.rotation().degrees()+self.headingController.rotation_offset*math.pi/180.
             rot =  self.currentPose.rotation().degrees()
             for i in range(self.numCams):    
                 LimelightHelpers.set_robot_orientation(
                    self.constants.CAM_NAME[i],rot, 0, 0, 0, 0, 0)
             self.print_counter = self.print_counter+1
+            
             self.update()
 
 
@@ -74,6 +76,7 @@ class LLsystem(Subsystem):
         
         closestTagDist = [self.max_value]*4
         closestTagID = [0]*4
+        closestAmb = [0]*4
         acceptEstimate = [False]*4
         stdXY = [self.max_value]*4
         stdRot = [self.max_value]*4
@@ -95,7 +98,7 @@ class LLsystem(Subsystem):
                 self.previous_estimate[i])    
             if self.current_estimate[i] is not None and self.current_estimate[i].tag_count>0:
                 numTags = self.current_estimate[i].tag_count
-                closestTagID[i],closestTagDist[i] = (
+                closestTagID[i],closestAmb[i],closestTagDist[i] = (
                     self.minDist(self.current_estimate[i].raw_fiducials))
                 if numTags == 1:
                     t1 = self.currentPose.translation()
@@ -130,6 +133,11 @@ class LLsystem(Subsystem):
 
 
                     if SmartDashboard.getBoolean("Vision Active",True):
+                     if closestAmb[i]<0.5:
+                        x = self.current_estimate[i].pose.X() + SmartDashboard.getNumber("CAM0 xoff",0)
+                        y = self.current_estimate[i].pose.Y()+ SmartDashboard.getNumber("CAM0 yoff",0)
+                        r = self.current_estimate[i].pose.rotation().radians()
+
                         self.driveTrain.add_vision_measurement(
                             self.current_estimate[i].pose,
 # Use for PV !          utils.fpga_to_current_time(self.estimate.timestamp_seconds),
@@ -148,7 +156,7 @@ class LLsystem(Subsystem):
                     SmartDashboard.putNumber(label+"pose Rot",round(self.current_estimate[i].pose.rotation().degrees(),3) )                               
                     SmartDashboard.putNumber(label+"pose X(in)",round(self.current_estimate[i].pose.translation().X()*39.37,3))
                     SmartDashboard.putNumber(label+"pose Y(in)",round(self.current_estimate[i].pose.translation().Y()*39.37,3))
-
+                    SmartDashboard.putNumber(label+"Amb",round(closestAmb[i],3))
                     SmartDashboard.putNumber(label+"Dist avg",round(self.current_estimate[i].avg_tag_dist,3))                
 #                   SmartDashboard.putNumber(label+"Area avg",round(current_estimate[i].avg_tag_area,3))    
 #                   SmartDashboard.putNumber(label+"Pitch_ty",LimelightHelpers.get_ty(self.constants.CAM_NAME[i]))                                 
@@ -167,13 +175,14 @@ class LLsystem(Subsystem):
         minID=0
         iMax=len(rf)
         i=0
+        amb=999
 
         while i<iMax:
             if rf[i].dist_to_camera<minD:
                 minID=i
                 minD=rf[i].dist_to_camera         
             i=i+1
-        return rf[minID].id,minD
+        return rf[minID].id, rf[minID].ambiguity, minD,
 
 
 
@@ -262,7 +271,7 @@ class LLsystem(Subsystem):
         closest_tag_id = 0
         closest_tag_distance = 0.0
         if estimate.raw_fiducials is not None and len(estimate.raw_fiducials) > 0:
-            closest_tag_id, closest_tag_distance = self.minDist(estimate.raw_fiducials)
+            closest_tag_id, closest_amb,closest_tag_distance = self.minDist(estimate.raw_fiducials)
 
         pose_x = estimate.pose.translation().X()*39.37  
         pose_y = estimate.pose.translation().Y()*39.37
