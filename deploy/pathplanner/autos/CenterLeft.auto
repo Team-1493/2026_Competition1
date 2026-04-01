@@ -11,21 +11,15 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
           "type": "wait",
           "data": {
             "waitTime": 3.5
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "CenterLeft_2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "SetHeadingToCurrent"
           }
         }
       ]

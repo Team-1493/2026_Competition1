@@ -18,6 +18,7 @@ from subsystems.Vision.limelight_system import LLsystem
 #from subsystems.laser_can import LaserCAN
 from subsystems.intake import IntakeSystem
 from subsystems.shooter import ShooterSystem
+from Commands.agitate_intake import AgitateIntake
 from Commands.drive_teleop_command import DriveTeleopCommand
 from Commands.auto_pilot_command import AutoPilotCommand
 from Commands.find_wheel_base import FindWheelBase
@@ -109,12 +110,12 @@ class RobotContainer:
         self._joystick.button(6).onFalse(self.slow_mode_off)
 
 
-        self._joystick.button(8).whileTrue(self.arcdrive.
-            andThen(self.shoot_command1)    
+        self._joystick.button(8).whileTrue(self.arcdrive    
             .finallyDo(self.headingController.setTargetRotationInt) ) 
 
         self._joystick_op.button(5).whileTrue(self.intake_command)
-        self._joystick_op.button(6).whileTrue(self.shoot_command2)        
+        self._joystick_op.button(6).whileTrue(self.shoot_command2)
+        self._joystick_op.button(7).whileTrue(AgitateIntake())                
         
         self._joystick.button(9).onTrue(
               InstantCommand(lambda:self.update_constants()))
@@ -127,9 +128,9 @@ class RobotContainer:
 
 
                 
-        self._joystick.button(10).whileTrue(
-            commands2.DeferredCommand(lambda:self.drivetrain.reset_pose(Pose2d(Translation2d(0.419,0.66),Rotation2d(0)))).finallyDo
-           (self.headingController.setTargetRotationInt))        
+#        self._joystick.button(10).whileTrue(
+#            commands2.DeferredCommand(lambda:self.drivetrain.reset_pose(Pose2d(Translation2d(0.419,0.66),Rotation2d(0)))).finallyDo
+#           (self.headingController.setTargetRotationInt))        
 
 
 
@@ -160,10 +161,10 @@ class RobotContainer:
 #            commands2.DeferredCommand(lambda:self.drive_path.drive_path_to_tag(23,-.75,0)).finallyDo
 #           (self.headingController.setTargetRotationInt))
 
-        self._joystick.button(7).whileTrue(
-            AutoPilotCommand(Pose2d(Translation2d(7.5,6.5),Rotation2d(-3.14/4)),-.2,1 ).
-            andThen (AutoPilotCommand(Pose2d(Translation2d(7.5,4.5),Rotation2d(-3.14/2)),-3.14/2,0 ))
-            .finallyDo((self.headingController.setTargetRotationInt)))
+#        self._joystick.button(7).whileTrue(
+#            AutoPilotCommand(Pose2d(Translation2d(7.5,6.5),Rotation2d(-3.14/4)),-.2,1 ).
+#            andThen (AutoPilotCommand(Pose2d(Translation2d(7.5,4.5),Rotation2d(-3.14/2)),-3.14/2,0 ))
+#            .finallyDo((self.headingController.setTargetRotationInt)))
  
 
     def getAutonomousCommand(self):
@@ -174,9 +175,9 @@ class RobotContainer:
         self.headingController.setTargetRotationInt(True)  
     
     def write_to_dashboard(self):
-        self.drivetrain.write_to_dashboard()
-        self.intake.write_to_dashboard()
-        self.shooter.write_to_dashboard()
+#       self.drivetrain.write_to_dashboard()
+#        self.intake.write_to_dashboard()
+#        self.shooter.write_to_dashboard()
         pass
        
     def apply_teleop_gains(self):

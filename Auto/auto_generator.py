@@ -8,11 +8,14 @@ from pathplannerlib.config import RobotConfig, PIDConstants
 from wpilib import DriverStation
 
 
+
 from Constants1 import ConstantValues
 from subsystems.Drive.drivetrain_generator import DrivetrainGenerator
 from Commands.stop_drive import StopDrive
 from Commands.goal_cam_command import GoalCamCommand
 from subsystems.intake import IntakeSystem
+from Commands.shoot_command import ShootCommand
+from Commands.arc_drive import arcDrive
 
 class AutoGenerator():
     
@@ -23,13 +26,14 @@ class AutoGenerator():
         self.intake = IntakeSystem.getInstance()
         self.driveRC=  swerve.requests.ApplyRobotSpeeds().with_drive_request_type(
             swerve.SwerveModule.DriveRequestType.VELOCITY)
+        self.arcdrive = arcDrive(self.driveTrain)
+        self.shoot_command1 = ShootCommand()
         self.configAutoBuilder()
         self.create_named_commands()
 
 
 
     def create_named_commands(self):
-        NamedCommands.registerCommand('DriveToGoalCam', GoalCamCommand(-1,0))
 
         NamedCommands.registerCommand('StopDrive', StopDrive())   
 
@@ -44,6 +48,10 @@ class AutoGenerator():
 
         NamedCommands.registerCommand('ArmDown', 
                         self.intake.runOnce(lambda:self.intake.arm_down()))
+        
+        NamedCommands.registerCommand('Shoot', self.shoot_command1)
+
+        NamedCommands.registerCommand('ArcDrive', self.arcdrive)
 
     
     def configAutoBuilder(self):
