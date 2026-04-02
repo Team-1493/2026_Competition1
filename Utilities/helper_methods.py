@@ -55,6 +55,7 @@ class HelperMethods():
 
     def calculate_shoot_speed():
         angle,dist = HelperMethods.dist_to_hub()
+        SmartDashboard.putNumber("Shooter hub dist",dist)
         return (dist*39.37)*.0337+4.65
 
     def dist_to_hub():

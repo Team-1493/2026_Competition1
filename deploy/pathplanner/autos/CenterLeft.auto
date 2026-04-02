@@ -21,6 +21,12 @@
           "data": {
             "waitTime": 3.5
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterLeft_2"
+          }
         }
       ]
     }

@@ -17,9 +17,15 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
           "type": "wait",
           "data": {
-            "waitTime": 2.5
+            "waitTime": 3.5
           }
         },
         {
@@ -32,6 +38,30 @@
           "type": "path",
           "data": {
             "pathName": "CenterLeft3_4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterLeft5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 4.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "SetHeadingToCurrent"
           }
         }
       ]

@@ -99,11 +99,11 @@ class RobotContainer:
 
         self._joystick.button(2).onTrue(self.rotateTo270)
 
-        self._joystick.button(5).onTrue(self.headingController.runOnce(
-            lambda:self.headingController.set_forward_direction()))
+#        self._joystick.button(5).onTrue(self.headingController.runOnce(
+#            lambda:self.headingController.set_forward_direction()))
 
-        self._joystick.button(6).onTrue(self.drivetrain.runOnce(
-            lambda:self.drivetrain.reset_pose(Pose2d())))
+#        self._joystick.button(6).onTrue(self.drivetrain.runOnce(
+#            lambda:self.drivetrain.reset_pose(Pose2d())))
 
         self._joystick.button(6).onTrue(self.slow_mode_on)
         
@@ -175,10 +175,10 @@ class RobotContainer:
         self.headingController.setTargetRotationInt(True)  
     
     def write_to_dashboard(self):
-#       self.drivetrain.write_to_dashboard()
-#        self.intake.write_to_dashboard()
+        self.drivetrain.write_to_dashboard()
+        self.intake.write_to_dashboard()
 #        self.shooter.write_to_dashboard()
-        pass
+#        pass
        
     def apply_teleop_gains(self):
         self.drivetrain.apply_teleop_gains()

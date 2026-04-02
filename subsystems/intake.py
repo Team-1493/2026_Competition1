@@ -46,16 +46,17 @@ class IntakeSystem(Subsystem):
         cfgIntake = configs.TalonFXConfiguration()
 
         cfgIntake.motor_output.neutral_mode=NeutralModeValue.COAST
-        """"
+        
         cfgIntake = configs.TalonFXConfiguration()
-        cfgIntake.current_limits.stator_current_limit=50
+        cfgIntake.current_limits.stator_current_limit=60
         cfgIntake.current_limits.with_stator_current_limit_enable(True)
-        cfgIntake.current_limits.supply_current_limit=70
+        cfgIntake.current_limits.supply_current_limit=60
         cfgIntake.current_limits.with_supply_current_limit_enable(True)
-        cfgIntake.current_limits.supply_current_lower_limit(50)
-        cfgIntake.current_limits.supply_current_lower_time(1.5)        
-        """
+        cfgIntake.current_limits.supply_current_lower_limit=50
+        cfgIntake.current_limits.supply_current_lower_time=1       
+        
         self.intake_motor.configurator.apply(cfgIntake)
+        self.intake_follower_motor.configurator.apply(cfgIntake)        
 
 
     def __init__(self, intakeMotorID, intakeFollowerMotorID,armMotorID, conveyorMotorID, dioPortUp, dioPortDown):
