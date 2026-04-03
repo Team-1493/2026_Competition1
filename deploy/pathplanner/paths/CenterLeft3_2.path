@@ -52,12 +52,6 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "IntakeStop",
-      "waypointRelativePos": 0.05941931127616482,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
       "name": "ArmUp",
       "waypointRelativePos": 0.09993247805536695,
       "endWaypointRelativePos": null,
