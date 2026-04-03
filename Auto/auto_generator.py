@@ -16,7 +16,7 @@ from Commands.goal_cam_command import GoalCamCommand
 from subsystems.intake import IntakeSystem
 from Commands.shoot_command import ShootCommand
 from Commands.arc_drive import arcDrive
-
+from commands2 import InstantCommand
 class AutoGenerator():
     
 
@@ -28,6 +28,8 @@ class AutoGenerator():
             swerve.SwerveModule.DriveRequestType.VELOCITY)
         self.arcdrive = arcDrive(self.driveTrain)
         self.shoot_command1 = ShootCommand()
+        self.intake_start_command = InstantCommand(lambda:self.intake.intake())
+        self.intake_stop_command = InstantCommand(lambda:self.intake.stop_intake())        
         self.configAutoBuilder()
         self.create_named_commands()
 
@@ -37,11 +39,9 @@ class AutoGenerator():
 
         NamedCommands.registerCommand('StopDrive', StopDrive())   
 
-        NamedCommands.registerCommand('IntakeStart', 
-                        self.intake.runOnce(lambda:self.intake.intake()))
+        NamedCommands.registerCommand('IntakeStart',self.intake_start_command)
 
-        NamedCommands.registerCommand('IntakeStop', 
-                        self.intake.runOnce(lambda:self.intake.stop_intake()))
+        NamedCommands.registerCommand('IntakeStop',self.intake_stop_command)
 
         NamedCommands.registerCommand('ArmUp', 
                         self.intake.runOnce(lambda:self.intake.arm_up()))

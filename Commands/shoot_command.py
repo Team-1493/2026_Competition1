@@ -14,7 +14,7 @@ class ShootCommand(commands2.Command):
         self.shooter = ShooterSystem.getInstance()
         self.intake = IntakeSystem.getInstance()
         self.timer = Timer()
-        self.addRequirements(self.shooter,self.intake)
+        self.addRequirements(self.shooter)#,self.intake)
 
     @override
     def initialize(self):
