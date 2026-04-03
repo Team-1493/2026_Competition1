@@ -109,8 +109,8 @@ class IntakeSystem(Subsystem):
 #        self.intake_motor.get_motor_voltage().set_update_frequency(200)
 #        self.intake_motor.optimize_bus_utilization()
 
-        
-        
+        SmartDashboard.putString("Intake State", "XXX")
+        SmartDashboard.putString("Arm State", "XXX")        
         
         self.setup()
 
@@ -157,10 +157,12 @@ class IntakeSystem(Subsystem):
 
     
     def intake(self):
+        SmartDashboard.putString("Intake State", "Intaking")
         self.intake_motor.set_control(self.voltage_out.with_output(ConstantValues.IntakeConstants.INTAKE_VOLTAGE))
         self.intake_follower_motor.set_control(self.voltage_out.with_output(-ConstantValues.IntakeConstants.INTAKE_VOLTAGE))
 
     def stop_intake(self):
+        SmartDashboard.putString("Intake State", "NOT")        
         self.intake_motor.set_control(self.brake)
         self.intake_follower_motor.set_control(self.brake)
 
@@ -178,15 +180,16 @@ class IntakeSystem(Subsystem):
         self.conveyor_motor.set_control(self.brake)
 
     def arm_up(self):
+        SmartDashboard.putString("Arm State", "UP")                
         self.current_goal_position = self.goal_up
         self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))
-        # self.stop_intake()
+
 
     def arm_down(self):
+        SmartDashboard.putString("Arm State", "DOWN")                
         self.current_goal_position = self.goal_down
         self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))        
-        # if self.down_limit_switch:
-        #     self.intake()
+
 
     def arm_wag_up(self):
         self.current_goal_position = 0.07 
