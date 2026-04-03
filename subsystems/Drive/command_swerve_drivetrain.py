@@ -222,6 +222,7 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
         self.state = self.get_state()
         self.pose =  self.state.pose
         self.rotation_rad = self.pose.rotation().radians()
+        self.rotation_deg = self.pose.rotation().degrees()        
         self.speeds = self.state.speeds
 
 

@@ -127,28 +127,6 @@ class RobotContainer:
 #            InstantCommand(lambda: self.limelightSytem.write_camera0_pose_to_file()))
 
 
-                
-#        self._joystick.button(10).whileTrue(
-#            commands2.DeferredCommand(lambda:self.drivetrain.reset_pose(Pose2d(Translation2d(0.419,0.66),Rotation2d(0)))).finallyDo
-#           (self.headingController.setTargetRotationInt))        
-
-
-
-        """    
-        self._joystick.button(5).onTrue(
-            self.intake.runOnce(lambda:self.intake.arm_up()))
- 
-        self._joystick.button(6).onTrue(
-            self.intake.runOnce(lambda:self.intake.arm_down()))
-
-        self._joystick.button(7).onTrue(
-            self.intake.runOnce(lambda:self.intake.intake()))
-        
-        self._joystick.button(8).onTrue(
-            self.intake.runOnce(lambda:self.intake.stop_intake()))
-            
-        """
-
 #        self._joystick.button(10).onTrue(
 #            self.intake.runOnce(lambda:self.intake.zero_position()))
 

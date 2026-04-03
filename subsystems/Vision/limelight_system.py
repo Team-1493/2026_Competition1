@@ -40,7 +40,7 @@ class LLsystem(Subsystem):
 
         self.max_value = 9999
         self.configfureLimelights()
-        self.zeroAndseedIMU(0)
+        self.zeroAndseedIMU()
         self.cam_label = [" "]*self.numCams
         self.previous_estimate = [None]*self.numCams
         self.current_estimate = [PoseEstimate()]*self.numCams                
@@ -224,7 +224,7 @@ class LLsystem(Subsystem):
     
     def zeroAndseedIMU(self,rot=None):
         if rot is None:
-            rot=self.driveTrain.rotation_deg  # LLH set_robot_orientation uses degrees
+            rot = self.driveTrain.pose.rotation().degrees()  # LLH set_robot_orientation uses degrees
 
         for i in range(self.numCams):
             # send the current robot pose to the limelight

@@ -69,6 +69,9 @@ class MyRobot(commands2.TimedCommandRobot):
             self.autonomousCommand.cancel()
         self.container.setHeadingControlToCurrentrHeading()
         self.container.apply_teleop_gains()
+        # Reseed Limelight IMU from the latest drivetrain heading at the
+        # autonomous -> teleop transition.
+        self.container.limelightSytem.zeroAndseedIMU()        
         
         #  0 for external IMU,  2 for internal IMU, 4 for internal + externa assist         
         self.container.limelightSytem.set_IMU_Mode(self.IMU_mode)   
@@ -85,8 +88,8 @@ class MyRobot(commands2.TimedCommandRobot):
     
 
 
-#    @typing.override
-#    def _simulationInit(self):
-#        from subsystems.Vision.photon_vision_sim import PVisionSim
-#        vsim = PVisionSim()
+    @typing.override
+    def _simulationInit(self):
+        from subsystems.Vision.photon_vision_sim import PVisionSim
+        vsim = PVisionSim()
     
