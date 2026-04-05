@@ -5,51 +5,45 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "path",
           "data": {
-            "name": "IntakeStartCommand"
+            "pathName": "CenterLef2_1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "CenterLeft3_1"
+            "pathName": "CenterLeft2_2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "CenterLeft3_2"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.5
+            "pathName": "CenterLeft2_3"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "CenterLeft3_3"
+            "pathName": "CenterLeft2_4"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "CenterLeft3_4"
+            "pathName": "CenterLeft2_5"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "CenterLeft3_5"
+            "pathName": "CenterLeft2_6"
           }
         },
         {
-          "type": "wait",
+          "type": "path",
           "data": {
-            "waitTime": 3.0
+            "pathName": "CenterLeft2_7"
           }
         }
       ]

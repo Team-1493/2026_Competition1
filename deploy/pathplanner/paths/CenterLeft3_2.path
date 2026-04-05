@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 0.6,
-        "y": 5.969329529243937
+        "y": 6.0
       },
       "prevControl": null,
       "nextControl": {
         "x": 2.2067079809121615,
-        "y": 5.969329529243937
+        "y": 6.0
       },
       "isLocked": false,
       "linkedName": "CornerLeft3_1_end"
@@ -20,8 +20,8 @@
         "y": 5.684679029963195
       },
       "prevControl": {
-        "x": 2.549158345223495,
-        "y": 5.920396456015478
+        "x": 2.5491602339181694,
+        "y": 5.9204010331682815
       },
       "nextControl": null,
       "isLocked": false,
@@ -50,7 +50,30 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "IntakeStartCommand",
+      "waypointRelativePos": 0.1431465226198475,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeStopCommand"
+        }
+      }
+    },
+    {
+      "name": "Shoot",
+      "waypointRelativePos": 0.9128966914247156,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Shoot"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 2.25,
     "maxAcceleration": 2.5,
@@ -61,7 +84,7 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": -45.0
+    "rotation": -50.0
   },
   "reversed": false,
   "folder": "DepotCenterLeft",

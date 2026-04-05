@@ -3,47 +3,35 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.120413694724209,
-        "y": 5.684679029963195
+        "x": 7.5,
+        "y": 6.6
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.057489300998572,
-        "y": 5.425905848787448
+        "x": 6.45858773180361,
+        "y": 6.015164051355148
       },
       "isLocked": false,
-      "linkedName": "CenterLeft3_2_end"
+      "linkedName": "CenterLeft2_3_end"
     },
     {
       "anchor": {
-        "x": 7.3,
-        "y": 6.5
+        "x": 3.159229671889203,
+        "y": 5.322396576319485
       },
       "prevControl": {
-        "x": 6.0708265734779605,
-        "y": 6.163597845906621
+        "x": 5.941041369464095,
+        "y": 5.969329529243878
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "CenterLeft3_3_end"
+      "linkedName": "CenterLeft2_4_end"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "IntakeStartCommand",
-      "waypointRelativePos": 0.5104659014179554,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "IntakeStartCommand"
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 2.25,
     "maxAcceleration": 2.5,
@@ -57,10 +45,10 @@
     "rotation": -45.0
   },
   "reversed": false,
-  "folder": "DepotCenterLeft",
+  "folder": "CenterLeft2",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -50.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

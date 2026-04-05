@@ -6,8 +6,9 @@ from subsystems.intake import IntakeSystem
 
 class IntakeStart(commands2.Command):
     def __init__(self):
-        SmartDashboard.putString("Intake State", "XXX")                            
         self.intake = IntakeSystem.getInstance()
+        self.addRequirements(self.intake)
+        SmartDashboard.putString("Intake State", "XXX")
 
     @override
     def initialize(self):

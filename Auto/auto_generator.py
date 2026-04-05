@@ -1,26 +1,17 @@
-from commands2 import Command
-import commands2
-from wpimath.geometry import Pose2d, Rotation2d
-from wpimath.kinematics import ChassisSpeeds
 from phoenix6 import swerve
 from pathplannerlib.auto import AutoBuilder,NamedCommands
 from pathplannerlib.controller import PPHolonomicDriveController
 from pathplannerlib.config import RobotConfig, PIDConstants
 from wpilib import DriverStation
-from commands2 import InstantCommand
-
-
 
 from Constants1 import ConstantValues
 from subsystems.Drive.drivetrain_generator import DrivetrainGenerator
 from Commands.stop_drive import StopDrive
-from Commands.goal_cam_command import GoalCamCommand
 from subsystems.intake import IntakeSystem
 from Commands.shoot_command_auto import ShootCommandAuto
 from Commands.arc_drive import arcDrive
-from Commands.intake_start_command import IntakeStart
+#from Commands.intake_start_command import IntakeStart
 from Commands.intake_stop_command import IntakeStop
-from commands2 import DeferredCommand
 class AutoGenerator():
     
 
@@ -31,9 +22,6 @@ class AutoGenerator():
         self.driveRC=  swerve.requests.ApplyRobotSpeeds().with_drive_request_type(
             swerve.SwerveModule.DriveRequestType.VELOCITY)
         self.arcdrive = arcDrive(self.driveTrain)
-#        self.shoot_command1 = ShootCommand()
-        self.intake_start_command2 = IntakeStart()
-#        self.intake_stop_command2 = IntakeStop()        
         self.create_named_commands()
         self.configAutoBuilder()
 
@@ -43,9 +31,15 @@ class AutoGenerator():
 
         NamedCommands.registerCommand('StopDrive', StopDrive())   
 
-        NamedCommands.registerCommand('IntakeStartCommand',IntakeStart()) 
-
-        NamedCommands.registerCommand('IntakeStopCommand',IntakeStop())
+ #       NamedCommands.registerCommand('IntakeStartCommand',IntakeStart()) 
+        
+        NamedCommands.registerCommand(
+            'IntakeStartCommand',
+            self.intake.runOnce(lambda: self.intake.intake()))
+        
+        NamedCommands.registerCommand(
+            'IntakeStopCommand',
+            self.intake.runOnce(lambda: self.intake.stop_intake()))
 
         NamedCommands.registerCommand('ArmUp', 
                         self.intake.runOnce(lambda:self.intake.arm_up()))
@@ -90,8 +84,6 @@ class AutoGenerator():
         # THE ORIGIN WILL REMAIN ON THE BLUE SIDE
         return DriverStation.getAlliance() == DriverStation.Alliance.kRed
     
-    def get_intake_command(self):
-        return IntakeStart()
     
 
 
