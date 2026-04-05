@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "IntakeStartCommand"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "CenterLeft3_1"
@@ -19,13 +25,25 @@
         {
           "type": "named",
           "data": {
+            "name": "IntakeStopCommand"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "Shoot"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 3.5
+            "waitTime": 2.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "IntakeStartCommand"
           }
         },
         {
@@ -47,15 +65,15 @@
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 4.0
+            "name": "IntakeStopCommand"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "SetHeadingToCurrent"
+            "name": "Shoot"
           }
         }
       ]

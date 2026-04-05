@@ -1,15 +1,12 @@
 import math
 from typing import override
 import commands2
-from wpilib import SmartDashboard, Timer
-from subsystems.shooter import ShooterSystem
+from wpilib import SmartDashboard
 from subsystems.intake import IntakeSystem
-from Utilities.helper_methods import HelperMethods
 
 class IntakeStop(commands2.Command):
     def __init__(self):
         self.intake = IntakeSystem.getInstance()
-        self.addRequirements(self.intake)
 
     @override
     def initialize(self):

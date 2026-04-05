@@ -15,7 +15,7 @@ class IntakeCommand(commands2.Command):
 #        self.intake.start_conveyor()
     @override
     def end(self,interrupted:bool):
-        self.intake.arm_up()
+#        self.intake.arm_up()
         self.intake.stop_arm()
         self.intake.stop_intake()
         self.intake.stop_conveyor()

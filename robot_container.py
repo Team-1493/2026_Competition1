@@ -127,13 +127,6 @@ class RobotContainer:
 #            InstantCommand(lambda: self.limelightSytem.write_camera0_pose_to_file()))
 
 
-#        self._joystick.button(10).onTrue(
-#            self.intake.runOnce(lambda:self.intake.zero_position()))
-
-#        self._joystick.button(7).whileTrue(FindkS())
-#        self._joystick.button(7).whileTrue(FindSlipCurrent())
-#        self._joystick.button(7).whileTrue(FindWheelBase())        
-#        self._joystick.button(8).whileTrue(FindKP_MaxA())        
 
 #        self._joystick.button(7).whileTrue(
 #            commands2.DeferredCommand(lambda:self.drive_path.drive_path_to_tag(23,-.75,0)).finallyDo

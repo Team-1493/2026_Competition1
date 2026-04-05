@@ -6,13 +6,15 @@ from subsystems.shooter import ShooterSystem
 from subsystems.intake import IntakeSystem
 from Utilities.helper_methods import HelperMethods
 
-class ShootCommand(commands2.Command):
+class ShootCommandAuto(commands2.Command):
     def __init__(self):
         SmartDashboard.putNumber("Shooter Speed Calculated",0)   
+        SmartDashboard.putNumber("Shooter Speed SF",1)            
+        SmartDashboard.putString("Shoot State", "XXX")                            
         self.shooter = ShooterSystem.getInstance()
         self.intake = IntakeSystem.getInstance()
         self.timer = Timer()
-        self.addRequirements(self.shooter,self.intake)
+        self.addRequirements(self.shooter)#,self.intake)
 
     @override
     def initialize(self):
@@ -23,7 +25,6 @@ class ShootCommand(commands2.Command):
         self.intake.start_conveyor_reverse()
         self.timer.reset()
         self.timer.start()
-        SmartDashboard.putString("Shoot State", "SHOOTING")                                   
 
     def execute(self):
         curretTime = self.timer.get()
@@ -39,14 +40,13 @@ class ShootCommand(commands2.Command):
 
     @override
     def end(self,interrupted:bool):
-        SmartDashboard.putString("Shoot State", "NOT")                                   
         self.intake.stop_arm()
         self.intake.stop_conveyor()
         self.shooter.stop_conveyor()
         self.shooter.stop_shooter()
     @override
     def isFinished(self):
-        return False
+        return self.timer.get()>4
     
     def get_shooter_speed(self):
         shooter_speed= SmartDashboard.getNumber('Shooting Velocity', 0)

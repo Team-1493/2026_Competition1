@@ -49,6 +49,7 @@ class LLsystem(Subsystem):
                 self.cam_label[i]="LL Cam "+str(i)+" "
 
         self.visionTimer = wpilib.Timer()
+        self.set_id_filter_override(0,[2,3,4,5,8,9,10,11,18,19,20,21,24,25,26,27])
         self.visionTimer.start()
 
 

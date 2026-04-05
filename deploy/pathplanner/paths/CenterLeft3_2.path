@@ -50,14 +50,7 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "ArmUp",
-      "waypointRelativePos": 0.09993247805536695,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 2.25,
     "maxAcceleration": 2.5,

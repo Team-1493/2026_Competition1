@@ -23,7 +23,7 @@ class ConstantValues():
         TELEOP_kA = 0 # TunerConstants._drive_gains.k_a
         TELEOP_DEADBAND = 0.0025
         TELEOP_MAX_ANGULAR_RATE = 1
-        TELEOP_SCALE_FACTOR_XY = 0.6
+        TELEOP_SCALE_FACTOR_XY = 0.8
         TELEOP_SCALE_FACTOR_ROT = 0.8
         SPEED_AT_12_VOLTS = 3.3#TunerConstants.speed_at_12_volts 
 
@@ -114,7 +114,7 @@ class ConstantValues():
 
 
     class IntakeConstants():
-        INTAKE_VOLTAGE = -7.5
+        INTAKE_VOLTAGE = -6
         CONVEYOR_VOLTAGE = -10
         MAX_UP_ROTATION = .26
         MAX_DOWN_ROTATION = 0.00

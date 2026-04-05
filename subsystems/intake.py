@@ -110,7 +110,6 @@ class IntakeSystem(Subsystem):
 #        self.intake_motor.optimize_bus_utilization()
 
         SmartDashboard.putString("Intake State", "XXX")
-        SmartDashboard.putString("Arm State", "XXX")        
         
         self.setup()
 
@@ -180,13 +179,11 @@ class IntakeSystem(Subsystem):
         self.conveyor_motor.set_control(self.brake)
 
     def arm_up(self):
-        SmartDashboard.putString("Arm State", "UP")                
         self.current_goal_position = self.goal_up
         self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))
 
 
     def arm_down(self):
-        SmartDashboard.putString("Arm State", "DOWN")                
         self.current_goal_position = self.goal_down
         self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))        
 
