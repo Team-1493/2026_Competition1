@@ -22,7 +22,7 @@ class MyRobot(commands2.TimedCommandRobot):
         self.container = RobotContainer()  
         self.IMU_mode = 0
         self.print_counter=0
-        """"          
+
         commands2.CommandScheduler.getInstance().onCommandInterrupt(
             lambda cmd, cause: print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAA   INTERRUPTED:", cmd.getName())
         )
@@ -30,7 +30,7 @@ class MyRobot(commands2.TimedCommandRobot):
         commands2.CommandScheduler.getInstance().onCommandInitialize(
             lambda cmd: print("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB   INIT:", cmd.getName())
         )
-        """     
+     
 
     def robotPeriodic(self) -> None:
         """This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
