@@ -98,8 +98,8 @@ class MyRobot(commands2.TimedCommandRobot):
     
 
 
-    @typing.override
-    def _simulationInit(self):
-        from subsystems.Vision.photon_vision_sim import PVisionSim
-        vsim = PVisionSim()
+#    @typing.override
+#    def _simulationInit(self):
+#        from subsystems.Vision.photon_vision_sim import PVisionSim
+#        vsim = PVisionSim()
     

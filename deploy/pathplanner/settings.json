@@ -1,14 +1,15 @@
 {
-  "robotWidth": 0.9,
-  "robotLength": 0.9,
+  "robotWidth": 1.1,
+  "robotLength": 1.3,
   "holonomicMode": true,
   "pathFolders": [
     "Auto1",
     "CenterLeft",
+    "CenterLeft2",
     "DepotCenterLeft",
     "Get_Shoot",
     "Left_Depot_Out",
-    "CenterLeft2",
+    "CenterLeftRight",
     "OutBack",
     "Squaers"
   ],

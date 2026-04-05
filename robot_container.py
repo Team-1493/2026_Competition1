@@ -49,9 +49,9 @@ class RobotContainer:
         self.headingController = HeadingController.getInstance()        
         self.intake = IntakeSystem.getInstance()
         self.shooter = ShooterSystem.getInstance()       
-        self.shoot_command1 = ShootCommand()
-        self.shoot_command2 = ShootCommand()        
-        self.intake_command = IntakeCommand()            
+        self.shoot_command = ShootCommand()
+        self.intake_command = IntakeCommand()  
+        self.agitate_command = AgitateIntake()          
 #        LaserCAN.getInstance()
 
         self.limelightSytem = LLsystem.getInstance()
@@ -109,13 +109,14 @@ class RobotContainer:
         
         self._joystick.button(6).onFalse(self.slow_mode_off)
 
-
+        self._joystick.button(7).whileTrue(DeferredCommand(lambda:self.drive_path.drive_trench()))
+                                           
         self._joystick.button(8).whileTrue(self.arcdrive    
             .finallyDo(self.headingController.setTargetRotationInt) ) 
 
         self._joystick_op.button(5).whileTrue(self.intake_command)
-        self._joystick_op.button(6).whileTrue(self.shoot_command2)
-        self._joystick_op.button(7).whileTrue(AgitateIntake())                
+        self._joystick_op.button(6).whileTrue(self.shoot_command)
+        self._joystick_op.button(7).whileTrue(self.agitate_command)                
         
         self._joystick.button(9).onTrue(
               InstantCommand(lambda:self.update_constants()))

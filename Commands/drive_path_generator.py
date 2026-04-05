@@ -22,11 +22,17 @@ class DrivePathGenerator():
                 _robot: typing.Callable[[], Pose2d],
                  ) -> None:
         super().__init__()
+        trenchx = 3.1
+        trenchxoffset = 2.9
+        self.trench_right_b_pose = Pose2d(Translation2d(trenchx,2.5),Rotation2d(pi/4))
+        self.trench_right_f_pose = Pose2d(Translation2d(trenchx + trenchxoffset,2.5),Rotation2d(0))        
+        self.trench_left_b_pose = Pose2d(Translation2d(trenchx,5.5),Rotation2d(-pi/4))
+        self.trench_left_f_pose = Pose2d(Translation2d(trenchx+trenchxoffset,5.5),Rotation2d(0))        
 
-        self.trench_right_pose = Pose2d(Translation2d(3.6+2,2.554),Rotation2d(0))
-        self.trench_right_pose2 = Pose2d(Translation2d(3.6,2.554),Rotation2d(0))        
-        self.trench_left_pose = Pose2d(Translation2d(3.6+2,8.069-2.554),Rotation2d(0))
-        self.trench_left_pose2 = Pose2d(Translation2d(3.6,8.069-2.554),Rotation2d(0))        
+        self.trench_right_b_poseRed = Pose2d(Translation2d(16.51 - trenchx,8.069 - 2.5),Rotation2d(5*pi/4))
+        self.trench_right_f_poseRed = Pose2d(Translation2d(16.51 - trenchx-trenchxoffset,8.069 - 2.5),Rotation2d(pi))        
+        self.trench_left_b_poseRed = Pose2d(Translation2d(16.51 - trenchx,8.069 - 5.5),Rotation2d(-5*pi/4))
+        self.trench_left_f_poseRed = Pose2d(Translation2d(16.51 - trenchx-trenchxoffset,8.069 - 5.5),Rotation2d(pi))        
 
         self.driveTrain = DrivetrainGenerator.getInstance()
         self.robot = _robot
@@ -153,38 +159,40 @@ class DrivePathGenerator():
 
     def drive_trench(self):
         #need to add a check if the robot is in a corner and can't get to the trench position 
-        targetpose=Pose2d()
         targetpose2=Pose2d()
 #  NOT SYMETRIC!!!  If y<1/2 field width and blue, go to right trench, but if red go to left trench
 #  This is because origin is always on blue side regardless of alliance color    
+        y=self.driveTrain.get_state().pose.translation().Y()
+        x=self.driveTrain.get_state().pose.translation().X()
+        targetpose=Pose2d()
         if DriverStation.getAlliance() == DriverStation.Alliance.kBlue:
-            if self.driveTrain.get_Y()>8.069/2:
-                targetpose = self.trench_left_pose
-                targetpose2 = self.trench_left_pose2
+            if y>=8.069/2: 
+                if x<=4.5:
+                    targetpose = self.trench_left_f_pose
+                else:  
+                    targetpose = self.trench_left_b_pose
             else:
-                targetpose = self.trench_right_pose
-                targetpose2 = self.trench_right_pose2
+                if x<4.4:
+                    targetpose = self.trench_right_f_pose                
+                else:
+                    targetpose = self.trench_right_b_pose                            
+
         else:
-            if self.driveTrain.get_Y()>8.069/2:
-                targetpose = self.trench_right_pose
-                targetpose2 = self.trench_right_pose2                
+            if y<=8.069/2: 
+                if x>=16.51-4.5:
+                    targetpose = self.trench_left_f_poseRed
+                else:  
+                    targetpose = self.trench_left_b_poseRed
             else:
-                targetpose = self.trench_left_pose
-                targetpose2 = self.trench_left_pose2                            
+                if x>16.51 - 4.4:
+                    targetpose = self.trench_right_f_poseRed                
+                else:
+                    targetpose = self.trench_right_b_poseRed                            
 
-        pose = HelperMethods.flip_pose_if_red(targetpose)
-        pose2 = HelperMethods.flip_pose_if_red(targetpose2)
-        
-        
-        
+
+#        targetpose = HelperMethods.flip_pose_if_red(targetpose)
+        print("BBBBBBBBBBBBBBBBBBBBBBB   ",x,"   ",y)
+        print("AAAAAAAAAAAAAAAAAAAAAAA   ",targetpose.x,"   ",targetpose.y)
         return (
-            (self.drive_pathfind_to_pose(pose,.75))
-            .andThen(self.drive_path_to_pose(pose,pose2,0.75,0))  
+            (self.drive_pathfind_to_pose(targetpose,0))
             .finallyDo(self.headingController.setTargetRotationInt)) 
-
-        """
-        return (
-            (self.drive_path_to_pose(None,pose,2.5, .75))
-            .andThen(self.drive_path_to_pose(pose,pose2,.75,0))  
-            .finallyDo(self.headingController.setTargetRotationInt))    
-        """
