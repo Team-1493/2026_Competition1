@@ -51,7 +51,7 @@ class ShootCommand(commands2.Command):
     def get_shooter_speed(self):
         shooter_speed= SmartDashboard.getNumber('Shooting Velocity', 0)
         if shooter_speed<0: 
-             shooter_speed = HelperMethods.calculate_shoot_speed()
+             shooter_speed = HelperMethods.calc_shoot_speed()
              shooter_speed=shooter_speed*SmartDashboard.getNumber("Shooter Speed SF",1)
         SmartDashboard.putNumber("Shooter Speed Calculated",shooter_speed)        
 

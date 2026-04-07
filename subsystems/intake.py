@@ -194,7 +194,7 @@ class IntakeSystem(Subsystem):
 
     def arm_to_position(self, position: float):
         self.current_goal_position = position 
-        self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))        
+#        self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))        
 
     def arm_manualUp(self):
         self.arm_motor.set_control(self.arm_manualControl.with_output(.08)) 

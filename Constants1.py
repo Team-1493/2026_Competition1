@@ -114,7 +114,7 @@ class ConstantValues():
 
 
     class IntakeConstants():
-        INTAKE_VOLTAGE = -6
+        INTAKE_VOLTAGE = -8
         CONVEYOR_VOLTAGE = -10
         MAX_UP_ROTATION = .26
         MAX_DOWN_ROTATION = 0.00
@@ -130,9 +130,9 @@ class ConstantValues():
 
 
     class ShooterConstants():
-        LEADER_KP = 0.8
+        LEADER_KP = 1
         LEADER_KS = 0.6 ##Caliberated by Sai & Mohammed
-        LEADER_KV = 0.124 #Caliberated by Sai & Mohammed
+        LEADER_KV = 0.154 #Caliberated by Sai & Mohammed
         FEEDER_KP = 1
         FEEDER_KV = 0.124
         SHOOTING_VELOCITY = -1
