@@ -130,9 +130,9 @@ class ConstantValues():
 
 
     class ShooterConstants():
-        LEADER_KP = 1
+        LEADER_KP = 0.8
         LEADER_KS = 0.6 ##Caliberated by Sai & Mohammed
-        LEADER_KV = 0.15   ##Caliberated by Sai & Mohammed
+        LEADER_KV = 0.124 #Caliberated by Sai & Mohammed
         FEEDER_KP = 1
         FEEDER_KV = 0.124
         SHOOTING_VELOCITY = -1

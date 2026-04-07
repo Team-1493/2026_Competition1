@@ -19,7 +19,31 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "Shoot_Left_2a"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterLeft_3a"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterRight4a"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot_Right_4a"
           }
         },
         {

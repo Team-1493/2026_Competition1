@@ -8,6 +8,7 @@ import commands2
 from commands2.button import CommandXboxController
 from wpimath.geometry import Pose2d,Rotation2d,Translation2d
 from wpilib import DataLogManager, SmartDashboard, Timer
+from pathplannerlib.auto import AutoBuilder 
 
 from Constants1 import ConstantValues
 from generated.tuner_constants import TunerConstants
@@ -167,6 +168,7 @@ class RobotContainer:
         # update limelight, autobuilder, and heading controller constants  
         self.limelightSytem.configfureLimelights()
         self.autoGenerator.configAutoBuilder()
+#        self.autoChooser = AutoBuilder.buildAutoChooser("DoNothing")        
         self.drivetrain.update()
         self.drive_teleop_command.setConstants()
         self.intake.setup()
@@ -176,7 +178,7 @@ class RobotContainer:
      
           
     def createPPStuff(self):
-        from pathplannerlib.auto import AutoBuilder 
+
         from Auto.auto_generator import AutoGenerator 
         from Commands.drive_path_generator import DrivePathGenerator 
         self.autoGenerator = AutoGenerator()

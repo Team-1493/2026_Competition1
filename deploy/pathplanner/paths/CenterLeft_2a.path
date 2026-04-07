@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.2627389443651924,
-        "y": 5.270641940085593
+        "x": 2.7840085592011405,
+        "y": 5.477660485021398
       },
       "prevControl": {
-        "x": 5.617574893009987,
-        "y": 5.82700427960057
+        "x": 5.682268188302424,
+        "y": 5.658801711840229
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,19 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "IntakeStopCommand",
+      "waypointRelativePos": 0.4240378122889863,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeStopCommand"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 2.25,
     "maxAcceleration": 2.5,
@@ -42,7 +54,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -45.0
+    "rotation": -34.50852298766842
   },
   "reversed": false,
   "folder": "CenterLeft",

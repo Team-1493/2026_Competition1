@@ -57,6 +57,40 @@ class HelperMethods():
         angle,dist = HelperMethods.dist_to_hub()
         SmartDashboard.putNumber("Shooter hub dist",dist)
         return (dist*39.37)*.0337+4.65
+    
+    def calc_shoot_speed():
+       
+        angle,dist = HelperMethods.dist_to_hub()
+        SmartDashboard.putNumber("Shooter hub dist",dist)
+        #SmartDashboard.putNumber("m",m)
+        data=[[1,2,3,4,5,6],[3,4,5,6,7,8]]
+        c=dist
+        s,t1=0,0
+        for i in range(len(data[0])):
+            if i ==0:
+                s=data[0][i]-c
+            if data[0][i]-c<=s:
+                s=data[0][i]-c
+                t1=i
+        if s==0:
+            return data[1][t1], m
+        elif s<0:
+            t2=t1-1
+        elif s>0:
+            t2=t1+1
+        m=(data[1][t1]-data[1][t2])/(data[0][t1]-data[0][t2])#slope
+        val = m*(c-data[0][t1])+data[1][t1]
+        return val, m
+
+    def calc_shoot_speed2():
+        _,d=HelperMethods.dis_to_hub()
+        data = [[1,2,3,4,5,6],[3,4,5,6,7,8]]
+        c=1.5#test number
+        closest_two = sorted(data[0], key=lambda x: abs(x-c))[:2]
+
+        
+
+        return 
 
     def dist_to_hub():
         pose = HelperMethods.dt.pose

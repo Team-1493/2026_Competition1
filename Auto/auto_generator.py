@@ -9,6 +9,7 @@ from subsystems.Drive.drivetrain_generator import DrivetrainGenerator
 from Commands.stop_drive import StopDrive
 from subsystems.intake import IntakeSystem
 from Commands.shoot_command_auto import ShootCommandAuto
+from Commands.shoot_command_auto_fixed  import ShootCommandAutoFixed
 from Commands.arc_drive import arcDrive
 #from Commands.intake_start_command import IntakeStart
 from Commands.intake_stop_command import IntakeStop
@@ -48,6 +49,9 @@ class AutoGenerator():
                         self.intake.runOnce(lambda:self.intake.arm_down()))
         
         NamedCommands.registerCommand('Shoot', ShootCommandAuto())
+        NamedCommands.registerCommand('Shoot_Left_2a', ShootCommandAutoFixed(shoot_speed=7.0))
+        NamedCommands.registerCommand('Shoot_Right_2a', ShootCommandAutoFixed(shoot_speed=7.0))
+        NamedCommands.registerCommand('Shoot_Right_4a', ShootCommandAutoFixed(shoot_speed=7.0))
 
         NamedCommands.registerCommand('ArcDrive', self.arcdrive)
 
