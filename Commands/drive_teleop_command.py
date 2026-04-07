@@ -59,6 +59,13 @@ class DriveTeleopCommand(commands2.Command):
                 sde*self._max_speed*self.scale_factorXY,
                 rot*self._max_angular_rate*self.scale_factorRot)
             
+        elif state==3:
+            self.drivetrain.drive_FC(
+                forw*self._max_speed*self.scale_factorXY,
+                sde*self._max_speed*self.scale_factorXY,
+                self.headingController.get_snap_rotation_rate(
+                    self._max_angular_rate*self.scale_factorRot))
+                        
         else:
             self.drivetrain.drive_FC_facing(
                 forw*self._max_speed*self.scale_factorXY,

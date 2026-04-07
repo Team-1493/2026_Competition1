@@ -91,6 +91,11 @@ class ConstantValues():
         HEADINGCONTROLLER_AMAX = 3.0 
         HEADINGCONTROLLER_TOLERANCE = 0.017
         HEADINGCONTROLLER_RATE_TOLERANCE = 0.03                 
+        SNAP_AWAY_FROM_WALL_DISTANCE = .75  # meters from nearest field wall
+        HEADINGCONTROLLER_RATE_TOLERANCE = 0.03
+        SNAP_WALL_SWING_CLEARANCE = 0.7 # meters where front swing toward nearest wall is considered risky
+        SNAP_FORCED_KP = 4  # rad/s commanded per rad of unwrapped heading error in forced-snap mode
+        SNAP_FORCED_MIN_RATE = 0.35  # rad/s minimum command while outside tolerance
     
     class DriveToGoalCameraConstants():
         kLateralTolerance = .5
