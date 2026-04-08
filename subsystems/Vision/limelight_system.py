@@ -30,7 +30,7 @@ class LLsystem(Subsystem):
         SmartDashboard.putNumber("CAM0 yoff",0)        
         self.print_counter = 0
         self.print_interval = 10
-        self.numCams = 1   # number of cameras on robot
+        self.numCams = 2   # number of cameras on robot
 
 
 

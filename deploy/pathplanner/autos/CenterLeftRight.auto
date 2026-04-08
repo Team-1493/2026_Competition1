@@ -15,18 +15,6 @@
           "data": {
             "waitTime": 3.5
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "CenterLeftRight_2"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.0
-          }
         }
       ]
     }

@@ -61,13 +61,6 @@ class ConstantValues():
         CAM_THETA_Y_OFFSET[1] = 0 # pitch
         CAM_THETA_Z_OFFSET[1] = 180 # yaw
 
-        CAM_NAME[2] =  "limelight-c"
-        CAM_X_OFFSET[2] = 0 # forward positive
-        CAM_Y_OFFSET[2] = 0 # right positive
-        CAM_Z_OFFSET[2] = 0 # up positive
-        CAM_THETA_X_OFFSET[2] = 0 # roll
-        CAM_THETA_Y_OFFSET[2] = 0 # pitch
-        CAM_THETA_Z_OFFSET[2] = 0 # yaw
 
         STD_DEV_COEFF_XY = .1 #0.05
         STD_DEV_COEFF_THETA = 999 #0.04 or self,max_value

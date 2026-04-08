@@ -111,8 +111,8 @@ class RobotContainer:
         
         self._joystick.button(6).onFalse(self.slow_mode_off)
 
-        self._joystick.button(7).whileTrue(DeferredCommand(lambda:self.drive_path.drive_trench()))
-                                           
+#        self._joystick.button(7).whileTrue(DeferredCommand(lambda:self.drive_path.drive_trench()))
+        self._joystick.button(7).onTrue(self.drivetrain.runOnce(lambda:self.drivetrain.reset_pose(Pose2d(Translation2d(0.3,0.66),Rotation2d(0)))))
         self._joystick.button(8).whileTrue(self.arcdrive    
             .finallyDo(self.headingController.setTargetRotationInt) ) 
 
@@ -169,7 +169,9 @@ class RobotContainer:
         # update limelight, autobuilder, and heading controller constants  
         self.limelightSytem.configfureLimelights()
         self.autoGenerator.configAutoBuilder()
-#        self.autoChooser = AutoBuilder.buildAutoChooser("DoNothing")        
+        self.autoChooser = None
+        self.autoChooser = AutoBuilder.buildAutoChooser("DoNothing")   
+        SmartDashboard.putData("Auto Chooser", self.autoChooser)             
         self.drivetrain.update()
         self.drive_teleop_command.setConstants()
         self.intake.setup()

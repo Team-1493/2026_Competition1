@@ -62,6 +62,7 @@ class MyRobot(commands2.TimedCommandRobot):
     def autonomousInit(self) -> None:
         self.container.apply_auto_gains()
         self.container.limelightSytem.set_IMU_Mode(self.IMU_mode)
+        self.autonomousCommand = None
         self.autonomousCommand = self.container.getAutonomousCommand()
         if self.autonomousCommand:
             self.autonomousCommand.schedule()

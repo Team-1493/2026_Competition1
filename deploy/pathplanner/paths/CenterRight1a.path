@@ -21,7 +21,7 @@
       },
       "prevControl": {
         "x": 6.431385487599683,
-        "y": 1.8606247751860512
+        "y": 1.8606247751860514
       },
       "nextControl": {
         "x": 7.299107433407246,
@@ -64,10 +64,10 @@
   "constraintZones": [
     {
       "name": "Turn",
-      "minWaypointRelativePos": 1.1231813773035448,
+      "minWaypointRelativePos": 1.7906819716407725,
       "maxWaypointRelativePos": 3.0,
       "constraints": {
-        "maxVelocity": 1.0,
+        "maxVelocity": 0.5,
         "maxAcceleration": 2.5,
         "maxAngularVelocity": 360.0,
         "maxAngularAcceleration": 720.0,

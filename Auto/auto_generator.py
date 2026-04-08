@@ -62,7 +62,7 @@ class AutoGenerator():
         autoTHETA_kP = self.constants.AUTOBUILDER_THETA_kP
         autoTHETA_kD = self.constants.AUTOBUILDER_THETA_kD
         config = RobotConfig.fromGUISettings()
-
+        
         AutoBuilder.configure(
             self.driveTrain.pose_supplier, # Robot pose supplier
             self.driveTrain.reset_pose, # Method to reset odometry (will be called if your auto has a starting pose)
