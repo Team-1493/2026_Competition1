@@ -8,8 +8,8 @@ from subsystems.Drive.drivetrain_generator import DrivetrainGenerator
 
 class HelperMethods():
     dt = DrivetrainGenerator.getInstance()
-    data=[[2.49,2.861,3.17,3.45,3.62,3.91,4.1,4.4],
-          [8.0,8.45,8.86,9.10,9.45,9.90,10.0,10.25]]
+    data=[[2.01,2.22,2.47,2.669,3.03,3.35,3.78,4.09],
+          [7.8,7.95,8.3,8.55,8.8,9.4,9.7,10.15]]
 
     """ calculates a goal pose from a BLUE tag ID, including an x and y offset from the tag face
      if alliance is red, the corresponding red tag is used!
@@ -75,25 +75,12 @@ class HelperMethods():
             if data[0][i]-c<=s:
                 s=data[0][i]-c
                 t1=i
-        if s==0:
-            return data[1][t1], m
-        elif s<0:
-            t2=t1-1
-        elif s>0:
-            t2=t1+1
+        if s==0:return data[1][t1], m
+        elif s<0:t2=t1-1
+        elif s>0:t2=t1+1
         m=(data[1][t1]-data[1][t2])/(data[0][t1]-data[0][t2])#slope
         val = m*(c-data[0][t1])+data[1][t1]
-        return val
-
-    def calc_shoot_speed2():
-        _,d=HelperMethods.dis_to_hub()
-        data = [[1,2,3,4,5,6],[3,4,5,6,7,8]]
-        c=1.5#test number
-        closest_two = sorted(data[0], key=lambda x: abs(x-c))[:2]
-
-        
-
-        return 
+        return val 
 
     def dist_to_hub():
         pose = HelperMethods.dt.pose

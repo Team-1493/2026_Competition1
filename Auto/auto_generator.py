@@ -47,11 +47,10 @@ class AutoGenerator():
 
         NamedCommands.registerCommand('ArmDown', 
                         self.intake.runOnce(lambda:self.intake.arm_down()))
-        
         NamedCommands.registerCommand('Shoot', ShootCommandAuto())
-        NamedCommands.registerCommand('Shoot_Left_2a', ShootCommandAutoFixed(shoot_speed=7.0))
-        NamedCommands.registerCommand('Shoot_Right_2a', ShootCommandAutoFixed(shoot_speed=7.0))
-        NamedCommands.registerCommand('Shoot_Right_4a', ShootCommandAutoFixed(shoot_speed=7.0))
+        NamedCommands.registerCommand('Shoot_Left_2a', ShootCommandAutoFixed(shoot_speed=8.15))
+        NamedCommands.registerCommand('Shoot_Right_2a', ShootCommandAutoFixed(shoot_speed=8.15))
+        NamedCommands.registerCommand('Shoot_Right_4a', ShootCommandAutoFixed(shoot_speed=8.15))
 
         NamedCommands.registerCommand('ArcDrive', self.arcdrive)
 

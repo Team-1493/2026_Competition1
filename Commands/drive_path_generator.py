@@ -29,10 +29,10 @@ class DrivePathGenerator():
         self.trench_left_b_pose = Pose2d(Translation2d(trenchx,5.5),Rotation2d(-pi/4))
         self.trench_left_f_pose = Pose2d(Translation2d(trenchx+trenchxoffset,5.5),Rotation2d(0))        
 
-        self.trench_right_b_poseRed = Pose2d(Translation2d(16.51 - trenchx,8.069 - 2.5),Rotation2d(5*pi/4))
-        self.trench_right_f_poseRed = Pose2d(Translation2d(16.51 - trenchx-trenchxoffset,8.069 - 2.5),Rotation2d(pi))        
-        self.trench_left_b_poseRed = Pose2d(Translation2d(16.51 - trenchx,8.069 - 5.5),Rotation2d(-5*pi/4))
-        self.trench_left_f_poseRed = Pose2d(Translation2d(16.51 - trenchx-trenchxoffset,8.069 - 5.5),Rotation2d(pi))        
+        self.trench_right_b_poseRed = Pose2d(Translation2d(16.54 - trenchx,8.069 - 2.5),Rotation2d(5*pi/4))
+        self.trench_right_f_poseRed = Pose2d(Translation2d(16.54 - trenchx-trenchxoffset,8.069 - 2.5),Rotation2d(pi))        
+        self.trench_left_b_poseRed = Pose2d(Translation2d(16.54 - trenchx,8.069 - 5.5),Rotation2d(-5*pi/4))
+        self.trench_left_f_poseRed = Pose2d(Translation2d(16.54 - trenchx-trenchxoffset,8.069 - 5.5),Rotation2d(pi))        
 
         self.driveTrain = DrivetrainGenerator.getInstance()
         self.robot = _robot
@@ -55,6 +55,8 @@ class DrivePathGenerator():
 # Control the direction of travel at each waypiont usaing the the rotation of the poses used in wayppointsFromPoses
 # Robot rotation controlled by GoalEndState
 # Does not avoid feild elements
+    def get_control_point(start_pt, end_pt):
+        pass
     def drive_path_to_pose(self,initialPose : Pose2d, _targetPose: Pose2d, maxVel,finalVel : float =None) -> Command:
         self.targetPose=_targetPose
         self.robotPose=self.robot()
@@ -67,7 +69,7 @@ class DrivePathGenerator():
                    self.getPathVelocityHeading(self.getFieldVelocity())) 
         listOfPoses = [initialPose, self.targetPose]
         self.waypoints = PathPlannerPath.waypointsFromPoses(listOfPoses) 
-
+        self.waypoints[0].nextControl=Translation2d()
         constraints = PathConstraints(
             maxVel, 
             2*maxVel,
@@ -179,12 +181,12 @@ class DrivePathGenerator():
 
         else:
             if y<=8.069/2: 
-                if x>=16.51-4.5:
+                if x>=16.54-4.5:
                     targetpose = self.trench_left_f_poseRed
                 else:  
                     targetpose = self.trench_left_b_poseRed
             else:
-                if x>16.51 - 4.4:
+                if x>16.54 - 4.4:
                     targetpose = self.trench_right_f_poseRed                
                 else:
                     targetpose = self.trench_right_b_poseRed                            
@@ -196,3 +198,4 @@ class DrivePathGenerator():
         return (
             (self.drive_pathfind_to_pose(targetpose,0))
             .finallyDo(self.headingController.setTargetRotationInt)) 
+            

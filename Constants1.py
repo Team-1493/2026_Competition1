@@ -46,9 +46,9 @@ class ConstantValues():
 
         # limelight 4 on practice robot
         CAM_NAME[0] =  "limelight-b"  
-        CAM_X_OFFSET[0] = -0.038 #-.127 # forward positive
-        CAM_Y_OFFSET[0] = 0 # left positive
-        CAM_Z_OFFSET[0] = 0.7588 #.7 # up positive
+        CAM_X_OFFSET[0] = -0.11 #-.127 # forward positive
+        CAM_Y_OFFSET[0] = 0.04 # left positive
+        CAM_Z_OFFSET[0] = 0.7652 #.7 # up positive
         CAM_THETA_X_OFFSET[0] = 0 # roll
         CAM_THETA_Y_OFFSET[0] = 23 # pitch
         CAM_THETA_Z_OFFSET[0] = 0 # yaw
@@ -124,8 +124,8 @@ class ConstantValues():
 
     class ShooterConstants():
         LEADER_KP = 1
-        LEADER_KS = 0.6 ##Caliberated by Sai & Mohammed
-        LEADER_KV = 0.154 #Caliberated by Sai & Mohammed
+        LEADER_KS = 0 ##Caliberated by Sai & Mohammed
+        LEADER_KV = 0.178 #Caliberated by Sai & Mohammed
         FEEDER_KP = 1
         FEEDER_KV = 0.124
         SHOOTING_VELOCITY = -1

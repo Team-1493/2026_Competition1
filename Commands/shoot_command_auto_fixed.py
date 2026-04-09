@@ -48,7 +48,7 @@ class ShootCommandAutoFixed(commands2.Command):
         self.shooter.stop_shooter()
     @override
     def isFinished(self):
-        return self.timer.get()>4
+        return self.timer.get()>7
     
     def get_shooter_speed(self):
         shooter_speed= SmartDashboard.getNumber('Shooting Velocity', 0)

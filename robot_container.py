@@ -142,6 +142,7 @@ class RobotContainer:
  
 
     def getAutonomousCommand(self):
+#        return PathPlannerAuto(self.autoChooser.getSelected())            
         return  self.autoChooser.getSelected()
 
 
