@@ -13,7 +13,6 @@ from math import hypot, pi
 from Utilities.helper_methods import HelperMethods
 
 from Commands.goal_pid import GoalPID
-from Commands.goal_cam_command import GoalCamCommand
 
 
 

@@ -1,1 +1,0 @@
-print(type(sorted([1,3,4,1,5,1])) == type([1,3,3]))

@@ -17,15 +17,6 @@ class AutoPilotCommand(commands2.Command):
         self.entryAngle = Rotation2d(entryAngle)
         self.velFinal = velFInal
         self.m_drivetrain = DrivetrainGenerator.getInstance()
-        self.actions = actions
-        self.positions = positions
-        if self.actions is not None:
-            self.actions_length = len(self.actions)
-            self.hasActions = True
-        else:
-            self.actions_length = 0 
-            self.hasActions = False
-
         self.addRequirements(self.m_drivetrain)    
 
     @override
@@ -33,8 +24,6 @@ class AutoPilotCommand(commands2.Command):
 #        print("****STARTING AUTOPILOT")
         self.ap_drive = ap_driver.getInstance()
         self.m_target = ap_target(self.pose).with_entry_angle(self.entryAngle).with_velocity(self.velFinal)
-        self.index_actions = 0
- #       print("************",self.m_target.get_reference().X(),"  ",self.m_target.get_reference().Y())
   
 
     @override
@@ -43,11 +32,6 @@ class AutoPilotCommand(commands2.Command):
         out,disp = self.ap_drive.kAutopilot.calculate(
             self.m_drivetrain.pose, self.m_drivetrain.speeds, self.m_target)
         
-        if self.hasActions:
-            if self.index_actions<self.actions_length:
-                if disp>self.positions[self.index_actions]:
-                    self.actions[self.index_actions].schedule()
-                    self.index_actions = self.index_actions+1
                     
         self.m_drivetrain.drive_autopilot(out.vx,out.vy,out.targetAngle.radians())
   

@@ -16,16 +16,12 @@ from subsystems.Drive.drivetrain_generator import DrivetrainGenerator
 from telemetry import Telemetry
 from subsystems.Drive.heading_controller import HeadingController
 from subsystems.Vision.limelight_system import LLsystem
-#from subsystems.laser_can import LaserCAN
 from subsystems.intake import IntakeSystem
 from subsystems.shooter import ShooterSystem
 from Commands.agitate_intake import AgitateIntake
 from Commands.drive_teleop_command import DriveTeleopCommand
 from Commands.auto_pilot_command import AutoPilotCommand
-from Commands.find_wheel_base import FindWheelBase
-from Commands.find_ks import FindkS
-from Commands.find_slipCurrent import FindSlipCurrent
-from Commands.findkP_maxA import FindKP_MaxA
+from Commands.drive_over_trench import DriveOveTrench
 from Commands.arc_drive import arcDrive
 from Commands.shoot_command import ShootCommand
 from Commands.intake_command import IntakeCommand
@@ -54,7 +50,7 @@ class RobotContainer:
         self.shoot_command = ShootCommand()
         self.intake_command = IntakeCommand()  
         self.agitate_command = AgitateIntake()          
-#        LaserCAN.getInstance()
+        self.over_trench = DriveOveTrench()
 
         self.limelightSytem = LLsystem.getInstance()
         self._joystick = CommandXboxController(0)
@@ -104,8 +100,6 @@ class RobotContainer:
 #        self._joystick.button(5).onTrue(self.headingController.runOnce(
 #            lambda:self.headingController.set_forward_direction()))
 
-#        self._joystick.button(6).onTrue(self.drivetrain.runOnce(
-#            lambda:self.drivetrain.reset_pose(Pose2d())))
 
         self._joystick.button(6).onTrue(self.slow_mode_on)
         
@@ -123,22 +117,8 @@ class RobotContainer:
         self._joystick.button(9).onTrue(
               InstantCommand(lambda:self.update_constants()))
 
-
-
-
-#        self._joystick.button(7).onTrue(
-#            InstantCommand(lambda: self.limelightSytem.write_camera0_pose_to_file()))
-
-
-
-#        self._joystick.button(7).whileTrue(
-#            commands2.DeferredCommand(lambda:self.drive_path.drive_path_to_tag(23,-.75,0)).finallyDo
-#           (self.headingController.setTargetRotationInt))
-
-#        self._joystick.button(7).whileTrue(
-#            AutoPilotCommand(Pose2d(Translation2d(7.5,6.5),Rotation2d(-3.14/4)),-.2,1 ).
-#            andThen (AutoPilotCommand(Pose2d(Translation2d(7.5,4.5),Rotation2d(-3.14/2)),-3.14/2,0 ))
-#            .finallyDo((self.headingController.setTargetRotationInt)))
+        self._joystick.button(7).whileTrue(commands2.DeferredCommand(
+            lambda:self.over_trench.drivetrench()))
  
 
     def getAutonomousCommand(self):
@@ -177,12 +157,9 @@ class RobotContainer:
         self.drive_teleop_command.setConstants()
         self.intake.setup()
         self.shooter.update_constants()
-        # DriveGoal_Cam does not need to be explicitly updated, it is generated at each use
-    
      
           
     def createPPStuff(self):
-
         from Auto.auto_generator import AutoGenerator 
         from Commands.drive_path_generator import DrivePathGenerator 
         self.autoGenerator = AutoGenerator()

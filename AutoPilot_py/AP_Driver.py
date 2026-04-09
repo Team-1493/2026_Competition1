@@ -19,8 +19,8 @@ class ap_driver:
         self.kConstraints = APConstraints().with_acceleration(8.0).with_jerk(8.0).with_velocity(3)
         self.kProfile = (
             APProfile(self.kConstraints).
-            with_ErrorXY(0.03).
-            with_ErrorTheta(0.017).
-            with_BeelineRadius(0.08)
+            with_ErrorXY(0.06).
+            with_ErrorTheta(0.05).
+            with_BeelineRadius(0.2)
         )
         self.kAutopilot = Autopilot(self.kProfile)
