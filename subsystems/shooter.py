@@ -96,9 +96,17 @@ class ShooterSystem(Subsystem):
         
         self.velocity = vel
         self.leader_motor.set_control(self.velocity_voltage.with_velocity(self.velocity))
-  
+        for motor in self.followers:
+            motor.set_control(self.velocity_voltage.with_velocity(self.velocity))
+        for motor in self.opposite_followers:
+            motor.set_control(self.velocity_voltage.with_velocity(-self.velocity))            
+
     def stop_shooter(self):
         self.leader_motor.set_control(self.brake)
+        for motor in self.followers:
+            motor.set_control(self.brake)
+        for motor in self.opposite_followers:
+            motor.set_control(self.brake)
         # self.leader_motor.set_control(self.voltage_control.with_output(0))
   
     def immediate_move_conveyor(self):
@@ -153,6 +161,10 @@ class ShooterSystem(Subsystem):
         self.leader_cfg.slot0.k_p = SmartDashboard.getNumber('Leader KP', 0)
         self.leader_cfg.slot0.k_s = ConstantValues.ShooterConstants.LEADER_KS         
         self.leader_motor.configurator.apply(self.leader_cfg)
+        for motor in self.followers:
+            motor.configurator.apply(self.leader_cfg)
+        for motor in self.opposite_followers:
+            motor.configurator.apply(self.leader_cfg)
         self.feeder_cfg.slot0.k_p = SmartDashboard.getNumber('Feeder KP', 0)
         self.feeder_cfg.slot0.k_v = SmartDashboard.getNumber('Feeder KV', 0)
         self.feeder_motor.configurator.apply(self.feeder_cfg)
