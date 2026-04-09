@@ -112,7 +112,7 @@ class RobotContainer:
         self._joystick.button(6).onFalse(self.slow_mode_off)
 
 #        self._joystick.button(7).whileTrue(DeferredCommand(lambda:self.drive_path.drive_trench()))
-        self._joystick.button(7).onTrue(self.drivetrain.runOnce(lambda:self.drivetrain.reset_pose(Pose2d(Translation2d(0.3,0.66),Rotation2d(0)))))
+#        self._joystick.button(7).onTrue(self.drivetrain.runOnce(lambda:self.drivetrain.reset_pose(Pose2d(Translation2d(0.3,0.66),Rotation2d(0)))))
         self._joystick.button(8).whileTrue(self.arcdrive    
             .finallyDo(self.headingController.setTargetRotationInt) ) 
 
