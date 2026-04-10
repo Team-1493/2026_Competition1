@@ -192,9 +192,7 @@ class DrivePathGenerator():
 
 
 #        targetpose = HelperMethods.flip_pose_if_red(targetpose)
-        print("BBBBBBBBBBBBBBBBBBBBBBB   ",x,"   ",y)
-        print("AAAAAAAAAAAAAAAAAAAAAAA   ",targetpose.x,"   ",targetpose.y)
-        return (
+            return (
             (self.drive_pathfind_to_pose(targetpose,0))
             .finallyDo(self.headingController.setTargetRotationInt)) 
             

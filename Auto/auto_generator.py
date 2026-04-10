@@ -36,7 +36,7 @@ class AutoGenerator():
         
         NamedCommands.registerCommand(
             'IntakeStartCommand',
-            self.intake.runOnce(lambda: self.intake.intake()))
+            self.intake.runOnce(lambda: self.intake.intake_auto()))
         
         NamedCommands.registerCommand(
             'IntakeStopCommand',

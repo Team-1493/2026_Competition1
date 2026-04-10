@@ -156,12 +156,14 @@ class IntakeSystem(Subsystem):
 
     
     def intake(self):
-        SmartDashboard.putString("Intake State", "Intaking")
         self.intake_motor.set_control(self.voltage_out.with_output(ConstantValues.IntakeConstants.INTAKE_VOLTAGE))
         self.intake_follower_motor.set_control(self.voltage_out.with_output(-ConstantValues.IntakeConstants.INTAKE_VOLTAGE))
 
+    def intake_auto(self):
+        self.intake_motor.set_control(self.voltage_out.with_output(ConstantValues.IntakeConstants.INTAKE_AUTO_VOLTAGE))
+        self.intake_follower_motor.set_control(self.voltage_out.with_output(-ConstantValues.IntakeConstants.INTAKE_AUTO_VOLTAGE))        
+
     def stop_intake(self):
-        SmartDashboard.putString("Intake State", "NOT")        
         self.intake_motor.set_control(self.brake)
         self.intake_follower_motor.set_control(self.brake)
 

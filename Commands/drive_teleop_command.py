@@ -3,7 +3,6 @@ import commands2
 from math import copysign
 from wpilib import SmartDashboard
 from wpimath.geometry import Rotation2d
-from subsystems.Drive.drivetrain_generator import DrivetrainGenerator
 from generated.tuner_constants import TunerConstants
 from subsystems.Drive.heading_controller import HeadingController
 from phoenix6 import swerve
@@ -36,6 +35,7 @@ class DriveTeleopCommand(commands2.Command):
 
 
     def execute(self) -> None:
+#        print("DDDDDDDDDDDDDDDD  IN DriveTeleop")
         forw=self.forward()
         sde=self.side()
         rot = self.rotate()
@@ -72,6 +72,8 @@ class DriveTeleopCommand(commands2.Command):
                 sde*self._max_speed*self.scale_factorXY,
                 target_angle)    
         
+    def isFinished(self):
+        return False
 
     def slow_mode_on(self):
         self.slow_mode=.5

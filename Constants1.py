@@ -112,6 +112,7 @@ class ConstantValues():
 
     class IntakeConstants():
         INTAKE_VOLTAGE = -8
+        INTAKE_AUTO_VOLTAGE = -8        
         CONVEYOR_VOLTAGE = -10
         MAX_UP_ROTATION = .26
         MAX_DOWN_ROTATION = 0.00
@@ -277,6 +278,8 @@ class ConstantValues():
         ConstantValues.DriveConstants.SPEED_AT_12_VOLTS = SmartDashboard.getNumber("Drive Speed 12V",ConstantValues.DriveConstants.SPEED_AT_12_VOLTS)                         
 
         ConstantValues.IntakeConstants.INTAKE_VOLTAGE = SmartDashboard.getNumber("Intake Intake Volt",ConstantValues.IntakeConstants.INTAKE_VOLTAGE)                         
+        ConstantValues.IntakeConstants.INTAKE_AUTO_VOLTAGE = SmartDashboard.getNumber("Intake Auto Volt",ConstantValues.IntakeConstants.INTAKE_AUTO_VOLTAGE)                         
+
         ConstantValues.IntakeConstants.MAX_UP_ROTATION = SmartDashboard.getNumber("Intake Arm Max Up",ConstantValues.IntakeConstants.MAX_UP_ROTATION)
         ConstantValues.IntakeConstants.MAX_DOWN_ROTATION = SmartDashboard.getNumber("Intake Arm Max Down",ConstantValues.IntakeConstants.MAX_DOWN_ROTATION)   
         ConstantValues.IntakeConstants.CONVEYOR_VOLTAGE = SmartDashboard.getNumber("Conveyor Voltage", ConstantValues.IntakeConstants.CONVEYOR_VOLTAGE)
@@ -379,7 +382,8 @@ class ConstantValues():
         SmartDashboard.putNumber("Drive Teleop Scale Rot",ConstantValues.DriveConstants.TELEOP_SCALE_FACTOR_ROT)                                 
         SmartDashboard.putNumber("Drive Speed 12V",ConstantValues.DriveConstants.SPEED_AT_12_VOLTS)                         
                     
-        SmartDashboard.putNumber("Intake Intake Volt",ConstantValues.IntakeConstants.INTAKE_VOLTAGE)                         
+        SmartDashboard.putNumber("Intake Intake Volt",ConstantValues.IntakeConstants.INTAKE_VOLTAGE)
+        SmartDashboard.putNumber("Intake Auto Volt",ConstantValues.IntakeConstants.INTAKE_AUTO_VOLTAGE)                                 
         SmartDashboard.putNumber("Intake Arm Max Up",ConstantValues.IntakeConstants.MAX_UP_ROTATION)
         SmartDashboard.putNumber("Intake Arm Max Down",ConstantValues.IntakeConstants.MAX_DOWN_ROTATION)   
         SmartDashboard.putNumber("Conveyor Voltage", ConstantValues.IntakeConstants.CONVEYOR_VOLTAGE)

@@ -26,7 +26,7 @@ class arcDrive(commands2.Command):
         super().__init__()
         self.driveTrain = _driveTrain
         self.max_radius = 3.9
-        self.min_radius = 2.2
+        self.min_radius = 2.3
 
         self.max_speed=2.0 #max speed
         self.max_omega=4  # max rotation rate

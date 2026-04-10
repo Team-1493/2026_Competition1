@@ -4,14 +4,14 @@ import commands2
 from wpilib import SmartDashboard
 from subsystems.intake import IntakeSystem
 
-class IntakeStart(commands2.Command):
+class IntakeStartAuto(commands2.Command):
     def __init__(self):
         self.intake = IntakeSystem.getInstance()
         self.addRequirements(self.intake)
 
     @override
     def initialize(self):
-        self.intake.intake()
+        self.intake.intake_auto()
 
     def execute(self):
             pass
