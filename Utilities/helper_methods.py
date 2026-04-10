@@ -7,13 +7,34 @@ from pathplannerlib.path import Waypoint
 from subsystems.Drive.drivetrain_generator import DrivetrainGenerator
 
 class HelperMethods():
+
     dt = DrivetrainGenerator.getInstance()
+#    datadist = SmartDashboard.getNumberArray("Shoot Dist data",[0])
+#    dataspd = SmartDashboard.getNumberArray("Shoot Speed data",[0])
+#    data = [datadist,dataspd]
+
+#    data=[[2.01,2.22,2.47,2.669,3.03,3.35,3.78,4.09],
+#          [7.8,7.95,8.3,8.55,8.8,9.4,9.7,10.15]]
+
     data=[[2.01,2.22,2.47,2.669,3.03,3.35,3.78,4.09],
-          [7.8,7.95,8.3,8.55,8.8,9.4,9.7,10.15]]
+          [7.9,8.1,8.3,8.55,8.8,9.4,9.7,10.15]]
+    
 
     """ calculates a goal pose from a BLUE tag ID, including an x and y offset from the tag face
      if alliance is red, the corresponding red tag is used!
     """ 
+    @staticmethod
+    def updateData():
+        print("***************************************  DATA OLD:  ",HelperMethods.data[0][0],"  ",HelperMethods.data[0][1])        
+        print("***************************************  DATA OLD:  ",HelperMethods.data[1][0],"  ",HelperMethods.data[1][1])
+
+
+        datadist1 = SmartDashboard.getNumberArray("Shoot Dist data",[0])
+        dataspd1 = SmartDashboard.getNumberArray("Shoot Speed data",[0])
+        HelperMethods.data = [datadist1,dataspd1]
+        print("***************************************  DATA NEW:  ",HelperMethods.data[0][0],"  ",HelperMethods.data[0][1])        
+        print("***************************************  DATA NEW:  ",HelperMethods.data[1][0],"  ",HelperMethods.data[1][1])
+
     @staticmethod
     def calculate_pose_goal_from_tag(i : int, x_offset = 0, y_offset = 0):
         offset  = 0

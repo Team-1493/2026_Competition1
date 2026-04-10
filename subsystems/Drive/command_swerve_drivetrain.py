@@ -1,4 +1,3 @@
-from tracemalloc import start
 from commands2 import Command, Subsystem
 import math
 from phoenix6 import SignalLogger, swerve, units, utils, hardware

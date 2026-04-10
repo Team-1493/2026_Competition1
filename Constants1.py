@@ -83,7 +83,11 @@ class ConstantValues():
         HEADINGCONTROLLER_VMAX = 5#2.0
         HEADINGCONTROLLER_AMAX = 3.0 
         HEADINGCONTROLLER_TOLERANCE = 0.017
-        HEADINGCONTROLLER_RATE_TOLERANCE = 0.03                 
+        HEADINGCONTROLLER_RATE_TOLERANCE = 0.03
+        SNAP_AWAY_FROM_WALL_DISTANCE = 1.1  # meters from nearest field wall
+        SNAP_WALL_SWING_CLEARANCE = 0.9  # meters where front swing toward nearest wall is considered risky
+        SNAP_FORCED_KP = 4  # rad/s commanded per rad of unwrapped heading error in forced-snap mode
+        SNAP_FORCED_MIN_RATE = 0.35  # rad/s minimum command while outside     
     
     class DriveToGoalCameraConstants():
         kLateralTolerance = .5
@@ -123,7 +127,7 @@ class ConstantValues():
 
 
     class ShooterConstants():
-        LEADER_KP = 1
+        LEADER_KP = 0.9
         LEADER_KS = 0 ##Caliberated by Sai & Mohammed
         LEADER_KV = 0.178 #Caliberated by Sai & Mohammed
         FEEDER_KP = 1
@@ -132,6 +136,7 @@ class ConstantValues():
         CONVEYOR_VOLTAGE = 0
         CONVEYOR_VELOCITY = 80
         TOLERANCE = 1e-3
+
 
     class VisionConstants():    
         

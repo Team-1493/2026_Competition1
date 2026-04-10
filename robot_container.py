@@ -26,13 +26,14 @@ from Commands.arc_drive import arcDrive
 from Commands.shoot_command import ShootCommand
 from Commands.intake_command import IntakeCommand
 from subsystems.led import led_system
+from Utilities.helper_methods import HelperMethods
 
 class RobotContainer:
 
     def __init__(self) -> None:
         ""
     
-#        self.timer = Timer()
+#        self.timer = Timer()e
 #        self.timer.reset()
 #        self.timer.start()
 
@@ -107,6 +108,11 @@ class RobotContainer:
 
 #        self._joystick.button(7).whileTrue(DeferredCommand(lambda:self.drive_path.drive_trench()))
 #        self._joystick.button(7).onTrue(self.drivetrain.runOnce(lambda:self.drivetrain.reset_pose(Pose2d(Translation2d(0.3,0.66),Rotation2d(0)))))
+        
+        self._joystick.button(7). whileTrue(commands2.DeferredCommand(
+            lambda:self.over_trench.drivetrench()))
+        
+
         self._joystick.button(8).whileTrue(self.arcdrive    
             .finallyDo(self.headingController.setTargetRotationInt) ) 
 
@@ -117,8 +123,7 @@ class RobotContainer:
         self._joystick.button(9).onTrue(
               InstantCommand(lambda:self.update_constants()))
 
-        self._joystick.button(7).whileTrue(commands2.DeferredCommand(
-            lambda:self.over_trench.drivetrench()))
+
  
 
     def getAutonomousCommand(self):
@@ -157,6 +162,7 @@ class RobotContainer:
         self.drive_teleop_command.setConstants()
         self.intake.setup()
         self.shooter.update_constants()
+        HelperMethods.updateData()
      
           
     def createPPStuff(self):
