@@ -6,7 +6,7 @@
 from commands2 import InstantCommand
 from commands2.button import CommandXboxController
 from wpilib import DataLogManager, SmartDashboard
-from pathplannerlib.auto import AutoBuilder 
+from pathplannerlib.auto import AutoBuilder,PathPlannerAuto 
 
 from Constants1 import ConstantValues
 from generated.tuner_constants import TunerConstants
@@ -24,6 +24,9 @@ from Commands.shoot_command import ShootCommand
 from Commands.intake_command import IntakeCommand
 from subsystems.led import led_system
 from Utilities.helper_methods import HelperMethods
+from Auto.auto_generator import AutoGenerator 
+from Commands.drive_path_generator import DrivePathGenerator 
+
 
 class RobotContainer:
 
@@ -122,8 +125,8 @@ class RobotContainer:
  
 
     def getAutonomousCommand(self):
-#        return PathPlannerAuto(self.autoChooser.getSelected())            
-        return  self.autoChooser.getSelected()
+        return PathPlannerAuto(self.autoChooser._m_selected)            
+#        return  self.autoChooser.getSelected()
 
 
     def setHeadingControlToCurrentrHeading(self):
@@ -149,10 +152,6 @@ class RobotContainer:
         self.constants.update_constants()
         # update limelight, autobuilder, and heading controller constants  
         self.limelightSytem.configfureLimelights()
-        self.autoGenerator.configAutoBuilder()
-        self.autoChooser = None
-        self.autoChooser = AutoBuilder.buildAutoChooser("DoNothing")   
-        SmartDashboard.putData("Auto Chooser", self.autoChooser)             
         self.drivetrain.update()
         self.drive_teleop_command.setConstants()
         self.intake.setup()
@@ -161,8 +160,6 @@ class RobotContainer:
      
           
     def createPPStuff(self):
-        from Auto.auto_generator import AutoGenerator 
-        from Commands.drive_path_generator import DrivePathGenerator 
         self.autoGenerator = AutoGenerator()
         self.autoChooser = AutoBuilder.buildAutoChooser("DoNothing")
         SmartDashboard.putData("Auto Chooser", self.autoChooser)

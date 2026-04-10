@@ -30,7 +30,7 @@ class LLsystem(Subsystem):
         SmartDashboard.putNumber("CAM0 yoff",0)        
         self.print_counter = 0
         self.print_interval = 10
-        self.numCams = 1   # number of cameras on robot
+        self.numCams = 2   # number of cameras on robot
 
 
 
@@ -50,6 +50,7 @@ class LLsystem(Subsystem):
 
         self.visionTimer = wpilib.Timer()
         self.set_id_filter_override(0,[2,3,4,5,8,9,10,11,18,19,20,21,24,25,26,27])
+        self.set_id_filter_override(1,[2,3,4,5,8,9,10,11,18,19,20,21,24,25,26,27])        
         self.visionTimer.start()
 
 
@@ -134,7 +135,7 @@ class LLsystem(Subsystem):
 
 
                     if SmartDashboard.getBoolean("Vision Active",True):
-                     if closestAmb[i]<0.5:
+                     if closestAmb[i]<0.4:
                         x = self.current_estimate[i].pose.X() + SmartDashboard.getNumber("CAM0 xoff",0)
                         y = self.current_estimate[i].pose.Y()+ SmartDashboard.getNumber("CAM0 yoff",0)
                         r = self.current_estimate[i].pose.rotation().radians()

@@ -26,15 +26,13 @@ class HelperMethods():
     @staticmethod
     def updateData():
         print("***************************************  DATA OLD:  ",HelperMethods.data[0][0],"  ",HelperMethods.data[0][1])        
-        print("***************************************  DATA OLD:  ",HelperMethods.data[1][0],"  ",HelperMethods.data[1][1])
-
+       
 
         datadist1 = SmartDashboard.getNumberArray("Shoot Dist data",[0])
         dataspd1 = SmartDashboard.getNumberArray("Shoot Speed data",[0])
         HelperMethods.data = [datadist1,dataspd1]
         print("***************************************  DATA NEW:  ",HelperMethods.data[0][0],"  ",HelperMethods.data[0][1])        
-        print("***************************************  DATA NEW:  ",HelperMethods.data[1][0],"  ",HelperMethods.data[1][1])
-
+    
     @staticmethod
     def calculate_pose_goal_from_tag(i : int, x_offset = 0, y_offset = 0):
         offset  = 0
@@ -83,7 +81,9 @@ class HelperMethods():
         return (1.245*dist+4.912)   
     
     def calc_shoot_speed():
-       
+        print("***************************************  DATA CALC  ",HelperMethods.data[0][0],"  ",HelperMethods.data[0][1])        
+        print("***************************************  DATA CALC:  ",HelperMethods.data[1][0],"  ",HelperMethods.data[1][1])
+
         angle,dist = HelperMethods.dist_to_hub()
         SmartDashboard.putNumber("Shooter hub dist",dist)
         #SmartDashboard.putNumber("m",m)

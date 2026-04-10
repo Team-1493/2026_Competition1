@@ -193,7 +193,7 @@ class AutoPilotCommand(commands2.Command):
         out,disp = self.ap_drive.kAutopilot.calculate(
             self.dt.pose, self.dt.speeds, self.m_target)
         
-                    
+        print("vx:  ",out.vx,"  vy: ",out.vy)                        
         self.dt.drive_autopilot(out.vx,out.vy,out.targetAngle.radians())
   
 

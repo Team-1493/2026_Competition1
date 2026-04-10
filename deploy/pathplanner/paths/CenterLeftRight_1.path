@@ -82,7 +82,30 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "IntakeStartCommand",
+      "waypointRelativePos": 0.41323430114786697,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeStartCommand"
+        }
+      }
+    },
+    {
+      "name": "IntakeStopCommand",
+      "waypointRelativePos": 2.446995273463834,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeStopCommand"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 2.0,
     "maxAcceleration": 2.5,

@@ -36,7 +36,12 @@
       "name": "IntakeStopCommand",
       "waypointRelativePos": 0.42095053346265626,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeStopCommand"
+        }
+      }
     }
   ],
   "globalConstraints": {
@@ -49,7 +54,7 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": 34.51
+    "rotation": 35.0
   },
   "reversed": false,
   "folder": "CenterRight",

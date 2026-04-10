@@ -47,26 +47,26 @@ class ConstantValues():
         # limelight 4 on practice robot
         CAM_NAME[0] =  "limelight-b"  
         CAM_X_OFFSET[0] = -0.11 #-.127 # forward positive
-        CAM_Y_OFFSET[0] = 0.04 # left positive
+        CAM_Y_OFFSET[0] = 0.0 # left positive
         CAM_Z_OFFSET[0] = 0.7652 #.7 # up positive
         CAM_THETA_X_OFFSET[0] = 0 # roll
         CAM_THETA_Y_OFFSET[0] = 23 # pitch
         CAM_THETA_Z_OFFSET[0] = 0 # yaw
 
         CAM_NAME[1] =  "limelight-a"
-        CAM_X_OFFSET[1] = -0.28 #-0.292 # forward positive
-        CAM_Y_OFFSET[1] = 0.3 #-0.3 # left positive
-        CAM_Z_OFFSET[1] = 0.606 #0.8 # up positive
+        CAM_X_OFFSET[1] = 0.07 #-0.292 # forward positive
+        CAM_Y_OFFSET[1] = .14 #-0.3 # left positive
+        CAM_Z_OFFSET[1] = 0.7652 #0.8 # up positive
         CAM_THETA_X_OFFSET[1] = 0 # roll
-        CAM_THETA_Y_OFFSET[1] = 0 # pitch
+        CAM_THETA_Y_OFFSET[1] = 23 # pitch
         CAM_THETA_Z_OFFSET[1] = 180 # yaw
 
 
         STD_DEV_COEFF_XY = .1 #0.05
         STD_DEV_COEFF_THETA = 999 #0.04 or self,max_value
 
-        CAMERA_CUTOFF_DISTANCE_1 = 8 # meters, above this distance std's set to max
-        CAMERA_CUTOFF_DISTANCE_2 = 8 # meters, above this distance std's set to max                
+        CAMERA_CUTOFF_DISTANCE_1 = 4 # meters, above this distance std's set to max
+        CAMERA_CUTOFF_DISTANCE_2 = 4 # meters, above this distance std's set to max                
         CAMERA_CUTOFF_DIFFERENCE = 8 # meters, above this distance std's set to max                
 
 
@@ -380,8 +380,7 @@ class ConstantValues():
         SmartDashboard.putNumber("Drive Teleop MaxAngRate",ConstantValues.DriveConstants.TELEOP_MAX_ANGULAR_RATE)
         SmartDashboard.putNumber("Drive Teleop Scale XY",ConstantValues.DriveConstants.TELEOP_SCALE_FACTOR_XY)
         SmartDashboard.putNumber("Drive Teleop Scale Rot",ConstantValues.DriveConstants.TELEOP_SCALE_FACTOR_ROT)                                 
-        SmartDashboard.putNumber("Drive Speed 12V",ConstantValues.DriveConstants.SPEED_AT_12_VOLTS)                         
-                    
+        SmartDashboard.putNumber("Drive Speed 12V",ConstantValues.DriveConstants.SPEED_AT_12_VOLTS)              
         SmartDashboard.putNumber("Intake Intake Volt",ConstantValues.IntakeConstants.INTAKE_VOLTAGE)
         SmartDashboard.putNumber("Intake Auto Volt",ConstantValues.IntakeConstants.INTAKE_AUTO_VOLTAGE)                                 
         SmartDashboard.putNumber("Intake Arm Max Up",ConstantValues.IntakeConstants.MAX_UP_ROTATION)
