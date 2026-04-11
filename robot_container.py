@@ -3,7 +3,7 @@
 # the WPILib BSD license file in the root directory of this project.
 #
 
-from commands2 import InstantCommand
+from commands2 import InstantCommand, ConditionalCommand
 from commands2.button import CommandXboxController
 from wpilib import DataLogManager, SmartDashboard
 from pathplannerlib.auto import AutoBuilder,PathPlannerAuto 
@@ -19,6 +19,7 @@ from subsystems.shooter import ShooterSystem
 from Commands.agitate_intake import AgitateIntake
 from Commands.drive_teleop_command import DriveTeleopCommand
 from Commands.auto_pilot_command import AutoPilotCommand
+from Commands.auto_pilot_to_shoot import AutoPilotCommandToShoot
 from Commands.arc_drive import arcDrive
 from Commands.shoot_command import ShootCommand
 from Commands.intake_command import IntakeCommand
@@ -52,6 +53,7 @@ class RobotContainer:
         self.intake_command = IntakeCommand()  
         self.agitate_command = AgitateIntake()          
         self.autoPilot_command = AutoPilotCommand(self.drivetrain)
+        self.autoPilot_to_shoot = AutoPilotCommandToShoot(self.drivetrain)        
 
         self.limelightSytem = LLsystem.getInstance()
         self._joystick = CommandXboxController(0)
@@ -108,10 +110,16 @@ class RobotContainer:
 
 #        self._joystick.button(7).onTrue(self.drivetrain.runOnce(lambda:self.drivetrain.reset_pose(Pose2d(Translation2d(0.3,0.66),Rotation2d(0)))))
         
-        self._joystick.button(7).whileTrue(self.autoPilot_command    
-            .finallyDo(self.headingController.setTargetRotationInt)) 
+#        self._joystick.button(7).whileTrue(self.autoPilot_command    
+#            .finallyDo(self.headingController.setTargetRotationInt))
+        
+        self._joystick.button(8).whileTrue(ConditionalCommand(
+            self.arcdrive,
+            self.autoPilot_to_shoot,
+            lambda:self.drivetrain.in_shoot_zone()
+        ).finallyDo(self.headingController.setTargetRotationInt))
 
-        self._joystick.button(8).whileTrue(self.arcdrive    
+        self._joystick.button(7).whileTrue(self.autoPilot_command    
             .finallyDo(self.headingController.setTargetRotationInt) ) 
 
         self._joystick_op.button(5).whileTrue(self.intake_command)

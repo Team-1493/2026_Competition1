@@ -412,6 +412,12 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
     def get_omega_dps(self):
         return self.speeds.omega_dps                   
 
+    def in_shoot_zone(self):
+        return (
+            (self.alliance_color==DriverStation.Alliance.kBlue and self.pose.X()<4)
+            or
+            (self.alliance_color==DriverStation.Alliance.kRed and self.pose.X()>12.54)
+        )
     
     def define_gain_slots(self):
         self.slot0_auto = Slot0Configs()
