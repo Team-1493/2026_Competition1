@@ -64,8 +64,8 @@ class ShooterSystem(Subsystem):
         self.conveyor_velocity = ConstantValues.ShooterConstants.CONVEYOR_VELOCITY
         self.velocity = ConstantValues.ShooterConstants.SHOOTING_VELOCITY
  
-        SmartDashboard.putNumberArray("Shoot Dist data",[2.01,2.22,2.47,2.669,3.03,3.35,3.78,4.09])
-        SmartDashboard.putNumberArray("Shoot Speed data",[7.8,7.95,8.3,8.55,8.8,9.4,9.7,10.15])
+        SmartDashboard.putNumberArray("Shoot Dist data",[2.01,2.22, 2.47, 2.669, 3.03, 3.35, 3.78, 4.09])
+        SmartDashboard.putNumberArray("Shoot Speed data",[7.9, 8.10, 8.30, 8.550, 8.80, 9.40, 9.70, 10.15])
 
 
         

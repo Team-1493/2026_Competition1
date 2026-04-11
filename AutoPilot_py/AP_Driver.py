@@ -16,7 +16,7 @@ class ap_driver:
 
 
     def __init__(self):        
-        self.kConstraints = APConstraints(2,6,6)
+        self.kConstraints = APConstraints(2.25,15,24)
         self.kProfile = (
             APProfile(self.kConstraints).
             with_ErrorXY(0.06).

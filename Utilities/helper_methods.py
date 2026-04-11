@@ -2,6 +2,7 @@ from math import pi, cos,sin
 from wpilib import DriverStation, SmartDashboard
 from wpimath.geometry import Pose2d, Rotation2d
 import math
+import bisect
 from Constants1 import ConstantValues
 from pathplannerlib.path import Waypoint
 from subsystems.Drive.drivetrain_generator import DrivetrainGenerator
@@ -16,8 +17,8 @@ class HelperMethods():
 #    data=[[2.01,2.22,2.47,2.669,3.03,3.35,3.78,4.09],
 #          [7.8,7.95,8.3,8.55,8.8,9.4,9.7,10.15]]
 
-    data=[[2.01,2.22,2.47,2.669,3.03,3.35,3.78,4.09],
-          [7.9,8.1,8.3,8.55,8.8,9.4,9.7,10.15]]
+    data=[[2.01,2.22, 2.47, 2.669, 3.03, 3.35, 3.78, 4.09],
+          [7.9, 8.10, 8.30, 8.550, 8.80, 9.40, 9.70, 10.15]]
     
 
     """ calculates a goal pose from a BLUE tag ID, including an x and y offset from the tag face
@@ -80,13 +81,28 @@ class HelperMethods():
 #        return ((dist*39.37)*.0337+4.65)
         return (1.245*dist+4.912)   
     
+    def calc_shoot_speed2():
+        _, dist = HelperMethods.dist_to_hub()
+        x, y = HelperMethods.data
+
+        if dist <= x[0]:
+            return y[0]
+        if dist >= x[-1]:
+            return y[-1]
+
+        i = bisect.bisect_left(x, dist)
+
+        x1, x2 = x[i-1], x[i]
+        y1, y2 = y[i-1], y[i]
+
+        t = (dist - x1) / (x2 - x1)
+        return y1 + t * (y2 - y1)
+
+
     def calc_shoot_speed():
-        print("***************************************  DATA CALC  ",HelperMethods.data[0][0],"  ",HelperMethods.data[0][1])        
-        print("***************************************  DATA CALC:  ",HelperMethods.data[1][0],"  ",HelperMethods.data[1][1])
 
         angle,dist = HelperMethods.dist_to_hub()
         SmartDashboard.putNumber("Shooter hub dist",dist)
-        #SmartDashboard.putNumber("m",m)
         data=HelperMethods.data
         c=dist
         s,t1=0,0

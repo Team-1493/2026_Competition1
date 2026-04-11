@@ -24,17 +24,36 @@ class AutoPilotCommand(commands2.Command):
 
         self.flag = 1
 
-        self.pose_blue_right_1 =Pose2d(Translation2d(3.4, 2.45),Rotation2d(0)) 
-        self.pose_blue_right_2 =Pose2d(Translation2d(6.0, 2.45),Rotation2d(0))
+         
+        self.rampOffsetR = 1.9
+        self.rampOffsetL = 8.069 -self.rampOffsetR
 
-        self.pose_blue_left_1 =Pose2d(Translation2d(3.4, 5.5),Rotation2d(0)) 
-        self.pose_blue_left_2 =Pose2d(Translation2d(6.0, 5.5),Rotation2d(0))
 
-        self.pose_red_right_1 =Pose2d(Translation2d(16.54-3.4, 5.5),Rotation2d(pi)) 
-        self.pose_red_right_2 =Pose2d(Translation2d(16.54 - 6.0, 5.5),Rotation2d(pi))
+        self.pose_blue_right_1 =Pose2d(Translation2d(3.4, 2.45),Rotation2d(pi)) 
+        self.pose_blue_right_2 =Pose2d(Translation2d(6.0, 2.45),Rotation2d(pi))
 
-        self.pose_red_left_1 =Pose2d(Translation2d(16.54 - 3.4, 2.45),Rotation2d(pi)) 
-        self.pose_red_left_2 =Pose2d(Translation2d(16.54 - 6.0, 2.45),Rotation2d(pi))
+        self.pose_blue_left_1 =Pose2d(Translation2d(3.4, 5.5),Rotation2d(pi)) 
+        self.pose_blue_left_2 =Pose2d(Translation2d(6.0, 5.5),Rotation2d(pi))
+
+        self.pose_blue_right_1R =Pose2d(Translation2d(3.4, 2.45),Rotation2d(0)) 
+        self.pose_blue_right_2R =Pose2d(Translation2d(6.0, 2.45),Rotation2d(0))
+
+        self.pose_blue_left_1R =Pose2d(Translation2d(3.4, 5.5),Rotation2d(0)) 
+        self.pose_blue_left_2R =Pose2d(Translation2d(6.0, 5.5),Rotation2d(0))
+
+
+
+        self.pose_red_right_1 =Pose2d(Translation2d(16.54-3.4, 5.5),Rotation2d(0)) 
+        self.pose_red_right_2 =Pose2d(Translation2d(16.54 - 6.0, 5.5),Rotation2d(0))
+
+        self.pose_red_left_1 =Pose2d(Translation2d(16.54 - 3.4, 2.45),Rotation2d(0)) 
+        self.pose_red_left_2 =Pose2d(Translation2d(16.54 - 6.0, 2.45),Rotation2d(0))
+
+        self.pose_red_right_1R =Pose2d(Translation2d(16.54-3.4, 5.5),Rotation2d(pi)) 
+        self.pose_red_right_2R =Pose2d(Translation2d(16.54 - 6.0, 5.5),Rotation2d(pi))
+
+        self.pose_red_left_1R =Pose2d(Translation2d(16.54 - 3.4, 2.45),Rotation2d(pi)) 
+        self.pose_red_left_2R =Pose2d(Translation2d(16.54 - 6.0, 2.45),Rotation2d(pi))
 
         self.targetPose1 = Pose2d()
         self.targetPose1 = Pose2d()
@@ -45,6 +64,8 @@ class AutoPilotCommand(commands2.Command):
         self.vfinal1 = 0
         self.vfinal2 = 0        
         self.v1 = 2
+
+
         self.addRequirements(self.dt)    
     
 
@@ -56,7 +77,7 @@ class AutoPilotCommand(commands2.Command):
         currentY = self.dt.pose.Y()
         if DriverStation.getAlliance()==DriverStation.Alliance.kBlue:
             if currentY<4.03:
-                if currentX<=3.4:
+                if currentX<=3.4 or (currentY <self.rampOffsetR and currentX<4.6) or (currentY>2.95 and currentX<4.4):
                     self.targetPose1 = self.pose_blue_right_1
                     self.entryangle1=self.ang1
                     self.vfinal1=self.v1
@@ -64,31 +85,31 @@ class AutoPilotCommand(commands2.Command):
                     self.entryangle2=self.ang2
                     self.vfinal2=0
 
-                elif currentX<=4.1:
+                elif currentX<=4.6:
                     self.targetPose1 = self.pose_blue_right_2
                     self.entryangle1=self.ang1
                     self.vfinal1=0
                     self.targetPose2=None
 
 
-                elif currentX<=5.2:
-                    self.targetPose1 = self.pose_blue_right_1
+                elif currentX<=5.9 and currentY>1.4:
+                    self.targetPose1 = self.pose_blue_right_1R
                     self.entryangle1=self.ang1+pi
                     self.vfinal1=0
                     self.targetPose2=None
 
 
                 else:
-                    self.targetPose1 = self.pose_blue_right_2
+                    self.targetPose1 = self.pose_blue_right_2R
                     self.entryangle1=self.ang1+pi
                     self.vfinal1=self.v1
-                    self.targetPose2 = self.pose_blue_right_1
+                    self.targetPose2 = self.pose_blue_right_1R
                     self.entryangle2=self.ang2+pi
                     self.vfinal2=0
 
 
             else:
-                if currentX<=3.4:
+                if currentX<=3.4 or (currentY >self.rampOffsetL and currentX<4.6) or (currentY<8.069-2.95 and currentX<4.4):
                     self.targetPose1 = self.pose_blue_left_1
                     self.entryangle1=self.ang1
                     self.vfinal1=self.v1
@@ -96,24 +117,23 @@ class AutoPilotCommand(commands2.Command):
                     self.entryangle2=self.ang2
                     self.vfinal2=0
 
-                elif currentX<=4.1:
+                elif currentX<=4.6:
                     self.targetPose1 = self.pose_blue_left_2
                     self.entryangle1=self.ang1
                     self.vfinal1=0
                     self.targetPose2 = None
 
-
-                elif currentX<=5.2:
-                    self.targetPose1 = self.pose_blue_left_1
-                    self.entryangle1=self.ang1
+                elif currentX<=5.9 and currentY<8.069 - 1.4:
+                    self.targetPose1 = self.pose_blue_left_1R
+                    self.entryangle1=self.ang1+pi
                     self.vfinal1=0
                     self.targetPose2 = None
 
                 else:
-                    self.targetPose1 = self.pose_blue_left_2
+                    self.targetPose1 = self.pose_blue_left_2R
                     self.entryangle1=self.ang1+pi
                     self.vfinal1=0
-                    self.targetPose2 = self.pose_blue_left_1
+                    self.targetPose2 = self.pose_blue_left_1R
                     self.entryangle2=self.ang1+pi
                     self.vfinal2=0
 
@@ -121,37 +141,37 @@ class AutoPilotCommand(commands2.Command):
 
         else:
             if currentY<4.03:
-                if currentX>=16.54 - 3.4:
+                if currentX>=16.54 - 3.4  or (currentY <self.rampOffsetR and currentX>16.54-4.6)  or (currentY>2.95 and currentX>16.54-4.4):
                     self.targetPose1 = self.pose_red_left_1
                     self.entryangle1=self.ang1+pi
                     self.vfinal1=self.v1
                     self.targetPose2 = self.pose_red_left_2
                     self.entryangle2=self.ang1+pi
                     self.vfinal2=0
-                    
+                    print("AAAAAAAAAAAAAAAAAA")
 
-                elif currentX>=16.54 - 4.1:
+                elif currentX>=16.54 - 4.6:
                     self.targetPose1 = self.pose_red_left_2
                     self.entryangle1=self.ang1+pi
                     self.vfinal1=0
                     self.targetPose2 = 2
-
-                elif currentX>=16.54 - 5.2:
-                    self.targetPose1 = self.pose_red_left_1
+                    print("BBBBBBBBBBB")
+                elif currentX>=16.54 - 5.9 and currentY>1.4:
+                    self.targetPose1 = self.pose_red_left_1R
                     self.entryangle1=self.ang1
                     self.vfinal1=0
                     self.targetPose2 = 0
-
+                    print("CCCCCCCCCCC")
                 else:
-                    self.targetPose1 = self.pose_red_left_2
+                    self.targetPose1 = self.pose_red_left_2R
                     self.entryangle1=self.ang1
                     self.vfinal1=self.v1
-                    self.targetPose2 = self.pose_red_left_1
+                    self.targetPose2 = self.pose_red_left_1R
                     self.entryangle2=self.ang1
                     self.vfinal2=0
-
+                    print("DDDDDDDDDDD")
             else:
-                if currentX>=16.54 -3.4:
+                if currentX>=(16.54 -3.4) or (currentY >self.rampOffsetL and currentX>(16.54-4.6) or (currentY<8.069-2.95 and currentX>16.54-4.4) ):
                     self.targetPose1 = self.pose_red_right_1
                     self.entryangle1=self.ang1+pi
                     self.vfinal1=self.v1
@@ -159,26 +179,25 @@ class AutoPilotCommand(commands2.Command):
                     self.entryangle2=self.ang1+pi
                     self.vfinal2=0
 
-                elif currentX>=16.54 -4.1:
+                elif currentX>=16.54 -4.6:
                     self.targetPose1 = self.pose_red_right_2
                     self.entryangle1=self.ang1+pi
                     self.vfinal1=0
                     self.targetPose2=None
 
-
-                elif currentX>=16.54 -5.2:
-                    self.targetPose1 = self.pose_red_right_1
+                elif currentX>=16.54 -5.9 and currentY<8.069-1.4:
+                    self.targetPose1 = self.pose_red_right_1R
                     self.entryangle1=self.ang1
                     self.vfinal1=0
                     self.targetPose2 = None
 
 
                 else:
-                    self.targetPose1 = self.pose_red_right_1
+                    self.targetPose1 = self.pose_red_right_2R
                     self.entryangle1=self.ang1
                     self.vfinal1=self.v1
-                    self.targetPose2 = self.pose_red_right_2
-                    self.entryangle2=self.ang1+pi
+                    self.targetPose2 = self.pose_red_right_1R
+                    self.entryangle2=self.ang1
                     self.vfinal2=0
 
         self.pose = self.targetPose1
