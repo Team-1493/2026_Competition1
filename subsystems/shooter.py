@@ -1,6 +1,4 @@
 from commands2 import Command, Subsystem
-from commands2.sysid import SysIdRoutine
-from wpilib.sysid import SysIdRoutineLog
 from wpilib import SmartDashboard
 from phoenix6 import hardware, configs, controls
 from phoenix6.signals import MotorAlignmentValue
@@ -125,21 +123,6 @@ class ShooterSystem(Subsystem):
         SmartDashboard.putNumber('Shooter mean velocity',self.mean_shooter_velocity())
         SmartDashboard.putNumber('Feeder1 actual velocity',self.feeder_motor.get_velocity().value_as_double)
 
-
-    def _run_shooter_sysid(self, voltage) -> None:
-        voltage_output = getattr(voltage, "value", voltage)
-        self.leader_motor.set_control(self.voltage_control.with_output(voltage_output))
-
-    def _log_shooter_sysid(self, log: SysIdRoutineLog) -> None:
-        log.motor("shooter_leader").voltage(
-            self.leader_motor.get_motor_voltage().value_as_double
-        ).angularVelocity(self.leader_motor.get_velocity().value_as_double)
-
-    def shooter_sysid_quasistatic(self, direction: SysIdRoutine.Direction) -> Command:
-        return self.sysid_routine.quasistatic(direction)
-
-    def shooter_sysid_dynamic(self, direction: SysIdRoutine.Direction) -> Command:
-        return self.sysid_routine.dynamic(direction)
 
     def update_constants(self):
         self.leader_cfg.slot0.k_v = SmartDashboard.getNumber('Leader KV', 0)
