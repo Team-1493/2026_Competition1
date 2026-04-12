@@ -7,12 +7,10 @@
     "CenterLeft",
     "CenterLeft2",
     "CenterLeftRight",
+    "CenterRight",
     "DepotCenterLeft",
     "Get_Shoot",
-    "Left_Depot_Out",
-    "CenterRight",
-    "OutBack",
-    "Squaers"
+    "Left_Depot_Out"
   ],
   "autoFolders": [
     "OutBack",
