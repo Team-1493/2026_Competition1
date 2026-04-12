@@ -26,7 +26,6 @@ from Commands.intake_command import IntakeCommand
 from subsystems.led import led_system
 from Utilities.helper_methods import HelperMethods
 from Auto.auto_generator import AutoGenerator 
-from Commands.drive_path_generator import DrivePathGenerator 
 
 
 class RobotContainer:
@@ -110,17 +109,15 @@ class RobotContainer:
 
 #        self._joystick.button(7).onTrue(self.drivetrain.runOnce(lambda:self.drivetrain.reset_pose(Pose2d(Translation2d(0.3,0.66),Rotation2d(0)))))
         
-#        self._joystick.button(7).whileTrue(self.autoPilot_command    
-#            .finallyDo(self.headingController.setTargetRotationInt))
-        
+        self._joystick.button(7).whileTrue(self.autoPilot_command    
+            .finallyDo(self.headingController.setTargetRotationInt) ) 
+
         self._joystick.button(8).whileTrue(ConditionalCommand(
             self.arcdrive,
             self.autoPilot_to_shoot,
             lambda:self.drivetrain.in_shoot_zone()
         ).finallyDo(self.headingController.setTargetRotationInt))
 
-        self._joystick.button(7).whileTrue(self.autoPilot_command    
-            .finallyDo(self.headingController.setTargetRotationInt) ) 
 
         self._joystick_op.button(5).whileTrue(self.intake_command)
         self._joystick_op.button(6).whileTrue(self.shoot_command)
@@ -128,9 +125,6 @@ class RobotContainer:
         
         self._joystick.button(9).onTrue(
               InstantCommand(lambda:self.update_constants()))
-
-
- 
 
     def getAutonomousCommand(self):
         return PathPlannerAuto(self.autoChooser._m_selected)            
@@ -171,8 +165,6 @@ class RobotContainer:
         self.autoGenerator = AutoGenerator()
         self.autoChooser = AutoBuilder.buildAutoChooser("DoNothing")
         SmartDashboard.putData("Auto Chooser", self.autoChooser)
-        self.drive_path = DrivePathGenerator(
-                 lambda: self.drivetrain.pose_supplier())
         
     def set_up_telemetry(self):
         self._logger = Telemetry(TunerConstants.speed_at_12_volts)

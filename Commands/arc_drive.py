@@ -7,10 +7,8 @@ from wpimath import units
 from wpimath.geometry import Translation2d
 from Commands.stop_drive import StopDrive
 from subsystems.Drive.command_swerve_drivetrain import CommandSwerveDrivetrain
-from subsystems.Drive.drivetrain_generator import DrivetrainGenerator
 from phoenix6 import swerve
 from wpimath.geometry import Pose2d,Rotation2d
-from Commands.drive_path_generator import DrivePathGenerator
 from pathplannerlib.config  import PIDConstants
 from pathplannerlib.controller import PPHolonomicDriveController 
 from pathplannerlib.trajectory import PathPlannerTrajectoryState

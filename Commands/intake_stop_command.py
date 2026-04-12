@@ -11,7 +11,8 @@ class IntakeStop(commands2.Command):
     @override
     def initialize(self):
         SmartDashboard.putString("Intake State", "STOPPING")                                   
-        self.intake.intake()
+        self.intake.stop_intake()
+        self.intake.stop_conveyor()        
 
     def execute(self):
         pass

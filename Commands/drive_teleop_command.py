@@ -28,6 +28,7 @@ class DriveTeleopCommand(commands2.Command):
         self.drivetrain = _drivetrain
         self.headingController = HeadingController.getInstance()
         self.slow_mode = 1
+
         self.setConstants()
         self.addRequirements(self.drivetrain)
 
@@ -35,7 +36,6 @@ class DriveTeleopCommand(commands2.Command):
 
 
     def execute(self) -> None:
-#        print("DDDDDDDDDDDDDDDD  IN DriveTeleop")
         forw=self.forward()
         sde=self.side()
         rot = self.rotate()
@@ -49,27 +49,25 @@ class DriveTeleopCommand(commands2.Command):
         rot = copysign(rot**2,rot)
 
         state, target_angle = self.headingController.get_rotation_state(rot*self._max_angular_rate)  
-      
-        self.scale_factorXY=self.slow_mode*SmartDashboard.getNumber("Drive Teleop Scale XY", self.scale_factorXY)
-        self.scale_factorRot=self.slow_mode*SmartDashboard.getNumber("Drive Teleop Scale Rot", self.scale_factorRot)
+
 
         if state==0:
             self.drivetrain.drive_FC(
-                forw*self._max_speed*self.scale_factorXY,
-                sde*self._max_speed*self.scale_factorXY,
-                rot*self._max_angular_rate*self.scale_factorRot)
+                forw*self.scale_factorXY*self.slow_mode,
+                sde*self.scale_factorXY*self.slow_mode,
+                rot*self.scale_factorRot*self.slow_mode)
             
         elif state==3:
             self.drivetrain.drive_FC(
-                forw*self._max_speed*self.scale_factorXY,
-                sde*self._max_speed*self.scale_factorXY,
+                forw*self.scale_factorXY*self.slow_mode,
+                sde*self.scale_factorXY*self.slow_mode,
                 self.headingController.get_snap_rotation_rate(
-                    self._max_angular_rate*self.scale_factorRot))
+                    self.scale_factorRot*self.slow_mode))
 
         else:
             self.drivetrain.drive_FC_facing(
-                forw*self._max_speed*self.scale_factorXY,
-                sde*self._max_speed*self.scale_factorXY,
+                forw*self.scale_factorXY*self.slow_mode,
+                sde*self.scale_factorXY*self.slow_mode,
                 target_angle)    
         
     def isFinished(self):
@@ -86,5 +84,5 @@ class DriveTeleopCommand(commands2.Command):
     def setConstants(self):
         self._max_speed = (ConstantValues.DriveConstants.SPEED_AT_12_VOLTS)  
         self._max_angular_rate = rotationsToRadians(ConstantValues.DriveConstants.TELEOP_MAX_ANGULAR_RATE)  
-        self.scale_factorXY = ConstantValues.DriveConstants.TELEOP_SCALE_FACTOR_XY
-        self.scale_factorRot = ConstantValues.DriveConstants.TELEOP_SCALE_FACTOR_ROT
+        self.scale_factorXY = self._max_speed*ConstantValues.DriveConstants.TELEOP_SCALE_FACTOR_XY
+        self.scale_factorRot = self._max_angular_rate*ConstantValues.DriveConstants.TELEOP_SCALE_FACTOR_ROT

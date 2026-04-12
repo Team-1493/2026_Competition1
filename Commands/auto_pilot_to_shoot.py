@@ -25,8 +25,6 @@ class AutoPilotCommandToShoot(commands2.Command):
         self.flag = 1
 
          
-        self.rampOffsetR = 1.9
-        self.rampOffsetL = 8.069 -self.rampOffsetR
 
 
         self.pose_blue_right_2 =Pose2d(Translation2d(2.784, 2.591),Rotation2d(35*pi/180)) 

@@ -11,7 +11,9 @@ class IntakeStart(commands2.Command):
 
     @override
     def initialize(self):
+        self.intake.arm_down()
         self.intake.intake()
+        self.intake.start_conveyor_slow()        
 
     def execute(self):
             pass

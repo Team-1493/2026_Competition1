@@ -15,51 +15,6 @@ class IntakeSystem(Subsystem):
             IntakeSystem.instance = IntakeSystem(10,18,9,11,8,9)
             print('*' * 22 + ' INTAKE ' + '*' * 22)
         return IntakeSystem.instance
-    def setup(self):
-        self.voltage = ConstantValues.IntakeConstants.INTAKE_VOLTAGE
-
-        self.goal_down = ConstantValues.IntakeConstants.MAX_DOWN_ROTATION
-        self.goal_up = ConstantValues.IntakeConstants.MAX_UP_ROTATION
-
-        self.cfg = configs.TalonFXConfiguration()
-#        self.cfg.motor_output.neutral_mode=signals.NeutralModeValue.COAST
-        self.cfg.slot0.k_p = ConstantValues.IntakeConstants.ARM_KP
-        self.cfg.slot0.k_d = ConstantValues.IntakeConstants.ARM_KD
-        self.cfg.slot0.k_i = ConstantValues.IntakeConstants.ARM_KI
-        self.cfg.slot0.gravity_type = GravityTypeValue.ARM_COSINE
-        self.cfg.slot0.k_g = ConstantValues.IntakeConstants.ARM_KG
-        self.cfg.motion_magic.motion_magic_cruise_velocity=1.5
-        self.cfg.motion_magic.motion_magic_acceleration=1
-
-        self.cfg.torque_current.peak_forward_torque_current = ConstantValues.IntakeConstants.ARM_PEAK_FORWARD_TORQUE_CURRENT
-        self.cfg.torque_current.peak_reverse_torque_current = ConstantValues.IntakeConstants.ARM_PEAK_REVERSE_TORQUE_CURRENT
-        self.cfg.feedback.sensor_to_mechanism_ratio = ConstantValues.IntakeConstants.SENSOR_TO_MECHANISM_RATIO
-        self.cfg.feedback.rotor_to_sensor_ratio=1
-
-#        self.cfg.software_limit_switch.forward_soft_limit_threshold= ConstantValues.IntakeConstants.ARM_FORWARDTHRESH
-##        self.cfg.software_limit_switch.reverse_soft_limit_threshold= ConstantValues.IntakeConstants.ARM_REVERSETHRESH
-#        self.cfg.software_limit_switch.reverse_soft_limit_enable = True
-#        self.cfg.software_limit_switch.forward_soft_limit_enable = True        
-        self.arm_motor.configurator.apply(self.cfg)
-
-
-        cfgIntake = configs.TalonFXConfiguration()
-
-        cfgIntake.motor_output.neutral_mode=NeutralModeValue.COAST
-
-        cfgIntake.current_limits.stator_current_limit=50
-        cfgIntake.current_limits.with_stator_current_limit_enable(True)
-        cfgIntake.current_limits.supply_current_limit=60
-        cfgIntake.current_limits.with_supply_current_limit_enable(True)
-        cfgIntake.current_limits.supply_current_lower_limit=50
-        cfgIntake.current_limits.supply_current_lower_time=1   
-
-        cfgIntake.slot0.kP=SmartDashboard.getNumber("IntakeMoter kP",1)    
-        
-        self.intake_motor.configurator.apply(cfgIntake)
-        self.intake_follower_motor.configurator.apply(cfgIntake)        
-
-
     def __init__(self, intakeMotorID, intakeFollowerMotorID,armMotorID, conveyorMotorID, dioPortUp, dioPortDown):
         """
         Initialize PID constants for motors
@@ -79,7 +34,7 @@ class IntakeSystem(Subsystem):
 
         self.current_goal_position = ConstantValues.IntakeConstants.MAX_DOWN_ROTATION
         self.conveyor_voltage = ConstantValues.IntakeConstants.CONVEYOR_VOLTAGE
-
+        self.conveyor_slow_voltage = ConstantValues.IntakeConstants.CONVEYOR_SLOW_VOLTAGE
         self.pos_signal = self.arm_motor.get_position()
         self.vel_signal = self.arm_motor.get_velocity()
         self.signals=[self.pos_signal,self.vel_signal]
@@ -115,7 +70,6 @@ class IntakeSystem(Subsystem):
         SmartDashboard.putString("Intake State", "XXX")
 
         self.voltage_out = controls.VoltageOut(0)
-#        self.intake_TC = controls.TorqueCurrentFOC(0)        
         self.intake_vel = controls.VelocityTorqueCurrentFOC(0)
         self.arm_motor.set_position(0)
 
@@ -164,8 +118,6 @@ class IntakeSystem(Subsystem):
     def intake(self):
         self.intake_motor.set_control(self.voltage_out.with_output(ConstantValues.IntakeConstants.INTAKE_VOLTAGE))
         self.intake_follower_motor.set_control(self.voltage_out.with_output(-ConstantValues.IntakeConstants.INTAKE_VOLTAGE))
-#        self.intake_motor.set_control(self.intake_vel.with_velocity(-SmartDashboard.getNumber("IntakeMoter velTC",0)))
-#        self.intake_follower_motor.set_control(self.intake_vel.with_velocity(SmartDashboard.getNumber("IntakeMoter velTC",0)))
 
     def intake_auto(self):
         self.intake_motor.set_control(self.voltage_out.with_output(ConstantValues.IntakeConstants.INTAKE_AUTO_VOLTAGE))
@@ -181,9 +133,12 @@ class IntakeSystem(Subsystem):
     def start_conveyor(self):
         self.conveyor_motor.set_control(self.voltage_out.with_output(self.conveyor_voltage))
 
+    def start_conveyor_slow(self):
+        self.conveyor_motor.set_control(self.voltage_out.with_output(self.conveyor_slow_voltage))
+
+
     def start_conveyor_reverse(self):
         self.conveyor_motor.set_control(self.voltage_out.with_output(4))
-
 
     def stop_conveyor(self):
         self.conveyor_motor.set_control(self.brake)
@@ -225,4 +180,44 @@ class IntakeSystem(Subsystem):
         SmartDashboard.putNumber("IntakeFollower SC act",self.intakeFollower_actual_SC)
         SmartDashboard.putNumber("IntakeFollower V act",self.intakeFollower_actual_V)         
 #        SmartDashboard.putNumber("Arm Velocity", arm_velocity)
-    
+        
+        
+    def setup(self):
+        self.goal_down = ConstantValues.IntakeConstants.MAX_DOWN_ROTATION
+        self.goal_up = ConstantValues.IntakeConstants.MAX_UP_ROTATION
+
+        self.cfg = configs.TalonFXConfiguration()
+#        self.cfg.motor_output.neutral_mode=signals.NeutralModeValue.COAST
+        self.cfg.slot0.k_p = ConstantValues.IntakeConstants.ARM_KP
+        self.cfg.slot0.k_d = ConstantValues.IntakeConstants.ARM_KD
+        self.cfg.slot0.k_i = ConstantValues.IntakeConstants.ARM_KI
+        self.cfg.slot0.gravity_type = GravityTypeValue.ARM_COSINE
+        self.cfg.slot0.k_g = ConstantValues.IntakeConstants.ARM_KG
+        self.cfg.motion_magic.motion_magic_cruise_velocity=1.5
+        self.cfg.motion_magic.motion_magic_acceleration=1
+        self.cfg.torque_current.peak_forward_torque_current = ConstantValues.IntakeConstants.ARM_PEAK_FORWARD_TORQUE_CURRENT
+        self.cfg.torque_current.peak_reverse_torque_current = ConstantValues.IntakeConstants.ARM_PEAK_REVERSE_TORQUE_CURRENT
+        self.cfg.feedback.sensor_to_mechanism_ratio = ConstantValues.IntakeConstants.SENSOR_TO_MECHANISM_RATIO
+        self.cfg.feedback.rotor_to_sensor_ratio=1
+#        self.cfg.software_limit_switch.forward_soft_limit_threshold= ConstantValues.IntakeConstants.ARM_FORWARDTHRESH
+#        self.cfg.software_limit_switch.reverse_soft_limit_threshold= ConstantValues.IntakeConstants.ARM_REVERSETHRESH
+#        self.cfg.software_limit_switch.reverse_soft_limit_enable = True
+#        self.cfg.software_limit_switch.forward_soft_limit_enable = True        
+        self.arm_motor.configurator.apply(self.cfg)
+
+
+        cfgIntake = configs.TalonFXConfiguration()
+        cfgIntake.motor_output.neutral_mode=NeutralModeValue.COAST
+        cfgIntake.current_limits.stator_current_limit=30
+        cfgIntake.current_limits.with_stator_current_limit_enable(True)
+        cfgIntake.current_limits.supply_current_limit=30
+        cfgIntake.current_limits.with_supply_current_limit_enable(True)
+        cfgIntake.current_limits.supply_current_lower_limit=25
+        cfgIntake.current_limits.supply_current_lower_time=.25 
+
+        cfgIntake.slot0.kP=SmartDashboard.getNumber("IntakeMoter kP",1)    
+        
+        self.intake_motor.configurator.apply(cfgIntake)
+        self.intake_follower_motor.configurator.apply(cfgIntake)        
+
+
