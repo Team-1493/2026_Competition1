@@ -84,13 +84,12 @@ class ShooterSystem(Subsystem):
 
 
         self.sysid = SysIdRoutine(
-            lambda volts: self.leader_motor.set_control(
-                self.voltage_control.with_output(volts)),
-            lambda log: log.motor("shooter")
-            .voltage(self.leader_motor.get_motor_voltage().value_as_double)
-        .angularVelocity(self.leader_motor.get_velocity().value_as_double)
-        .angularPosition(self.leader_motor.get_position().value_as_double),
-    self
+            SysIdRoutine.Config(),   # you can customize later
+            SysIdRoutine.Mechanism(
+                self.apply_voltage,
+                self._log_shooter_sysid,
+                self
+    )
 )
 
 
@@ -162,8 +161,21 @@ class ShooterSystem(Subsystem):
     def apply_voltage(self,volts: float):
         self.leader_motor(self.voltage_control.with_output(volts))
 
-    def log(self,log:SysIdRoutineLog):
-        m = log.mechanism("shooter")
-        m.voltage(self.leader.get_motor_voltage().value)
-        m.angularPosition(self.leader.get_position().value * 2 * math.pi)
-        m.angularVelocity(self.leader.get_velocity().value * 2 * math.pi)
+  
+    def _log_shooter_sysid(self, log: SysIdRoutineLog) -> None:
+        log.motor("shooter_leader").voltage(
+            self.leader_motor.get_motor_voltage().value_as_double
+        ).angularVelocity(self.leader_motor.get_velocity().value_as_double)
+
+
+    def sysid_quasistatic_forward(self):
+        return self.sysid.quasistatic(SysIdRoutine.Direction.kForward)
+
+    def sysid_quasistatic_reverse(self):
+        return self.sysid.quasistatic(SysIdRoutine.Direction.kReverse)
+
+    def sysid_dynamic_forward(self):
+        return self.sysid.dynamic(SysIdRoutine.Direction.kForward)
+
+    def sysid_dynamic_reverse(self):
+        return self.sysid.dynamic(SysIdRoutine.Direction.kReverse)

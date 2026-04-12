@@ -91,16 +91,16 @@ class RobotContainer:
 #            self.drivetrain.apply_request(lambda: idle).ignoringDisable(True)
 #        )
 
-        self._joystick.button(4).onTrue(self.rotateToZero)
+        self._joystick.button(1).onTrue(self.shooter.sysid_quasistatic_forward())
         
-        self._joystick.button(3).onTrue(self.rotateTo90)
+        self._joystick.button(2).onTrue(self.shooter.sysid_quasistatic_reverse())
 
-        self._joystick.button(1).onTrue(self.rotateTo180)
+        self._joystick.button(3).onTrue(self.shooter.sysid_dynamic_forward())
 
-        self._joystick.button(2).onTrue(self.rotateTo270)
+        self._joystick.button(4).onTrue(self.shooter.sysid_dynamic_reverse())
 
 #        self._joystick.button(5).onTrue(self.headingController.runOnce(
-#            lambda:self.headingController.set_forward_direction()))
+#            lambda:self.headingCntroller.set_forward_direction()))
 
 
         self._joystick.button(6).onTrue(self.slow_mode_on)
