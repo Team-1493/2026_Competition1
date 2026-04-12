@@ -47,6 +47,7 @@ class IntakeSystem(Subsystem):
         self.intake_state = False
         self.intake_set_value = 0
         self.clamp_den=50
+        self.intake_velocity = 0        
         SmartDashboard.putNumber("Intake Clamp Den",self.clamp_den)
     
         """"
@@ -112,6 +113,7 @@ class IntakeSystem(Subsystem):
             if self.arm_velocity==0 and self.arm_position != 0:
                 self.arm_motor.set_position(0)
 
+
     
     def intake(self):
         self.intake_state = True
@@ -123,10 +125,9 @@ class IntakeSystem(Subsystem):
 
 
     def intake_run(self):
-        current_velocity = abs(self.intake_motor.get_velocity().value_as_double)  # rotations/sec
 
-        if current_velocity > self.intake_max_vel:
-            error = current_velocity - self.intake_max_vel
+        if self.intake_velocity > self.intake_max_vel:
+            error = self.intake_velocity - self.intake_max_vel
             scale = 1.0 - min(error / 50.0, 1.0)  # tune 50
 #            scale = abs(self.intake_max_vel / current_velocity)
 #            tc = self.intake_set_value * scale
@@ -187,10 +188,16 @@ class IntakeSystem(Subsystem):
         self.arm_motor.set_position(0)
 
     def write_to_dashboard(self):
-        SmartDashboard.putBoolean("Up Limit Switch", self.lsu)
-        SmartDashboard.putBoolean("Down Limit Switch", self.lsd)
-        SmartDashboard.putNumber("Arm Position", self.arm_position)        
-        
+#        SmartDashboard.putBoolean("Up Limit Switch", self.lsu)
+#        SmartDashboard.putBoolean("Down Limit Switch", self.lsd)
+#        SmartDashboard.putNumber("Arm Position", self.arm_position)
+        SmartDashboard.putNumber("Intake vel", self.current_velocity)
+        self.intake_velocity = self.intake_motor.get_velocity().value_as_double
+        self.intake_volt = self.intake_motor.get_motor_voltage().value_as_double
+        self.intake_tc = self.intake_motor.get_stator_current().value_as_double                
+        SmartDashboard.putNumber("Intake vel", self.intake_velocity)
+        SmartDashboard.putNumber("Intake volt", self.intake_volt)
+        SmartDashboard.putNumber("Intake tc", self.intake_tc)                        
     def setup(self):
         self.goal_down = ConstantValues.IntakeConstants.MAX_DOWN_ROTATION
         self.goal_up = ConstantValues.IntakeConstants.MAX_UP_ROTATION
@@ -223,7 +230,8 @@ class IntakeSystem(Subsystem):
         cfgIntake.current_limits.with_supply_current_limit_enable(True)
         cfgIntake.current_limits.supply_current_lower_limit=ConstantValues.IntakeConstants.INTAKE_LOWERLIMIT_CL
         cfgIntake.current_limits.supply_current_lower_time=ConstantValues.IntakeConstants.INTAKE_LOWERTIME_CL
-                
+        cfgIntake.torque_current.peak_forward_torque_current=ConstantValues.IntakeConstants.INTAKE_STATOR_CL
+        cfgIntake.torque_current.peak_reverse_torque_current=-ConstantValues.IntakeConstants.INTAKE_STATOR_CL                       
         self.intake_motor.configurator.apply(cfgIntake)
         self.intake_follower_motor.configurator.apply(cfgIntake)    
 
