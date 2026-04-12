@@ -1,6 +1,7 @@
 from commands2 import Command, Subsystem
 from commands2.sysid import SysIdRoutine
 from wpilib.sysid import SysIdRoutineLog
+from wpilib.sysid import SysIdRoutineConfig
 from wpilib import SmartDashboard
 from phoenix6 import hardware, configs, controls
 from phoenix6.signals import MotorAlignmentValue
@@ -79,6 +80,20 @@ class ShooterSystem(Subsystem):
 #        self.feeder_motor.optimize_bus_utilization_for_all([self.feeder2_motor,self.feeder2_motor])
         
 
+
+
+
+        self.sysid = SysIdRoutine(
+            lambda volts: self.leader_motor.set_control(
+                self.voltage_control.with_output(volts)),
+            lambda log: log.motor("shooter")
+            .voltage(self.leader_motor.get_motor_voltage().value_as_double)
+        .angularVelocity(self.leader_motor.get_velocity().value_as_double)
+        .angularPosition(self.leader_motor.get_position().value_as_double),
+    self
+)
+
+
     def periodic(self): 
         pass
 
@@ -126,21 +141,6 @@ class ShooterSystem(Subsystem):
         SmartDashboard.putNumber('Feeder1 actual velocity',self.feeder_motor.get_velocity().value_as_double)
 
 
-    def _run_shooter_sysid(self, voltage) -> None:
-        voltage_output = getattr(voltage, "value", voltage)
-        self.leader_motor.set_control(self.voltage_control.with_output(voltage_output))
-
-    def _log_shooter_sysid(self, log: SysIdRoutineLog) -> None:
-        log.motor("shooter_leader").voltage(
-            self.leader_motor.get_motor_voltage().value_as_double
-        ).angularVelocity(self.leader_motor.get_velocity().value_as_double)
-
-    def shooter_sysid_quasistatic(self, direction: SysIdRoutine.Direction) -> Command:
-        return self.sysid_routine.quasistatic(direction)
-
-    def shooter_sysid_dynamic(self, direction: SysIdRoutine.Direction) -> Command:
-        return self.sysid_routine.dynamic(direction)
-
     def update_constants(self):
         self.leader_cfg.slot0.k_v = SmartDashboard.getNumber('Leader KV', 0)
         self.leader_cfg.slot0.k_p = SmartDashboard.getNumber('Leader KP', 0)
@@ -154,3 +154,16 @@ class ShooterSystem(Subsystem):
         self.conveyor_velocity = SmartDashboard.getNumber('Conveyor Velocity', 0)
         self.conveyor_voltage = SmartDashboard.getNumber('Shooter conveyor V', 0)
 
+
+
+
+        ## SYSID STUFF
+
+    def apply_voltage(self,volts: float):
+        self.leader_motor(self.voltage_control.with_output(volts))
+
+    def log(self,log:SysIdRoutineLog):
+        m = log.mechanism("shooter")
+        m.voltage(self.leader.get_motor_voltage().value)
+        m.angularPosition(self.leader.get_position().value * 2 * math.pi)
+        m.angularVelocity(self.leader.get_velocity().value * 2 * math.pi)
