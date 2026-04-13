@@ -17,6 +17,7 @@ from telemetry import Telemetry
 from subsystems.Drive.heading_controller import HeadingController
 from subsystems.Vision.limelight_system import LLsystem
 #from subsystems.laser_can import LaserCAN
+from subsystems.led import led_system
 from subsystems.intake import IntakeSystem
 from subsystems.shooter import ShooterSystem
 from Commands.agitate_intake import AgitateIntake
@@ -35,7 +36,7 @@ class RobotContainer:
 
     def __init__(self) -> None:
         ""
-    
+        self.led=led_system()
 #        self.timer = Timer()
 #        self.timer.reset()
 #        self.timer.start()
