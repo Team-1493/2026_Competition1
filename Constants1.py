@@ -90,8 +90,8 @@ class ConstantValues():
     
 
     class IntakeConstants():
-        INTAKE_VOLTAGE = -8 # -25
-        INTAKE_AUTO_VOLTAGE = -8#  -25
+        INTAKE_VOLTAGE = -4.5 # -25
+        INTAKE_AUTO_VOLTAGE = -8#  -251
         INTAKE_MAX_VEL =45    
         INTAKE_STATOR_CL = 100#35
         INTAKE_SUPPLY_CL = 100#35

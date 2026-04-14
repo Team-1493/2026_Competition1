@@ -47,7 +47,7 @@ class RobotContainer:
         self.headingController = HeadingController.getInstance()        
         self.intake = IntakeSystem.getInstance()
         self.shooter = ShooterSystem.getInstance()   
-#        self.LED =  led_system()
+        self.LED =  led_system()
         self.shoot_command = ShootCommand()
         self.intake_command = IntakeCommand()  
         self.agitate_command = AgitateIntake()          
