@@ -34,7 +34,8 @@ class ShootCommandAuto(commands2.Command):
             self.intake.stop_conveyor()
 
         if self.timer.get()>1:
-            self.intake.start_conveyor()            
+            self.intake.start_conveyor()    
+            self.intake.intake()            
 #            self.intake.arm_to_position(0.1 + 0.1*math.sin(1.5*self.timer.get()*math.pi) )
             pos = min(0.18,0.18*self.timer.get()/4.5)
             self.intake.arm_to_position(pos )
@@ -43,8 +44,10 @@ class ShootCommandAuto(commands2.Command):
     def end(self,interrupted:bool):
         self.intake.stop_arm()
         self.intake.stop_conveyor()
-        self.shooter.stop_conveyor()
+        self.intake.stop_intake()
         self.shooter.stop_shooter()
+        self.shooter.stop_conveyor()
+        
     @override
     def isFinished(self):
         return self.timer.get()>self.time

@@ -67,7 +67,6 @@ class IntakeSystem(Subsystem):
 #        self.intake_motor.get_motor_voltage().set_update_frequency(200)
 #        self.intake_motor.optimize_bus_utilization()
 
-        SmartDashboard.putString("Intake State", "XXX")
 
         self.voltage_out = controls.VoltageOut(0)
         self.intake_vel = controls.VelocityTorqueCurrentFOC(0)
@@ -83,13 +82,6 @@ class IntakeSystem(Subsystem):
     def periodic(self):
 
         BaseStatusSignal.refresh_all(self.signals)
-
-        self.intake_actual_SC=self.intake_motor.get_stator_current().value_as_double
-        self.intakeFollower_actual_SC=self.intake_follower_motor.get_stator_current().value_as_double        
-
-        self.intake_actual_V=self.intake_motor.get_motor_voltage().value_as_double
-        self.intakeFollower_actual_V=self.intake_follower_motor.get_motor_voltage().value_as_double        
-
 
         self.arm_position = self.pos_signal.value_as_double
         self.arm_velocity = self.vel_signal.value_as_double      
@@ -159,7 +151,7 @@ class IntakeSystem(Subsystem):
 
     def arm_to_position(self, position: float):
         self.current_goal_position = position 
-#        self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))        
+        self.arm_motor.set_control(self.arm_position_torque.with_position(self.current_goal_position))        
 
     def arm_manualUp(self):
         self.arm_motor.set_control(self.arm_manualControl.with_output(.08)) 
@@ -175,11 +167,6 @@ class IntakeSystem(Subsystem):
         SmartDashboard.putBoolean("Up Limit Switch", self.lsu)
         SmartDashboard.putBoolean("Down Limit Switch", self.lsd)
         SmartDashboard.putNumber("Arm Position", self.arm_position)
-        SmartDashboard.putNumber("IntakeMoter SC act",self.intake_actual_SC)
-        SmartDashboard.putNumber("IntakeMoter V act",self.intake_actual_V)                      
-        SmartDashboard.putNumber("IntakeFollower SC act",self.intakeFollower_actual_SC)
-        SmartDashboard.putNumber("IntakeFollower V act",self.intakeFollower_actual_V)         
-#        SmartDashboard.putNumber("Arm Velocity", arm_velocity)
         
         
     def setup(self):
@@ -208,11 +195,11 @@ class IntakeSystem(Subsystem):
 
         cfgIntake = configs.TalonFXConfiguration()
         cfgIntake.motor_output.neutral_mode=NeutralModeValue.COAST
-        cfgIntake.current_limits.stator_current_limit=30
-        cfgIntake.current_limits.with_stator_current_limit_enable(False)
-        cfgIntake.current_limits.supply_current_limit=30
-        cfgIntake.current_limits.with_supply_current_limit_enable(False)
-        cfgIntake.current_limits.supply_current_lower_limit=25
+        cfgIntake.current_limits.stator_current_limit=100
+        cfgIntake.current_limits.with_stator_current_limit_enable(True)
+        cfgIntake.current_limits.supply_current_limit=100
+        cfgIntake.current_limits.with_supply_current_limit_enable(True)
+        cfgIntake.current_limits.supply_current_lower_limit=90
         cfgIntake.current_limits.supply_current_lower_time=.25 
 
         cfgIntake.slot0.kP=SmartDashboard.getNumber("IntakeMoter kP",1)    

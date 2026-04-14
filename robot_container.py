@@ -3,7 +3,7 @@
 # the WPILib BSD license file in the root directory of this project.
 #
 
-from commands2 import InstantCommand, ConditionalCommand
+from commands2 import InstantCommand
 from commands2.button import CommandXboxController
 from wpilib import DataLogManager, SmartDashboard
 from pathplannerlib.auto import AutoBuilder,PathPlannerAuto 
@@ -33,17 +33,8 @@ class RobotContainer:
     def __init__(self) -> None:
         ""
     
-#        self.timer = Timer()e
-#        self.timer.reset()
-#        self.timer.start()
-
         self.constants = ConstantValues.getInstance()
- #       while self.timer.get()<3:""
-#            print("Waiting for Warmup",round(self.timer.get(),0))
         self.drivetrain = DrivetrainGenerator.getInstance()
- #       while self.timer.get()<5:""
-#            print("Creating CAN Devices",round(self.timer.get(),0))
-
         self.headingController = HeadingController.getInstance()        
         self.intake = IntakeSystem.getInstance()
         self.shooter = ShooterSystem.getInstance()   
@@ -74,6 +65,8 @@ class RobotContainer:
         
         self.slow_mode_on = InstantCommand(lambda:self.drive_teleop_command.slow_mode_on())
         self.slow_mode_off = InstantCommand(lambda:self.drive_teleop_command.slow_mode_off())        
+        self.arm_up_command = self.intake.runOnce(lambda:self.intake.arm_up())
+        self.arm_down_command = self.intake.runOnce(lambda:self.intake.arm_down())        
 #        self.setForwardDirection = self.headingController.set_forward_directionCommand()                     
         self.createPPStuff()
         self.set_up_telemetry()
@@ -109,23 +102,18 @@ class RobotContainer:
 
 #        self._joystick.button(7).onTrue(self.drivetrain.runOnce(lambda:self.drivetrain.reset_pose(Pose2d(Translation2d(0.3,0.66),Rotation2d(0)))))
         
+
         self._joystick.button(7).whileTrue(self.autoPilot_command    
             .finallyDo(self.headingController.setTargetRotationInt) ) 
 
-        self._joystick.button(8).whileTrue(ConditionalCommand(
-            self.arcdrive,
-            self.autoPilot_to_shoot,
-            lambda:self.drivetrain.in_shoot_zone()
-        ).finallyDo(self.headingController.setTargetRotationInt))
+        self._joystick.button(8).whileTrue(
+            self.arcdrive.finallyDo(
+                self.headingController.setTargetRotationInt))
 
 
+        self._joystick_op.povUp().onTrue(self.arm_up_command)
+        self._joystick_op.povDown().onTrue(self.arm_down_command)        
         self._joystick_op.button(5).whileTrue(self.intake_command)
-
-        (self._joystick_op.button(1) and ~self._joystick_op.button(6)).onTrue(
-            lambda:self.shooter.shoot(8))
-        (~self._joystick_op.button(1) and  ~self._joystick_op.button(6)).onTrue(
-            lambda:self.shooter.shoot(8))
-
         self._joystick_op.button(6).whileTrue(self.shoot_command)
         self._joystick_op.button(7).whileTrue(self.agitate_command)                
         
@@ -141,10 +129,10 @@ class RobotContainer:
         self.headingController.setTargetRotationInt(True)  
     
     def write_to_dashboard(self):
-        self.drivetrain.write_to_dashboard()
-        self.intake.write_to_dashboard()
+#        self.drivetrain.write_to_dashboard()
+#        self.intake.write_to_dashboard()
 #        self.shooter.write_to_dashboard()
-#        pass
+        pass
        
     def apply_teleop_gains(self):
         self.drivetrain.apply_teleop_gains()

@@ -32,8 +32,9 @@ class ShootCommand(commands2.Command):
             self.intake.stop_conveyor()
 
         if self.timer.get()>1:
-            self.intake.start_conveyor()            
-#            self.intake.arm_to_position(0.1 + 0.1*math.sin(1.5*self.timer.get()*math.pi) )
+            self.intake.start_conveyor()
+            self.intake.intake()            
+            self.intake.arm_to_position(0.1 + 0.1*math.sin(1.5*self.timer.get()*math.pi) )
             pos = min(0.18,0.18*self.timer.get()/4.5)
             self.intake.arm_to_position(pos )
 
@@ -41,7 +42,8 @@ class ShootCommand(commands2.Command):
     def end(self,interrupted:bool):
         SmartDashboard.putString("Shoot State", "NOT")                                   
         self.intake.stop_arm()
-        self.intake.stop_conveyor()
+        self.intake.stop_conveyor()        
+        self.intake.stop_intake()
         self.shooter.stop_conveyor()
         self.shooter.stop_shooter()
     @override

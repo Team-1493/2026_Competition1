@@ -70,8 +70,8 @@ class ShooterSystem(Subsystem):
         for motor in self.opposite_followers:
             motor.get_velocity().set_update_frequency(200)
 
-        for motor in self.all_motors:
-            motor.optimize_bus_utilization()
+#        for motor in self.all_motors:
+#            motor.optimize_bus_utilization()
 
 
 

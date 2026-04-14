@@ -99,7 +99,7 @@ class ConstantValues():
         INTAKE_LOWERTIME_CL = 1
         INTAKE_CONVEYOR_VOLTAGE = -10
         INTAKE_CONVEYOR_SLOW_VOLTAGE = -2        
-        MAX_UP_ROTATION = .26
+        MAX_UP_ROTATION = .25
         MAX_DOWN_ROTATION = 0.00
         ARM_KP = 50
         ARM_KD = 0
