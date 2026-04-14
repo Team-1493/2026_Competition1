@@ -7,13 +7,14 @@ from subsystems.intake import IntakeSystem
 from Utilities.helper_methods import HelperMethods
 
 class ShootCommandAuto(commands2.Command):
-    def __init__(self):
+    def __init__(self, time=4.0):
         SmartDashboard.putNumber("Shooter Speed Calculated",0)   
         SmartDashboard.putNumber("Shooter Speed SF",1)            
         SmartDashboard.putString("Shoot State", "XXX")                            
         self.shooter = ShooterSystem.getInstance()
         self.intake = IntakeSystem.getInstance()
         self.timer = Timer()
+        self.time = time
         self.addRequirements(self.shooter)#,self.intake)
 
     @override
@@ -46,7 +47,7 @@ class ShootCommandAuto(commands2.Command):
         self.shooter.stop_shooter()
     @override
     def isFinished(self):
-        return self.timer.get()>4
+        return self.timer.get()>self.time
     
     def get_shooter_speed(self):
         shooter_speed= SmartDashboard.getNumber('Shooting Velocity', 0)

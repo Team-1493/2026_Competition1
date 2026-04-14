@@ -90,15 +90,15 @@ class ConstantValues():
     
 
     class IntakeConstants():
-        INTAKE_VOLTAGE = -8
-        INTAKE_AUTO_VOLTAGE = -8
-        INTAKE_MAX_VEL =10    
-        INTAKE_STATOR_CL = 25
-        INTAKE_SUPPLY_CL = 25
-        INTAKE_LOWERLIMIT_CL = 20
-        INTAKE_LOWERTIME_CL = 0.25
+        INTAKE_VOLTAGE = -8 # -25
+        INTAKE_AUTO_VOLTAGE = -8#  -25
+        INTAKE_MAX_VEL =45    
+        INTAKE_STATOR_CL = 100#35
+        INTAKE_SUPPLY_CL = 100#35
+        INTAKE_LOWERLIMIT_CL = 100#30
+        INTAKE_LOWERTIME_CL = 1
         INTAKE_CONVEYOR_VOLTAGE = -10
-        INTAKE_CONVEYOR_SLOW_VOLTAGE = -4        
+        INTAKE_CONVEYOR_SLOW_VOLTAGE = -2        
         MAX_UP_ROTATION = .26
         MAX_DOWN_ROTATION = 0.00
         ARM_KP = 50

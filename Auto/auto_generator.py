@@ -48,6 +48,10 @@ class AutoGenerator():
         NamedCommands.registerCommand('ArmDown', 
                         self.intake.runOnce(lambda:self.intake.arm_down()))
         NamedCommands.registerCommand('Shoot', ShootCommandAuto())
+        NamedCommands.registerCommand('Shoot_2s', ShootCommandAuto(2))
+        NamedCommands.registerCommand('Shoot_2_5s', ShootCommandAuto(2.5))
+        NamedCommands.registerCommand('Shoot_3_s', ShootCommandAuto(3))
+        NamedCommands.registerCommand('Shoot_3_5s', ShootCommandAuto(3.5))
         NamedCommands.registerCommand('Shoot_Left_2a', ShootCommandAutoFixed(shoot_speed=8.4))
         NamedCommands.registerCommand('Shoot_Right_2a', ShootCommandAutoFixed(shoot_speed=8.4))
         NamedCommands.registerCommand('Shoot_Right_4a', ShootCommandAutoFixed(shoot_speed=8.4))

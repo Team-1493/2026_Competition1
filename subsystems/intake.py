@@ -26,10 +26,8 @@ class IntakeSystem(Subsystem):
 #        self.intake_follower_motor.set_control(controls.Follower(intakeMotorID, motor_alignment=MotorAlignmentValue.OPPOSED))               
         self.arm_motor = hardware.TalonFX(armMotorID)
         self.conveyor_motor = hardware.TalonFX(conveyorMotorID)
-
         self.up_limit_switch = DigitalInput(dioPortUp)
         self.down_limit_switch = DigitalInput(dioPortDown)
-        
         self.arm_position_torque = controls.MotionMagicVoltage(0,True).with_slot(0)        
         self.arm_manualControl = controls.DutyCycleOut(0)
         self.brake = controls.NeutralOut()
@@ -44,10 +42,12 @@ class IntakeSystem(Subsystem):
         self.intake_actual_V = 0
         self.intakeFollower_actual_SC = 0 
         self.intakeFollower_actual_V = 0  
-        self.intake_state = False
-        self.intake_set_value = 0
-        self.clamp_den=50
-        SmartDashboard.putNumber("Intake Clamp Den",self.clamp_den)
+        SmartDashboard.putNumber("IntakeMoter velTC",20)
+        SmartDashboard.putNumber("IntakeMoter kP",1)                
+        SmartDashboard.putNumber("IntakeMoter SC act",self.intake_actual_SC)
+        SmartDashboard.putNumber("IntakeMoter V act",self.intake_actual_V)                      
+        SmartDashboard.putNumber("IntakeFollower SC act",self.intakeFollower_actual_SC)
+        SmartDashboard.putNumber("IntakeFollower V act",self.intakeFollower_actual_V)
     
         """"
         self.arm_motor.get_position().set_update_frequency(200)
@@ -67,10 +67,12 @@ class IntakeSystem(Subsystem):
 #        self.intake_motor.get_motor_voltage().set_update_frequency(200)
 #        self.intake_motor.optimize_bus_utilization()
 
+        SmartDashboard.putString("Intake State", "XXX")
 
         self.voltage_out = controls.VoltageOut(0)
-        self.intake_tc = controls.TorqueCurrentFOC(0)
+        self.intake_vel = controls.VelocityTorqueCurrentFOC(0)
         self.arm_motor.set_position(0)
+
 
         self.setup()
 
@@ -114,31 +116,14 @@ class IntakeSystem(Subsystem):
 
     
     def intake(self):
-        self.intake_state = True
-        self.intake_set_value = self.intake_teleop_set_value
+        self.intake_motor.set_control(self.voltage_out.with_output(ConstantValues.IntakeConstants.INTAKE_VOLTAGE))
+        self.intake_follower_motor.set_control(self.voltage_out.with_output(-ConstantValues.IntakeConstants.INTAKE_VOLTAGE))
 
     def intake_auto(self):
-        self.intake_state = True
-        self.intake_set_value = self.intake_auto_set_value        
-
-
-    def intake_run(self):
-        current_velocity = abs(self.intake_motor.get_velocity().value_as_double)  # rotations/sec
-
-        if current_velocity > self.intake_max_vel:
-            error = current_velocity - self.intake_max_vel
-            scale = 1.0 - min(error / 50.0, 1.0)  # tune 50
-#            scale = abs(self.intake_max_vel / current_velocity)
-#            tc = self.intake_set_value * scale
-        else:
-            tc = self.intake_set_value
-        
-        self.intake_motor.set_control(self.intake_tc.with_output(tc))
-        self.intake_follower_motor.set_control(self.intake_tc.with_output(-tc))
-
+        self.intake_motor.set_control(self.voltage_out.with_output(ConstantValues.IntakeConstants.INTAKE_AUTO_VOLTAGE))
+        self.intake_follower_motor.set_control(self.voltage_out.with_output(-ConstantValues.IntakeConstants.INTAKE_AUTO_VOLTAGE))        
 
     def stop_intake(self):
-        self.intake_state = False
         self.intake_motor.set_control(self.brake)
         self.intake_follower_motor.set_control(self.brake)
 
@@ -189,7 +174,13 @@ class IntakeSystem(Subsystem):
     def write_to_dashboard(self):
         SmartDashboard.putBoolean("Up Limit Switch", self.lsu)
         SmartDashboard.putBoolean("Down Limit Switch", self.lsd)
-        SmartDashboard.putNumber("Arm Position", self.arm_position)        
+        SmartDashboard.putNumber("Arm Position", self.arm_position)
+        SmartDashboard.putNumber("IntakeMoter SC act",self.intake_actual_SC)
+        SmartDashboard.putNumber("IntakeMoter V act",self.intake_actual_V)                      
+        SmartDashboard.putNumber("IntakeFollower SC act",self.intakeFollower_actual_SC)
+        SmartDashboard.putNumber("IntakeFollower V act",self.intakeFollower_actual_V)         
+#        SmartDashboard.putNumber("Arm Velocity", arm_velocity)
+        
         
     def setup(self):
         self.goal_down = ConstantValues.IntakeConstants.MAX_DOWN_ROTATION
@@ -217,20 +208,16 @@ class IntakeSystem(Subsystem):
 
         cfgIntake = configs.TalonFXConfiguration()
         cfgIntake.motor_output.neutral_mode=NeutralModeValue.COAST
-        cfgIntake.current_limits.stator_current_limit=ConstantValues.IntakeConstants.INTAKE_STATOR_CL
-        cfgIntake.current_limits.with_stator_current_limit_enable(True)
-        cfgIntake.current_limits.supply_current_limit=ConstantValues.IntakeConstants.INTAKE_SUPPLY_CL
-        cfgIntake.current_limits.with_supply_current_limit_enable(True)
-        cfgIntake.current_limits.supply_current_lower_limit=ConstantValues.IntakeConstants.INTAKE_LOWERLIMIT_CL
-        cfgIntake.current_limits.supply_current_lower_time=ConstantValues.IntakeConstants.INTAKE_LOWERTIME_CL
-                
+        cfgIntake.current_limits.stator_current_limit=30
+        cfgIntake.current_limits.with_stator_current_limit_enable(False)
+        cfgIntake.current_limits.supply_current_limit=30
+        cfgIntake.current_limits.with_supply_current_limit_enable(False)
+        cfgIntake.current_limits.supply_current_lower_limit=25
+        cfgIntake.current_limits.supply_current_lower_time=.25 
+
+        cfgIntake.slot0.kP=SmartDashboard.getNumber("IntakeMoter kP",1)    
+        
         self.intake_motor.configurator.apply(cfgIntake)
-        self.intake_follower_motor.configurator.apply(cfgIntake)    
+        self.intake_follower_motor.configurator.apply(cfgIntake)        
 
-        self.intake_max_vel = ConstantValues.IntakeConstants.INTAKE_MAX_VEL    
-        self.intake_teleop_set_value = ConstantValues.IntakeConstants.INTAKE_VOLTAGE
-        self.intake_auto_set_value = ConstantValues.IntakeConstants.INTAKE_AUTO_VOLTAGE        
-        self.clamp_den = SmartDashboard.getNumber("Intake Clamp Den",self.clamp_den)
 
-        self.conveyor_voltage = ConstantValues.IntakeConstants.INTAKE_CONVEYOR_VOLTAGE
-        self.conveyor_slow_voltage = ConstantValues.IntakeConstants.INTAKE_CONVEYOR_SLOW_VOLTAGE

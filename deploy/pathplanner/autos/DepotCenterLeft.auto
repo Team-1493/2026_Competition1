@@ -7,31 +7,43 @@
         {
           "type": "path",
           "data": {
-            "pathName": "square_1"
+            "pathName": "CenterLeft3_1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "square_2"
+            "pathName": "CenterLeft3_2"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot_2_5s"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "square_3"
+            "pathName": "Copy of CenterLeft_1a"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "square_4"
+            "pathName": "CenterLeft3_5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Squares",
+  "folder": null,
   "choreoAuto": false
 }

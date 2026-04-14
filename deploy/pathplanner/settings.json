@@ -10,12 +10,10 @@
     "CenterRight",
     "DepotCenterLeft",
     "Get_Shoot",
-    "Left_Depot_Out"
+    "Left_Depot_Out",
+    "New Folder"
   ],
-  "autoFolders": [
-    "OutBack",
-    "Squares"
-  ],
+  "autoFolders": [],
   "defaultMaxVel": 2.25,
   "defaultMaxAccel": 2.5,
   "defaultMaxAngVel": 360.0,

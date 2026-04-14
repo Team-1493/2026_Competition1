@@ -120,6 +120,12 @@ class RobotContainer:
 
 
         self._joystick_op.button(5).whileTrue(self.intake_command)
+
+        (self._joystick_op.button(1) and ~self._joystick_op.button(6)).onTrue(
+            lambda:self.shooter.shoot(8))
+        (~self._joystick_op.button(1) and  ~self._joystick_op.button(6)).onTrue(
+            lambda:self.shooter.shoot(8))
+
         self._joystick_op.button(6).whileTrue(self.shoot_command)
         self._joystick_op.button(7).whileTrue(self.agitate_command)                
         

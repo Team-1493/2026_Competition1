@@ -16,11 +16,11 @@ class ap_driver:
 
 
     def __init__(self):        
-        self.kConstraints = APConstraints(2.25,15,24)
+        self.kConstraints = APConstraints(2,12,15)
         self.kProfile = (
             APProfile(self.kConstraints).
-            with_ErrorXY(0.06).
+            with_ErrorXY(0.08).
             with_ErrorTheta(0.05).
-            with_BeelineRadius(0.2)
+            with_BeelineRadius(0.8)
         )
         self.kAutopilot = Autopilot(self.kProfile)

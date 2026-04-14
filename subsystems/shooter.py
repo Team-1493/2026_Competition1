@@ -61,21 +61,19 @@ class ShooterSystem(Subsystem):
 
         self.conveyor_velocity = ConstantValues.ShooterConstants.CONVEYOR_VELOCITY
         self.velocity = ConstantValues.ShooterConstants.SHOOTING_VELOCITY
- 
-        SmartDashboard.putNumberArray("Shoot Dist data",[2.01,2.22, 2.47, 2.669, 3.03, 3.35, 3.78, 4.09])
-        SmartDashboard.putNumberArray("Shoot Speed data",[7.9, 8.10, 8.30, 8.550, 8.80, 9.40, 9.70, 10.15])
 
 
-        
-        for motor in self.all_motors:
+        self.leader_motor.get_velocity().set_update_frequency(200)
+        for motors in self.followers:
             motor.get_velocity().set_update_frequency(200)
-        
-#        self.feeder_motor.get_velocity().set_update_frequency(100)
-#        self.feeder2_motor.get_velocity().set_update_frequency(100)
-#        self.feeder_motor.get_motor_voltage().set_update_frequency(100)
-#        self.feeder2_motor.get_motor_voltage().set_update_frequency(100)        
-#        self.feeder_motor.optimize_bus_utilization_for_all([self.feeder2_motor,self.feeder2_motor])
-        
+
+        for motor in self.opposite_followers:
+            motor.get_velocity().set_update_frequency(200)
+
+        for motor in self.all_motors:
+            motor.optimize_bus_utilization()
+
+
 
     def periodic(self): 
         pass
@@ -110,18 +108,10 @@ class ShooterSystem(Subsystem):
         self.feeder2_motor.set_control(self.brake)
   
     def mean_shooter_velocity(self):
-        return sum([abs(m.get_velocity().value_as_double) for m in self.all_motors]) / len(self.all_motors)
+        return sum([abs(m.get_velocity().value_as_double) for m in self.all_motors]) / 4.
 
     def write_to_dashboard(self):
-        i=1
-        for motor in self.all_motors:
-            v=motor.get_velocity().value_as_double
-            SmartDashboard.putNumber("Shooter"+str(i)+" Actual",v)
-            i=i+1
-
-
         SmartDashboard.putNumber('Shooter mean velocity',self.mean_shooter_velocity())
-        SmartDashboard.putNumber('Feeder1 actual velocity',self.feeder_motor.get_velocity().value_as_double)
 
 
     def update_constants(self):

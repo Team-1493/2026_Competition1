@@ -17,9 +17,15 @@ class HelperMethods():
 #    data=[[2.01,2.22,2.47,2.669,3.03,3.35,3.78,4.09],
 #          [7.8,7.95,8.3,8.55,8.8,9.4,9.7,10.15]]
 
-    data=[[2.01,2.22, 2.47, 2.669, 3.03, 3.35, 3.78, 4.09],
-          [7.9, 8.10, 8.30, 8.550, 8.80, 9.40, 9.70, 10.15]]
+    datadist1 = [2.01,  2.22, 2.47, 2.67, 2.79,  3.03, 3.12, 3.34, 3.50, 3.78, 4.09]
+    dataspd1 =  [8.10,  8.45, 8.68, 8.80, 8.89,  9.10, 9.25, 9.68, 9.72, 9.90, 10.1] 
+
+    data = [datadist1,dataspd1]
     
+
+    SmartDashboard.putNumberArray("Shoot Dist data",datadist1)
+    SmartDashboard.putNumberArray("Shoot Speed data",dataspd1)
+
 
     """ calculates a goal pose from a BLUE tag ID, including an x and y offset from the tag face
      if alliance is red, the corresponding red tag is used!
@@ -34,24 +40,6 @@ class HelperMethods():
         HelperMethods.data = [datadist1,dataspd1]
         print("***************************************  DATA NEW:  ",HelperMethods.data[0][0],"  ",HelperMethods.data[0][1])        
     
-    @staticmethod
-    def calculate_pose_goal_from_tag(i : int, x_offset = 0, y_offset = 0):
-        offset  = 0
-        perspRot=HelperMethods.dt.get_operator_forward_direction().degrees()
-        if perspRot==180:
-            offset =16
-        print("*****************  ",offset)
-        poseTag = ConstantValues.VisionConstants.tags_list[i-1-offset].pose.toPose2d()
-        rotTag = poseTag.rotation().radians()
-        transTag = poseTag.translation()
-        rotRobot=rotTag-pi
-
-        poseGoal =  Pose2d(
-            transTag.X()-x_offset*math.cos(rotTag)-y_offset*math.sin(rotTag),
-            transTag.Y()-x_offset*math.sin(rotTag)+(y_offset)*math.cos(rotTag),
-            Rotation2d(rotRobot))
-        return (poseGoal)
-
 
     def flip_coordinates(x,y):
         perspRot =HelperMethods.dt.get_operator_forward_direction().degrees()
@@ -94,7 +82,6 @@ class HelperMethods():
 
         x1, x2 = x[i-1], x[i]
         y1, y2 = y[i-1], y[i]
-
         t = (dist - x1) / (x2 - x1)
         return y1 + t * (y2 - y1)
 
