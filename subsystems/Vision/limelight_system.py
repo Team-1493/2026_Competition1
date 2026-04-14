@@ -29,7 +29,7 @@ class LLsystem(Subsystem):
         SmartDashboard.putNumber("CAM0 xoff",0)
         SmartDashboard.putNumber("CAM0 yoff",0)        
         self.print_counter = 0
-        self.print_interval = 10
+        self.print_interval = 25
         self.numCams = 2   # number of cameras on robot
 
 
@@ -50,7 +50,9 @@ class LLsystem(Subsystem):
 
         self.visionTimer = wpilib.Timer()
         self.set_id_filter_override(0,[2,3,4,5,8,9,10,11,18,19,20,21,24,25,26,27])
-        self.set_id_filter_override(1,[2,3,4,5,8,9,10,11,18,19,20,21,24,25,26,27])        
+        self.set_id_filter_override(1,[2,3,4,5,8,9,10,11,18,19,20,21,24,25,26,27])    
+
+        self.last_rot = 0    
         self.visionTimer.start()
 
 
@@ -60,12 +62,13 @@ class LLsystem(Subsystem):
 
     def periodic(self):
        # Run vision at 50 Hz
-        if self.visionTimer.advanceIfElapsed(0.02):
+        if self.visionTimer.advanceIfElapsed(0.05):
             self.currentPose = self.driveTrain.pose
             rot =  self.currentPose.rotation().degrees()
-            for i in range(self.numCams):    
-                LimelightHelpers.set_robot_orientation(
-                   self.constants.CAM_NAME[i],rot, 0, 0, 0, 0, 0)
+            if abs(rot-self.last_rot)>=1.0:
+                for i in range(self.numCams):    
+                    LimelightHelpers.set_robot_orientation(
+                    self.constants.CAM_NAME[i],rot, 0, 0, 0, 0, 0)            
             self.print_counter = self.print_counter+1
             
             self.update()
@@ -76,12 +79,12 @@ class LLsystem(Subsystem):
 #        current_estimate = [PoseEstimate(),PoseEstimate(),PoseEstimate(),PoseEstimate()]                
         estimate = PoseEstimate()
         
-        closestTagDist = [self.max_value]*4
-        closestTagID = [0]*4
-        closestAmb = [0]*4
-        acceptEstimate = [False]*4
-        stdXY = [self.max_value]*4
-        stdRot = [self.max_value]*4
+        closestTagDist = [self.max_value]*2
+        closestTagID = [0]*2
+        closestAmb = [0]*2
+        acceptEstimate = [False]*2
+        stdXY = [self.max_value]*2
+        stdRot = [self.max_value]*2
 
 
 

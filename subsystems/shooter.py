@@ -65,10 +65,10 @@ class ShooterSystem(Subsystem):
 
         self.leader_motor.get_velocity().set_update_frequency(200)
         for motors in self.followers:
-            motor.get_velocity().set_update_frequency(200)
+            motor.get_velocity().set_update_frequency(10)
 
         for motor in self.opposite_followers:
-            motor.get_velocity().set_update_frequency(200)
+            motor.get_velocity().set_update_frequency(10)
 
         for motor in self.all_motors:
             motor.optimize_bus_utilization()
@@ -76,6 +76,7 @@ class ShooterSystem(Subsystem):
 
 
     def periodic(self): 
+        self.leader_vel = self.leader_motor.get_velocity().value_as_double
         pass
 
     def shoot(self,vel):
@@ -96,9 +97,7 @@ class ShooterSystem(Subsystem):
   
     def move_conveyor(self):
         # If the shooter motor's velocity is around the threshold, THEN move the feeder
-        mean =  self.mean_shooter_velocity()
-#        SmartDashboard.putNumber("ShooterCheck",abs(self.velocity  - mean)/ (mean+0.0001))
-        if abs(self.velocity  - mean)/ (mean+0.0001) <= 0.08 or mean >= self.velocity * 0.98:
+        if abs(self.velocity  - self.leader_vel)/ (self.leader_vel+0.0001) <= 0.08 or self.leader_vel >= self.velocity * 0.98:
             self.feeder_motor.set_control(self.velocity_voltage.with_velocity(self.conveyor_velocity))
             self.feeder2_motor.set_control(self.velocity_voltage.with_velocity(self.conveyor_velocity))            
   
@@ -107,11 +106,9 @@ class ShooterSystem(Subsystem):
         self.feeder_motor.set_control(self.brake)
         self.feeder2_motor.set_control(self.brake)
   
-    def mean_shooter_velocity(self):
-        return sum([abs(m.get_velocity().value_as_double) for m in self.all_motors]) / 4.
-
+  
     def write_to_dashboard(self):
-        SmartDashboard.putNumber('Shooter mean velocity',self.mean_shooter_velocity())
+        SmartDashboard.putNumber('Shooter mean velocity',self.leader_vel())
 
 
     def update_constants(self):
