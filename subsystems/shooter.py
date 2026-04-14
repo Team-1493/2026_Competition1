@@ -82,7 +82,6 @@ class ShooterSystem(Subsystem):
         """
         Move the leader motor
         """
-        
         self.velocity = vel
         self.leader_motor.set_control(self.velocity_voltage.with_velocity(self.velocity))
   
@@ -93,7 +92,9 @@ class ShooterSystem(Subsystem):
     def immediate_move_conveyor(self):
         self.feeder_motor.set_control(self.velocity_voltage.with_velocity(self.conveyor_velocity))
         self.feeder2_motor.set_control(self.velocity_voltage.with_velocity(self.conveyor_velocity))        
-  
+    def reverse_move_conveyor(self):
+        self.feeder_motor.set_control(self.velocity_voltage.with_velocity(-self.conveyor_velocity))
+        self.feeder2_motor.set_control(self.velocity_voltage.with_velocity(-self.conveyor_velocity))        
     def move_conveyor(self):
         # If the shooter motor's velocity is around the threshold, THEN move the feeder
         mean =  self.mean_shooter_velocity()

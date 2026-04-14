@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "FeederStart"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "CenterRight1a"
@@ -19,13 +25,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot_Right_2a"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 4.0
+            "name": "Shoot_Slow_5"
           }
         }
       ]

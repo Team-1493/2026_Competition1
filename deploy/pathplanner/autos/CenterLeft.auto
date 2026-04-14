@@ -19,13 +19,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot_Left_2a"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 7.0
+            "name": "Shoot_Slow_4"
           }
         }
       ]

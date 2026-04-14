@@ -91,7 +91,7 @@ class IntakeSystem(Subsystem):
             if self.lsd:
                 self.arm_motor.set_position(0)
                 self.zeroed = True
-            elif not self.lsu:
+            elif self.lsu:
                 self.arm_motor.set_position(ConstantValues.IntakeConstants.ARM_FORWARDTHRESH)
                 self.zeroed = True
 
@@ -112,6 +112,7 @@ class IntakeSystem(Subsystem):
         self.intake_follower_motor.set_control(self.voltage_out.with_output(-ConstantValues.IntakeConstants.INTAKE_VOLTAGE))
 
     def intake_auto(self):
+        self.arm_down()
         self.intake_motor.set_control(self.voltage_out.with_output(ConstantValues.IntakeConstants.INTAKE_AUTO_VOLTAGE))
         self.intake_follower_motor.set_control(self.voltage_out.with_output(-ConstantValues.IntakeConstants.INTAKE_AUTO_VOLTAGE))        
 

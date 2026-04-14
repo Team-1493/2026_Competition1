@@ -47,13 +47,11 @@ class ShootCommandAuto(commands2.Command):
         self.intake.stop_intake()
         self.shooter.stop_shooter()
         self.shooter.stop_conveyor()
-        
     @override
     def isFinished(self):
         return self.timer.get()>self.time
-    
     def get_shooter_speed(self):
-        shooter_speed= SmartDashboard.getNumber('Shooting Velocity', 0)
+        shooter_speed= SmartDashboard.getNumber('Shooting Velocity', 0.1)
         if shooter_speed<0: 
              shooter_speed = HelperMethods.calculate_shoot_speed()
              shooter_speed=shooter_speed*SmartDashboard.getNumber("Shooter Speed SF",1)

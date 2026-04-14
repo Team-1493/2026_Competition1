@@ -133,7 +133,7 @@ class LLsystem(Subsystem):
 
 
                     if SmartDashboard.getBoolean("Vision Active",True):
-                     if closestAmb[i]<0.4:
+                     if closestAmb[i]<0.3:
                         x = self.current_estimate[i].pose.X() + SmartDashboard.getNumber("CAM0 xoff",0)
                         y = self.current_estimate[i].pose.Y()+ SmartDashboard.getNumber("CAM0 yoff",0)
                         r = self.current_estimate[i].pose.rotation().radians()

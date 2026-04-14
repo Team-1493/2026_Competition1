@@ -8,6 +8,7 @@ from Constants1 import ConstantValues
 from subsystems.Drive.drivetrain_generator import DrivetrainGenerator
 from Commands.stop_drive import StopDrive
 from subsystems.intake import IntakeSystem
+from subsystems.shooter import ShooterSystem
 from Commands.shoot_command_auto import ShootCommandAuto
 from Commands.shoot_command_auto_fixed  import ShootCommandAutoFixed
 from Commands.arc_drive import arcDrive
@@ -20,6 +21,7 @@ class AutoGenerator():
         self.constants = ConstantValues.AutoBuilderConstants
         self.driveTrain = DrivetrainGenerator.getInstance()
         self.intake = IntakeSystem.getInstance()
+        self.shooter = ShooterSystem.getInstance()
         self.driveRC=  swerve.requests.ApplyRobotSpeeds().with_drive_request_type(
             swerve.SwerveModule.DriveRequestType.VELOCITY)
         self.arcdrive = arcDrive(self.driveTrain)
@@ -44,7 +46,16 @@ class AutoGenerator():
 
         NamedCommands.registerCommand('ArmUp', 
                         self.intake.runOnce(lambda:self.intake.arm_up()))
-
+        NamedCommands.registerCommand('ArmDown',
+                        self.intake.runOnce(lambda:self.intake.arm_down()))
+        NamedCommands.registerCommand(
+            'FeederStart',
+            self.shooter.runOnce(lambda: self.shooter.reverse_move_conveyor())
+        )
+        NamedCommands.registerCommand(
+            'FeederStop',
+            self.shooter.runOnce(lambda: self.shooter.stop_conveyor())
+        )
         NamedCommands.registerCommand('ArmDown', 
                         self.intake.runOnce(lambda:self.intake.arm_down()))
         NamedCommands.registerCommand('Shoot', ShootCommandAuto())
@@ -52,9 +63,10 @@ class AutoGenerator():
         NamedCommands.registerCommand('Shoot_2_5s', ShootCommandAuto(2.5))
         NamedCommands.registerCommand('Shoot_3_s', ShootCommandAuto(3))
         NamedCommands.registerCommand('Shoot_3_5s', ShootCommandAuto(3.5))
-        NamedCommands.registerCommand('Shoot_Left_2a', ShootCommandAutoFixed(shoot_speed=8.4))
-        NamedCommands.registerCommand('Shoot_Right_2a', ShootCommandAutoFixed(shoot_speed=8.4))
-        NamedCommands.registerCommand('Shoot_Right_4a', ShootCommandAutoFixed(shoot_speed=8.4))
+        NamedCommands.registerCommand('Shoot_Slow_2_5', ShootCommandAutoFixed(shoot_time=2.5, shoot_speed=9.08))
+        NamedCommands.registerCommand('Shoot_Slow_3', ShootCommandAutoFixed(shoot_time=3, shoot_speed=9.08))
+        NamedCommands.registerCommand('Shoot_Slow_4', ShootCommandAutoFixed(shoot_time=4, shoot_speed=9.08))
+        NamedCommands.registerCommand('Shoot_Slow_5', ShootCommandAutoFixed(shoot_time=5, shoot_speed=9.08))
 
         NamedCommands.registerCommand('ArcDrive', self.arcdrive)
 

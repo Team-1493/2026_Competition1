@@ -71,7 +71,7 @@ class ConstantValues():
 
 
     class AutoBuilderConstants():
-        AUTOBUILDER_XY_kP = 8        
+        AUTOBUILDER_XY_kP = 5        
         AUTOBUILDER_XY_kD = 0
         AUTOBUILDER_THETA_kP = 5        
         AUTOBUILDER_THETA_kD = 0        

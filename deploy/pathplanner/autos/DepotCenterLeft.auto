@@ -19,7 +19,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot_2_5s"
+            "name": "Shoot_Slow_2_5"
           }
         },
         {
@@ -37,7 +37,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot"
+            "name": "Shoot_Slow_4"
           }
         }
       ]
