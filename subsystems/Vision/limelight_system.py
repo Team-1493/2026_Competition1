@@ -107,10 +107,8 @@ class LLsystem(Subsystem):
                     t2=self.current_estimate[i].pose.translation()
                     difference_check = t1.distance(t2)<self.constants.CAMERA_CUTOFF_DIFFERENCE
                     distance_check = closestTagDist[i]<self.constants.CAMERA_CUTOFF_DISTANCE_1
-                        
                     if difference_check and distance_check: 
                         acceptEstimate[i] = True
-
                 else:
                     distance_check = closestTagDist[i] < self.constants.CAMERA_CUTOFF_DISTANCE_2
                     if distance_check : 
@@ -156,8 +154,8 @@ class LLsystem(Subsystem):
                     SmartDashboard.putNumber(label+"pose X",round(self.current_estimate[i].pose.translation().X(),3))
                     SmartDashboard.putNumber(label+"pose Y",round(self.current_estimate[i].pose.translation().Y(),3))
                     SmartDashboard.putNumber(label+"pose Rot",round(self.current_estimate[i].pose.rotation().degrees(),3) )                               
-#                    SmartDashboard.putNumber(label+"pose X(in)",round(self.current_estimate[i].pose.translation().X()*39.37,3))
-#                    SmartDashboard.putNumber(label+"pose Y(in)",round(self.current_estimate[i].pose.translation().Y()*39.37,3))
+                    SmartDashboard.putNumber(label+"pose X(in)",round(self.current_estimate[i].pose.translation().X()*39.37,3))
+                    SmartDashboard.putNumber(label+"pose Y(in)",round(self.current_estimate[i].pose.translation().Y()*39.37,3))
                     SmartDashboard.putNumber(label+"Amb",round(closestAmb[i],3))
 #                    SmartDashboard.putNumber(label+"Dist avg",round(self.current_estimate[i].avg_tag_dist,3))                
 #                   SmartDashboard.putNumber(label+"Area avg",round(current_estimate[i].avg_tag_area,3))    

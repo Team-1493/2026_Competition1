@@ -6,13 +6,16 @@ class led_system(Subsystem):
    
     def __init__(self):
         Subsystem.__init__(self)
-        self.p = AddressableLED(1)
+        self.p = AddressableLED(7)
         self.p.setColorOrder(AddressableLED.ColorOrder.kRGB)
         self.p.setLength(50)
         self.G=[AddressableLED.LEDData(0,128,0)]*50
         self.R=[AddressableLED.LEDData(256,128,0)]*50
-        self.p.setData(self.a)
+        self.p.setData(self.R)
         self.p.start()
+        self.p.setData(self.G)
+        self.p.start()        
+        self.prev_color = "G"   
         self.i=0
     def periodic(self):
         mt=DriverStation.getMatchTime()
@@ -21,7 +24,8 @@ class led_system(Subsystem):
             al="R"
         elif al=="blue":
             al="B"
-        msg=DriverStation.getGameSpecificMessage()[0]
+#        msg=DriverStation.getGameSpecificMessage()[0]
+        msg = "B"
        
         if msg=="R":
             if al=="R":
@@ -33,5 +37,6 @@ class led_system(Subsystem):
                 self.a=self.G
             else:
                 self.a=self.R
-        self.p.setData(self.a)
-        self.i =self.i+1
+        if al != self.prev_color:                
+            self.p.setData(self.a)
+        self.prev_color = al
