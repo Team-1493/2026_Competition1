@@ -41,6 +41,22 @@ class AutoGenerator():
             self.intake.runOnce(lambda: self.intake.intake_auto()))
         
         NamedCommands.registerCommand(
+            'IntakeStartCommand_5_5',
+            self.intake.runOnce(lambda: self.intake.intake_auto_volt(5.5)))
+        
+        NamedCommands.registerCommand(
+            'IntakeStartCommand_6_0',
+            self.intake.runOnce(lambda: self.intake.intake_auto_volt(6.0)))
+
+        NamedCommands.registerCommand(
+            'IntakeStartCommand_6_5',
+            self.intake.runOnce(lambda: self.intake.intake_auto_volt(6.5)))                
+
+        NamedCommands.registerCommand(
+            'IntakeStartCommand_7_0',
+            self.intake.runOnce(lambda: self.intake.intake_auto_volt(7.0)))
+
+        NamedCommands.registerCommand(
             'IntakeStopCommand',
             self.intake.runOnce(lambda: self.intake.stop_intake()))
 
@@ -67,6 +83,8 @@ class AutoGenerator():
         NamedCommands.registerCommand('Shoot_Slow_3', ShootCommandAutoFixed(shoot_time=3, shoot_speed=9.08))
         NamedCommands.registerCommand('Shoot_Slow_4', ShootCommandAutoFixed(shoot_time=4, shoot_speed=9.08))
         NamedCommands.registerCommand('Shoot_Slow_5', ShootCommandAutoFixed(shoot_time=5, shoot_speed=9.08))
+
+
 
         NamedCommands.registerCommand('ArcDrive', self.arcdrive)
 

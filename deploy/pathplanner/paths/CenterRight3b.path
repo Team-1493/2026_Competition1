@@ -8,34 +8,50 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.115447658815095,
-        "y": 4.847627543689829
+        "x": 5.9314698795180725,
+        "y": 2.865734939759036
       },
       "isLocked": false,
       "linkedName": "CenterRight_2a_end"
     },
     {
       "anchor": {
-        "x": 0.887,
-        "y": 5.997880067567568
+        "x": 6.8384698795180725,
+        "y": 1.5981204819277117
       },
       "prevControl": {
-        "x": 1.5443581081081081,
-        "y": 6.042322635135134
+        "x": 5.199313253012048,
+        "y": 2.2210000000000014
+      },
+      "nextControl": {
+        "x": 7.431122669611079,
+        "y": 1.3729124216923692
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.428566265060241,
+        "y": 3.78366265060241
+      },
+      "prevControl": {
+        "x": 7.428566265060241,
+        "y": 2.78366265060241
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "CenterRight_3a_end"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
   "constraintZones": [
     {
-      "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.3,
-      "maxWaypointRelativePos": 0.5,
+      "name": "Turn",
+      "minWaypointRelativePos": 0.9,
+      "maxWaypointRelativePos": 2.0,
       "constraints": {
-        "maxVelocity": 2.25,
+        "maxVelocity": 1.2,
         "maxAcceleration": 2.5,
         "maxAngularVelocity": 360.0,
         "maxAngularAcceleration": 720.0,
@@ -48,7 +64,7 @@
   "eventMarkers": [
     {
       "name": "IntakeStartCommand",
-      "waypointRelativePos": 0.4869059165858355,
+      "waypointRelativePos": 0.41488833746897236,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -56,10 +72,21 @@
           "name": "IntakeStartCommand"
         }
       }
+    },
+    {
+      "name": "IntakeStopCommand",
+      "waypointRelativePos": 1.975186104218362,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeStopCommand"
+        }
+      }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.25,
+    "maxVelocity": 1.6,
     "maxAcceleration": 2.5,
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 720.0,
@@ -68,13 +95,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 90.0
   },
   "reversed": false,
   "folder": "CenterRight",
   "idealStartingState": {
-    "velocity": 0,
+    "velocity": 0.0,
     "rotation": 35.0
   },
-  "useDefaultConstraints": true
+  "useDefaultConstraints": false
 }

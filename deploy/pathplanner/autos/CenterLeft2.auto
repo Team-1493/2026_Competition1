@@ -23,9 +23,9 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "CenterLeft2_4"
+            "name": "Shoot_Slow_2_5"
           }
         },
         {
@@ -44,6 +44,12 @@
           "type": "path",
           "data": {
             "pathName": "CenterLeft2_7"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "Shoot_Slow_4"
           }
         }
       ]

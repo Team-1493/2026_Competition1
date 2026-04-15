@@ -116,6 +116,12 @@ class IntakeSystem(Subsystem):
         self.intake_motor.set_control(self.voltage_out.with_output(ConstantValues.IntakeConstants.INTAKE_AUTO_VOLTAGE))
         self.intake_follower_motor.set_control(self.voltage_out.with_output(-ConstantValues.IntakeConstants.INTAKE_AUTO_VOLTAGE))        
 
+    def intake_auto_volt(self,volt):
+        self.arm_down()
+        self.intake_motor.set_control(self.voltage_out.with_output(-volt))
+        self.intake_follower_motor.set_control(self.voltage_out.with_output(volt))
+
+
     def stop_intake(self):
         self.intake_motor.set_control(self.brake)
         self.intake_follower_motor.set_control(self.brake)

@@ -19,13 +19,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot_Left_2a"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.0
+            "name": "Shoot_Slow_4"
           }
         },
         {
@@ -43,13 +37,7 @@
         {
           "type": "named",
           "data": {
-            "name": "Shoot_Right_4a"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 4.0
+            "name": "Shoot_Slow_2_5"
           }
         }
       ]
