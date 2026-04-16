@@ -39,9 +39,9 @@ class LLsystem(Subsystem):
         self.max_value = 9999
         self.configfureLimelights()
         self.zeroAndseedIMU()
-        self.cam_label = [" "]*self.numCams
-        self.previous_estimate = [None]*self.numCams
-        self.current_estimate = [PoseEstimate()]*self.numCams                
+        self.cam_label = [" "," "]
+        self.previous_estimate = [None,None]
+        self.current_estimate = [PoseEstimate(),PoseEstimate()]                
         SmartDashboard.putBoolean("Vision Active",True)
         for i in range(self.numCams):
                 self.cam_label[i]="LL Cam "+str(i)+" "
@@ -50,12 +50,12 @@ class LLsystem(Subsystem):
         self.set_id_filter_override(0,[2,3,4,5,8,9,10,11,18,19,20,21,24,25,26,27])
         self.set_id_filter_override(1,[2,3,4,5,8,9,10,11,18,19,20,21,24,25,26,27])        
         
-        self.closestTagDist = [self.max_value]*2
-        self.closestTagID = [0]*2
-        self.closestAmb = [0]*2
-        self.acceptEstimate = [False]*2
-        self.stdXY = [self.max_value]*2
-        self.stdRot = [self.max_value]*2
+        self.closestTagDist = [self.max_value,self.max_value]
+        self.closestTagID = [0,0]
+        self.closestAmb = [0,0]
+        self.acceptEstimate = [False,False]
+        self.stdXY = [self.max_value,self.max_value]
+        self.stdRot = [self.max_value,self.max_value]
         self.den = 1
 
         self.visionTimer.start()
@@ -81,7 +81,8 @@ class LLsystem(Subsystem):
 
 
     def update(self):
-        if abs(self.driveTrain.get_omega_rps())<1:
+        omega = abs(self.driveTrain.get_omega_rps()) 
+        if omega<1.5:
         
             for i in range(self.numCams):
 
@@ -93,8 +94,13 @@ class LLsystem(Subsystem):
 
                 if self.current_estimate[i] is not None :
                     numTags = self.current_estimate[i].tag_count
+
+                    rf = self.current_estimate[i].raw_fiducials
+                    if rf is None or len(rf) == 0:
+                        continue
+
                     self.closestTagID[i],self.closestAmb[i],self.closestTagDist[i] = (
-                        self.minDist(self.current_estimate[i].raw_fiducials))
+                        self.minDist(rf))
                 
                     self.acceptEstimate[i] = False
                     distance = self.closestTagDist[i]
@@ -105,19 +111,21 @@ class LLsystem(Subsystem):
                                 t2=self.current_estimate[i].pose.translation()
                                 if t1.distance(t2)<self.constants.CAMERA_CUTOFF_DIFFERENCE:
                                     self.acceptEstimate[i] = True
-                                    self.den = 1
                     else:
                         if self.closestAmb[i]<0.3:
                             if distance < self.constants.CAMERA_CUTOFF_DISTANCE_2:
                                 self.acceptEstimate[i] = True
-                                self.den=1.4
 
                     if self.acceptEstimate[i]:
+                        velocity = self.driveTrain.get_speeds_norm()
+                        motionScale = 1 + 0.7*velocity + 0.5*omega
+
                         baseXY = self.constants.STD_DEV_COEFF_XY
                         baseTheta = self.constants.STD_DEV_COEFF_THETA                       
                         d2 = distance*distance
-                        self.stdXY[i] = baseXY * d2 / self.den
-                        self.stdRot[i] =baseTheta * d2 / numTags
+                        den = 1 if numTags == 1 else 1.4                        
+                        self.stdXY[i] = motionScale*baseXY * d2 / den
+                        self.stdRot[i] =motionScale*baseTheta * d2 / numTags
                     
                         self.driveTrain.add_vision_measurement(
                                 self.current_estimate[i].pose,

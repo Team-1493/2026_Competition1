@@ -23,8 +23,8 @@ class led_system(Subsystem):
         self.length = 24
         self.p.setColorOrder(AddressableLED.ColorOrder.kRGB)
         self.p.setLength(self.length)
-        self.G=[AddressableLED.LEDData(0,128,0)]*24        
-        self.R=[AddressableLED.LEDData(128,0,0)]*24
+        self.G = [AddressableLED.LEDData(0,128,0) for _ in range(self.length)]
+        self.R = [AddressableLED.LEDData(128,0,0) for _ in range(self.length)]
         self.GY =self.set_green_yellow()
         self.RY = self.set_red_yellow()
 
@@ -40,7 +40,7 @@ class led_system(Subsystem):
 
     def periodic(self):
         time = Timer.getMatchTime()
-        print(time)
+#        print(time)
 
         if (not self.has_alliance):
             self.al=DriverStation.getAlliance()
@@ -65,7 +65,7 @@ class led_system(Subsystem):
             else:
                 self.a = self.GY
 
-        else:
+        elif self.al == DriverStation.Alliance.kBlue:
             if hub == Hub.BLUE or hub == Hub.BOTH:
                 self.a = self.G
             elif hub == Hub.RED:
@@ -75,11 +75,12 @@ class led_system(Subsystem):
             else:
                 self.a = self.GY
 
+        else:
+            self.a = self.G
 
 
-        if True:#al != self.prev_alliance:
-            self.p.setData(self.a)
-#            self.p.start()
+
+        self.p.setData(self.a)
         self.prev_alliance = self.al
 
 
