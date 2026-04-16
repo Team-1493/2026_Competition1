@@ -99,6 +99,10 @@ class LLsystem(Subsystem):
                     if rf is None or len(rf) == 0:
                         continue
 
+                    maxYaw = max(abs(t.txyc) for t in rf)
+                    if maxYaw > 0.6:  # tune this
+                        continue        
+
                     self.closestTagID[i],self.closestAmb[i],self.closestTagDist[i] = (
                         self.minDist(rf))
                 
