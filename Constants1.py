@@ -65,9 +65,9 @@ class ConstantValues():
         STD_DEV_COEFF_XY = .1 #0.05
         STD_DEV_COEFF_THETA = 999 #0.04 or self,max_value
 
-        CAMERA_CUTOFF_DISTANCE_1 = 4 # meters, above this distance std's set to max
+        CAMERA_CUTOFF_DISTANCE_1 = 2.5 # meters, above this distance std's set to max
         CAMERA_CUTOFF_DISTANCE_2 = 4 # meters, above this distance std's set to max                
-        CAMERA_CUTOFF_DIFFERENCE = 8 # meters, above this distance std's set to max                
+        CAMERA_CUTOFF_DIFFERENCE = 0.75 # meters, above this distance std's set to max                
 
 
     class AutoBuilderConstants():
