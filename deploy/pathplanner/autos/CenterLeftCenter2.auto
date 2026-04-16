@@ -7,37 +7,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "LDO_1"
+            "pathName": "CenterLeft_1a"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "LDO_2"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 1.5
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "LDO_3"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.0
+            "pathName": "CenterLeft_2a"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "SetHeadingToCurrent"
+            "name": "Shoot_Slow_4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterLeft_3b"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "CenterLeft_4b"
           }
         }
       ]

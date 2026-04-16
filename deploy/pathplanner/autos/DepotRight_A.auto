@@ -7,25 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "depot_1"
+            "pathName": "DepotRight_1a"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "outpost_2"
+            "pathName": "DepotLeft_2"
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "shoot_3"
+            "name": "Shoot_Slow_4"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Depot",
   "choreoAuto": false
 }

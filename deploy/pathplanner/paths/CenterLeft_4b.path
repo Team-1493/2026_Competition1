@@ -3,45 +3,55 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.159229671889203,
-        "y": 5.322396576319485
+        "x": 6.329201141226819,
+        "y": 6.435121255349501
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.723843373493976,
-        "y": 5.706939759036145
+        "x": 6.264507845934379,
+        "y": 5.788188302425108
       },
       "isLocked": false,
-      "linkedName": "CenterLeft2_4_end"
+      "linkedName": "CenterLeft3_3b_end"
     },
     {
       "anchor": {
-        "x": 6.8,
-        "y": 6.3
+        "x": 6.329201141226819,
+        "y": 4.455506419400857
       },
       "prevControl": {
-        "x": 5.713939759036144,
-        "y": 5.801987951807228
+        "x": 6.303323823109846,
+        "y": 5.28358059914408
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "CeterLeft2_5_end"
+      "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.2025586353944516,
+      "rotationDegrees": -90.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "IntakeStartCommand",
-      "waypointRelativePos": 0.23325062034739463,
+      "name": "IntakeStopCommand",
+      "waypointRelativePos": 0.9750168804861576,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeStopCommand"
+        }
+      }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 2.0,
-    "maxAcceleration": 2.75,
+    "maxVelocity": 1.0,
+    "maxAcceleration": 2.5,
     "maxAngularVelocity": 360.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -52,10 +62,10 @@
     "rotation": -90.0
   },
   "reversed": false,
-  "folder": "CenterLeft2",
+  "folder": "CenterLeft",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -45.0
+    "rotation": 45.0
   },
   "useDefaultConstraints": false
 }

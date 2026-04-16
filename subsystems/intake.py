@@ -98,6 +98,10 @@ class IntakeSystem(Subsystem):
 #        if  self.current_goal_position == self.goal_up and not self.up_limit_switch.get() :
 #            self.arm_motor.set_position(ConstantValues.IntakeConstants.ARM_FORWARDTHRESH)
 #            self.stop_arm()
+
+#        if  self.current_goal_position == self.goal_down and self.arm_position<.1:
+#            if self.arm_velocity !=0:
+#                self.stop_arm()
         if  self.current_goal_position == self.goal_down and self.lsd:
             if self.arm_velocity !=0:
                 self.stop_arm()

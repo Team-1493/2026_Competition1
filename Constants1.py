@@ -90,8 +90,8 @@ class ConstantValues():
     
 
     class IntakeConstants():
-        INTAKE_VOLTAGE = -4.5 # -25
-        INTAKE_AUTO_VOLTAGE = -4.5#  -25
+        INTAKE_VOLTAGE = -5 # -25
+        INTAKE_AUTO_VOLTAGE = -5.5#  -25
         INTAKE_MAX_VEL =45    
         INTAKE_STATOR_CL = 100#35
         INTAKE_SUPPLY_CL = 100#35
@@ -99,17 +99,17 @@ class ConstantValues():
         INTAKE_LOWERTIME_CL = 1
         INTAKE_CONVEYOR_VOLTAGE = -10
         INTAKE_CONVEYOR_SLOW_VOLTAGE = -2        
-        MAX_UP_ROTATION = .25
+        MAX_UP_ROTATION = 0.275
         MAX_DOWN_ROTATION = 0.00
-        ARM_KP = 50
+        ARM_KP = 70
         ARM_KD = 0
         ARM_KI = 5
-        ARM_KG = .35
+        ARM_KG = .45
         ARM_PEAK_FORWARD_TORQUE_CURRENT = 40
         ARM_PEAK_REVERSE_TORQUE_CURRENT = 40
-        ARM_FORWARDTHRESH = .285
+        ARM_FORWARDTHRESH = 0.28
         ARM_REVERSETHRESH = 0                
-        SENSOR_TO_MECHANISM_RATIO = 50 # 1 if 1 rotation of the motor = 1 rotation of the arm
+        SENSOR_TO_MECHANISM_RATIO = 16 # 1 if 1 rotation of the motor = 1 rotation of the arm
 
 
     class ShooterConstants():

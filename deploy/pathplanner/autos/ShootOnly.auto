@@ -7,25 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CenterLeft_1a_slow"
+            "pathName": "ShootOnly_A"
           }
         },
         {
-          "type": "path",
+          "type": "wait",
           "data": {
-            "pathName": "CenterLeft_2a"
+            "waitTime": 2.0
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot_Slow_5"
+            "name": "Shoot_Slow_4"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "ShootOnly",
   "choreoAuto": false
 }

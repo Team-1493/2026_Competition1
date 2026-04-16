@@ -25,19 +25,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CenterLeft_3a"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "CenterLeft_4a"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "Shoot_Slow_2_5"
+            "pathName": "CenterLeftCenter_3"
           }
         }
       ]

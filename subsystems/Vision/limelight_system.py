@@ -116,7 +116,7 @@ class LLsystem(Subsystem):
 
                 if acceptEstimate[i]:
                     distance = closestTagDist[i]
-                    numTags = self.current_estimate[i].tag_count
+#                    numTags = self.current_estimate[i].tag_count
                     baseXY = self.constants.STD_DEV_COEFF_XY
                     baseTheta = self.constants.STD_DEV_COEFF_THETA
                     omega = abs(self.driveTrain.get_omega_rps())
@@ -126,9 +126,9 @@ class LLsystem(Subsystem):
                         self.current_estimate[i].raw_fiducials)
                     yawSpread = max(yawSpread, 1.0)
 #                    print(yawSpread)
-
-                    stdXY[i] = motionScale*baseXY * (distance ** 2) / math.sqrt(numTags)
-                    stdRot[i] = motionScale*baseTheta * (distance ** 2) / (numTags*yawSpread)
+                    d2 = distance*distance
+                    stdXY[i] = motionScale*baseXY * (d2) / math.sqrt(numTags)
+                    stdRot[i] = motionScale*baseTheta * (d2) / (numTags*yawSpread)
 
 
 

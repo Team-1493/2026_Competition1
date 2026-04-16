@@ -66,7 +66,9 @@ class RobotContainer:
         self.slow_mode_on = InstantCommand(lambda:self.drive_teleop_command.slow_mode_on())
         self.slow_mode_off = InstantCommand(lambda:self.drive_teleop_command.slow_mode_off())        
         self.arm_up_command = self.intake.runOnce(lambda:self.intake.arm_up())
-        self.arm_down_command = self.intake.runOnce(lambda:self.intake.arm_down())        
+        self.arm_down_command = self.intake.runOnce(lambda:self.intake.arm_down())
+        self.arm_stop_command = self.intake.runOnce(lambda:self.intake.stop_arm())   
+        self.prespin = self.shooter.runOnce(lambda: self.shooter.shoot(8.9))             
 #        self.setForwardDirection = self.headingController.set_forward_directionCommand()                     
         self.createPPStuff()
         self.set_up_telemetry()
@@ -83,7 +85,6 @@ class RobotContainer:
 ##        Triggerc(DriverStation.isDisabled).whileTrue(
 #            self.drivetrain.apply_request(lambda: idle).ignoringDisable(True)
 #        )
-
         self._joystick.button(4).onTrue(self.rotateToZero)
         
         self._joystick.button(3).onTrue(self.rotateTo90)
@@ -112,11 +113,13 @@ class RobotContainer:
 
 
         self._joystick_op.povUp().onTrue(self.arm_up_command)
-        self._joystick_op.povDown().onTrue(self.arm_down_command)        
+        self._joystick_op.povDown().onTrue(self.arm_down_command)
+        self._joystick_op.button(4).onTrue(self.prespin)       
         self._joystick_op.button(5).whileTrue(self.intake_command)
         self._joystick_op.button(6).whileTrue(self.shoot_command)
         self._joystick_op.button(7).whileTrue(self.agitate_command)                
-        
+        self._joystick_op.button(10).onTrue(self.arm_stop_command)
+
         self._joystick.button(9).onTrue(
               InstantCommand(lambda:self.update_constants()))
 
@@ -130,7 +133,7 @@ class RobotContainer:
     
     def write_to_dashboard(self):
         self.drivetrain.write_to_dashboard()
-#        self.intake.write_to_dashboard()
+        self.intake.write_to_dashboard()
 #        self.shooter.write_to_dashboard()
         pass
        

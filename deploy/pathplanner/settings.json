@@ -8,12 +8,16 @@
     "CenterLeft2",
     "CenterLeftRight",
     "CenterRight",
+    "CenterRightLeft",
+    "Depot",
     "DepotCenterLeft",
     "Get_Shoot",
-    "Left_Depot_Out",
-    "New Folder"
+    "ShootOnly"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "Depot",
+    "ShootOnly"
+  ],
   "defaultMaxVel": 2.25,
   "defaultMaxAccel": 2.5,
   "defaultMaxAngVel": 360.0,

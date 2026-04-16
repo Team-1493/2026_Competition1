@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.000242510699001,
-        "y": -0.00833095577746007
+        "x": 0.6956,
+        "y": 6.042
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.000242510699002,
-        "y": -0.00833095577746007
+        "x": 1.5276024096385536,
+        "y": 5.706939759036145
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "CenterLeft_3aa_end"
     },
     {
       "anchor": {
-        "x": 4.000242510699001,
-        "y": 6.448059914407988
+        "x": 2.8616405135520675,
+        "y": 5.2059486447931524
       },
       "prevControl": {
-        "x": 3.0002425106990014,
-        "y": 6.448059914407988
+        "x": 2.2160481927710847,
+        "y": 5.4228192771084345
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,19 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "IntakeStopCommand",
+      "waypointRelativePos": 0.45104659014179416,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeStopCommand"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 2.25,
     "maxAcceleration": 2.5,
@@ -42,13 +54,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -29.999999999999996
   },
   "reversed": false,
-  "folder": "Left_Depot_Out",
+  "folder": "Depot",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

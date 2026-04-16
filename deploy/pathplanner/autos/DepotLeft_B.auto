@@ -7,25 +7,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "CenterLeft_1a_slow"
+            "pathName": "DepotLeft_1c"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "CenterLeft_2a"
+            "pathName": "DepotLeft_2"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "Shoot_Slow_5"
+            "name": "Shoot_Slow_4"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "Depot",
   "choreoAuto": false
 }
