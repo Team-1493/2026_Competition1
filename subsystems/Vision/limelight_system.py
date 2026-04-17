@@ -29,7 +29,7 @@ class LLsystem(Subsystem):
         SmartDashboard.putNumber("CAM0 xoff",0)
         SmartDashboard.putNumber("CAM0 yoff",0)        
         self.print_counter = 0
-        self.print_interval = 50
+        self.print_interval = 50000
         self.numCams = 2   # number of cameras on robot
 
 
@@ -60,7 +60,7 @@ class LLsystem(Subsystem):
 
     def periodic(self):
        # Run vision at 50 Hz
-        if self.visionTimer.advanceIfElapsed(0.02):
+        if self.visionTimer.advanceIfElapsed(0.05):
             self.currentPose = self.driveTrain.pose
             rot =  self.currentPose.rotation().degrees()
             for i in range(self.numCams):    

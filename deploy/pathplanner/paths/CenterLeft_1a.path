@@ -79,6 +79,28 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
+      "name": "FeederStart",
+      "waypointRelativePos": 0.17828200972446767,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "FeederStart"
+        }
+      }
+    },
+    {
+      "name": "FeederStop",
+      "waypointRelativePos": 0.32739059967585066,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "FeederStop"
+        }
+      }
+    },
+    {
       "name": "IntakeStartCommand",
       "waypointRelativePos": 0.46185010128292003,
       "endWaypointRelativePos": null,

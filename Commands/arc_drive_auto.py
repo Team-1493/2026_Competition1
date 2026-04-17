@@ -112,7 +112,7 @@ class arcDriveAuto(commands2.Command):
             speeds = ChassisSpeeds(speeds.vx * scale,speeds.vy * scale, omega)
         else:
             speeds = ChassisSpeeds(speeds.vx,speeds.vy,omega)    
-        print(omega)        
+#        print(omega)        
 #        print(speeds.vx,"  ",speeds.vy,"  ",speeds.omega,"  ",self.driveTrain.pose.rotation().degrees())
         if self.validLocation:
             self.driveTrain.set_control(
@@ -144,7 +144,7 @@ class arcDriveAuto(commands2.Command):
         near_angle = abs(thetaErr) <= self.nearTarget_angle_tol
         at_angle = abs(thetaErr) <= self.atTarget_angle_tol
 
-        print(xyErr,"   ",thetaErr,"  ",self.is_near_target,"  ",self.is_at_target)
+#        print(xyErr,"   ",thetaErr,"  ",self.is_near_target,"  ",self.is_at_target)
         self.is_at_target = at_angle and at_xy
         self.is_near_target  = near_angle and near_xy
 

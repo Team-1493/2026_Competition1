@@ -5,13 +5,13 @@
 
 from commands2 import InstantCommand,RepeatCommand
 from commands2.button import CommandXboxController
-from wpilib import DataLogManager, SmartDashboard
+from wpilib import SmartDashboard
 from pathplannerlib.auto import AutoBuilder,PathPlannerAuto 
 
 from Constants1 import ConstantValues
 from generated.tuner_constants import TunerConstants
 from subsystems.Drive.drivetrain_generator import DrivetrainGenerator 
-from telemetry import Telemetry
+#from telemetry import Telemetry
 from subsystems.Drive.heading_controller import HeadingController
 from subsystems.Vision.limelight_system import LLsystem
 from subsystems.intake import IntakeSystem
@@ -24,7 +24,7 @@ from Commands.arc_drive import arcDrive
 from Commands.shoot_command import ShootCommand
 from Commands.intake_command import IntakeCommand
 from Commands.shoot_command_auto_fixed import ShootCommandAutoFixed
-from subsystems.led import led_system
+# from subsystems.led import led_system
 from Utilities.helper_methods import HelperMethods
 from Auto.auto_generator import AutoGenerator 
 
@@ -39,7 +39,7 @@ class RobotContainer:
         self.headingController = HeadingController.getInstance()        
         self.intake = IntakeSystem.getInstance()
         self.shooter = ShooterSystem.getInstance()   
-        self.LED =  led_system()
+        # self.LED =  led_system()
         self.shoot_command = ShootCommand()
         self.intake_command = IntakeCommand()  
         self.agitate_command = AgitateIntake()          
@@ -73,7 +73,7 @@ class RobotContainer:
         self.prespin = self.shooter.runOnce(lambda: self.shooter.shoot(8.9))             
 #        self.setForwardDirection = self.headingController.set_forward_directionCommand()                     
         self.createPPStuff()
-        self.set_up_telemetry()
+#        self.set_up_telemetry()
         self.configureButtonBindings()
 
 
@@ -166,8 +166,8 @@ class RobotContainer:
         self.autoChooser = AutoBuilder.buildAutoChooser("DoNothing")
         SmartDashboard.putData("Auto Chooser", self.autoChooser)
         
-    def set_up_telemetry(self):
-        self._logger = Telemetry(TunerConstants.speed_at_12_volts)
-        DataLogManager.start()
-        self.drivetrain.register_telemetry(
-            lambda state: self._logger.telemeterize(state))
+#    def set_up_telemetry(self):
+#        self._logger = Telemetry(TunerConstants.speed_at_12_volts)
+#        DataLogManager.start()
+#        self.drivetrain.register_telemetry(
+#            lambda state: self._logger.telemeterize(state))

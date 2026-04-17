@@ -109,11 +109,10 @@ class arcDrive(commands2.Command):
         
         if speed_mag > self.max_speed:
             scale = self.max_speed / speed_mag
-            speeds = ChassisSpeeds(speeds.vx * scale,speeds.vy * scale, omega)
+#            speeds = ChassisSpeeds(speeds.vx * scale,speeds.vy * scale, omega)
+            speeds = ChassisSpeeds(0, 0, omega)
         else:
-            speeds = ChassisSpeeds(speeds.vx,speeds.vy,omega)    
-        print(omega)        
-#        print(speeds.vx,"  ",speeds.vy,"  ",speeds.omega,"  ",self.driveTrain.pose.rotation().degrees())
+            speeds = ChassisSpeeds(0,0,omega)    
         if self.validLocation:
             self.driveTrain.set_control(
                 self.driveTrain.request_autogenerator.with_speeds(speeds))
@@ -134,20 +133,19 @@ class arcDrive(commands2.Command):
 
     def calculate_error(self):
         current = self.driveTrain.pose
-        xyErr =math.hypot(current.X() - self.x_goal,current.Y() - self.y_goal) 
-        near_xy = xyErr <= self.nearTarget_dist_tol
-        at_xy =  xyErr <= self.atTarget_dist_tol
+#        xyErr =math.hypot(current.X() - self.x_goal,current.Y() - self.y_goal) 
+#        near_xy = xyErr <= self.nearTarget_dist_tol
+#        at_xy =  xyErr <= self.atTarget_dist_tol
 
         thetaErr = abs(current.rotation().radians() - self.angle_goal)
         if thetaErr>math.pi: thetaErr = thetaErr - 2*math.pi
         if thetaErr<-math.pi: thetaErr = thetaErr - 2*math.pi 
         near_angle = abs(thetaErr) <= self.nearTarget_angle_tol
         at_angle = abs(thetaErr) <= self.atTarget_angle_tol
+ 
+        self.is_at_target = at_angle
+#       self.is_near_target  = near_angle
 
-        print(xyErr,"   ",thetaErr,"  ",self.is_near_target,"  ",self.is_at_target)
-        self.is_at_target = at_angle and at_xy
-        self.is_near_target  = near_angle and near_xy
 
-
-    def get_is_near(self):
-        return self.is_near_target
+#    def get_is_near(self):
+#        return self.is_near_target

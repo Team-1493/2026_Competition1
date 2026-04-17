@@ -50,7 +50,6 @@ class DriveTeleopCommand(commands2.Command):
 
         state, target_angle = self.headingController.get_rotation_state(rot*self._max_angular_rate)  
 
-
         if state==0:
             self.drivetrain.drive_FC(
                 forw*self.scale_factorXY*self.slow_mode,

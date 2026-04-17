@@ -1,7 +1,7 @@
 from wpilib import AddressableLED
 from commands2 import Subsystem
 from enum import Enum
-from wpilib import DriverStation, Timer
+from wpilib import DriverStation
 
 class Alliance(Enum):
     RED = 0
@@ -38,15 +38,15 @@ class led_system(Subsystem):
         self.has_alliance = False
         self.msg=None
         self.al = None
-        self.timer = Timer()
+#        self.timer = Timer()
 #        self.timer.restart()
 #        self.timer.start()
 
     def periodic(self):
-        time = Timer.getMatchTime()
- #       if DriverStation.isDisabled(): self.timer.reset()
- #       time =160-self.timer.get() 
-        print(time)
+        time = DriverStation.getMatchTime()
+#        if DriverStation.isDisabled(): self.timer.reset()
+#        time =160-self.timer.get() 
+#        print(time)
 
         if (not self.has_alliance):
             self.al=DriverStation.getAlliance()
@@ -66,19 +66,29 @@ class led_system(Subsystem):
                 self.a = self.G
             elif hub == Hub.BLUE:
                 self.a = self.R
-            elif hub == Hub.BLUE_YELLOW:
-                self.a = self.RY
+            elif time>130:
+                if hub == Hub.RED_YELLOW:
+                    self.a = self.GY
+                else:
+                    self.a = self.G
             else:
                 if time<40:
-                    self.a = self.G
-                else:
                     self.a = self.GY
+                else:
+                    self.a = self.G
 
         elif self.al == DriverStation.Alliance.kBlue:
             if hub == Hub.BLUE or hub == Hub.BOTH:
                 self.a = self.G
             elif hub == Hub.RED:
                 self.a = self.R
+                
+            elif time>130:
+                if hub == Hub.RED_YELLOW:
+                    self.a = self.G
+                else:
+                    self.a = self.GY
+
             elif hub == Hub.RED_YELLOW:
                 self.a = self.RY
             else:
@@ -127,7 +137,12 @@ def get_active_hub(match_time: float, gsm: str) -> Hub:
 
     # --- TRANSITION ---
     if match_time > 130:
-        return Hub.BOTH
+        if gsm == "R":
+            return Hub.RED_YELLOW
+        elif gsm == "B":
+            return Hub.BLUE_YELLOW
+        else:
+            return Hub.BOTH
 
     # --- ENDGAME ---
     if match_time <= 30:
