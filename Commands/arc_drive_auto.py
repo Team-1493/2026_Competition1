@@ -16,14 +16,14 @@ from wpimath.kinematics import ChassisSpeeds
 
 
 
-class arcDrive(commands2.Command):
+class arcDriveAuto(commands2.Command):
     def __init__(self,
                 _driveTrain:CommandSwerveDrivetrain
                 # _targetPose: typing.Callable[[], Pose2d],
                 ) -> None:
         super().__init__()
         self.driveTrain = _driveTrain
-        self.max_radius = 3.3
+        self.max_radius = 3.8
         self.min_radius = 2.2
 
         self.max_speed=2.0 #max speed

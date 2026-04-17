@@ -3,7 +3,7 @@
 # the WPILib BSD license file in the root directory of this project.
 #
 
-from commands2 import InstantCommand
+from commands2 import InstantCommand,RepeatCommand
 from commands2.button import CommandXboxController
 from wpilib import DataLogManager, SmartDashboard
 from pathplannerlib.auto import AutoBuilder,PathPlannerAuto 
@@ -23,6 +23,7 @@ from Commands.auto_pilot_to_shoot import AutoPilotCommandToShoot
 from Commands.arc_drive import arcDrive
 from Commands.shoot_command import ShootCommand
 from Commands.intake_command import IntakeCommand
+from Commands.shoot_command_auto_fixed import ShootCommandAutoFixed
 from subsystems.led import led_system
 from Utilities.helper_methods import HelperMethods
 from Auto.auto_generator import AutoGenerator 
@@ -38,10 +39,11 @@ class RobotContainer:
         self.headingController = HeadingController.getInstance()        
         self.intake = IntakeSystem.getInstance()
         self.shooter = ShooterSystem.getInstance()   
-        self.LED =  led_system()
+#        self.LED =  led_system()
         self.shoot_command = ShootCommand()
         self.intake_command = IntakeCommand()  
         self.agitate_command = AgitateIntake()          
+        self.shoot_fixed = ShootCommandAutoFixed(shoot_time=5, shoot_speed=9.08)        
         self.autoPilot_command = AutoPilotCommand(self.drivetrain)
         self.autoPilot_to_shoot = AutoPilotCommandToShoot(self.drivetrain)        
 
@@ -112,28 +114,29 @@ class RobotContainer:
                 self.headingController.setTargetRotationInt))
 
 
-        self._joystick_op.povUp().onTrue(self.arm_up_command)
-        self._joystick_op.povDown().onTrue(self.arm_down_command)
+        self._joystick_op.povUp().whileTrue(self.arm_up_command)
+        self._joystick_op.povDown().whileTrue(self.arm_down_command)
+        self._joystick_op.button(1).whileTrue(self.shoot_fixed)        
         self._joystick_op.button(4).onTrue(self.prespin)       
         self._joystick_op.button(5).whileTrue(self.intake_command)
         self._joystick_op.button(6).whileTrue(self.shoot_command)
         self._joystick_op.button(7).whileTrue(self.agitate_command)                
         self._joystick_op.button(10).onTrue(self.arm_stop_command)
 
-        self._joystick.button(9).onTrue(
-              InstantCommand(lambda:self.update_constants()))
+#        self._joystick.button(9).onTrue(
+#              InstantCommand(lambda:self.update_constants()))
 
     def getAutonomousCommand(self):
-        return PathPlannerAuto(self.autoChooser._m_selected)            
-#        return  self.autoChooser.getSelected()
+#        return PathPlannerAuto(self.autoChooser._m_selected)            
+        return  self.autoChooser.getSelected()
 
 
     def setHeadingControlToCurrentrHeading(self):
         self.headingController.setTargetRotationInt(True)  
     
     def write_to_dashboard(self):
-        self.drivetrain.write_to_dashboard()
-        self.intake.write_to_dashboard()
+#        self.drivetrain.write_to_dashboard()
+#        self.intake.write_to_dashboard()
 #        self.shooter.write_to_dashboard()
         pass
        

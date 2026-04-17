@@ -23,8 +23,8 @@ class ConstantValues():
         TELEOP_kA = 0 # TunerConstants._drive_gains.k_a
         TELEOP_DEADBAND = 0.0025
         TELEOP_MAX_ANGULAR_RATE = 1
-        TELEOP_SCALE_FACTOR_XY = 0.8
-        TELEOP_SCALE_FACTOR_ROT = 0.8
+        TELEOP_SCALE_FACTOR_XY = 0.9
+        TELEOP_SCALE_FACTOR_ROT = 0.9
         SPEED_AT_12_VOLTS = 3.3#TunerConstants.speed_at_12_volts 
 
 
@@ -65,7 +65,7 @@ class ConstantValues():
         STD_DEV_COEFF_XY = .1 #0.05
         STD_DEV_COEFF_THETA = 999 #0.04 or self,max_value
 
-        CAMERA_CUTOFF_DISTANCE_1 = 2.5 # meters, above this distance std's set to max
+        CAMERA_CUTOFF_DISTANCE_1 = 2 # meters, above this distance std's set to max
         CAMERA_CUTOFF_DISTANCE_2 = 4 # meters, above this distance std's set to max                
         CAMERA_CUTOFF_DIFFERENCE = 0.75 # meters, above this distance std's set to max                
 

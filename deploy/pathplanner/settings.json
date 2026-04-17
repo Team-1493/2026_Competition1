@@ -18,7 +18,7 @@
     "Depot",
     "ShootOnly"
   ],
-  "defaultMaxVel": 2.25,
+  "defaultMaxVel": 2.1,
   "defaultMaxAccel": 2.5,
   "defaultMaxAngVel": 360.0,
   "defaultMaxAngAccel": 720.0,

@@ -79,10 +79,10 @@ class AutoGenerator():
         NamedCommands.registerCommand('Shoot_2_5s', ShootCommandAuto(2.5))
         NamedCommands.registerCommand('Shoot_3_s', ShootCommandAuto(3))
         NamedCommands.registerCommand('Shoot_3_5s', ShootCommandAuto(3.5))
-        NamedCommands.registerCommand('Shoot_Slow_2_5', ShootCommandAutoFixed(shoot_time=2.5, shoot_speed=9.08))
-        NamedCommands.registerCommand('Shoot_Slow_3', ShootCommandAutoFixed(shoot_time=3, shoot_speed=9.08))
-        NamedCommands.registerCommand('Shoot_Slow_4', ShootCommandAutoFixed(shoot_time=4, shoot_speed=9.08))
-        NamedCommands.registerCommand('Shoot_Slow_5', ShootCommandAutoFixed(shoot_time=5, shoot_speed=9.08))
+        NamedCommands.registerCommand('Shoot_Slow_2_5', ShootCommandAutoFixed(shoot_time=2.5, shoot_speed=8.98))
+        NamedCommands.registerCommand('Shoot_Slow_3', ShootCommandAutoFixed(shoot_time=3, shoot_speed=8.98))
+        NamedCommands.registerCommand('Shoot_Slow_4', ShootCommandAutoFixed(shoot_time=4, shoot_speed=8.98))
+        NamedCommands.registerCommand('Shoot_Slow_5', ShootCommandAutoFixed(shoot_time=5, shoot_speed=8.98))
 
 
 

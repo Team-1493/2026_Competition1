@@ -29,7 +29,7 @@ class LLsystem(Subsystem):
         SmartDashboard.putNumber("CAM0 xoff",0)
         SmartDashboard.putNumber("CAM0 yoff",0)        
         self.print_counter = 0
-        self.print_interval = 10
+        self.print_interval = 50
         self.numCams = 2   # number of cameras on robot
 
 
@@ -76,12 +76,12 @@ class LLsystem(Subsystem):
 #        current_estimate = [PoseEstimate(),PoseEstimate(),PoseEstimate(),PoseEstimate()]                
         estimate = PoseEstimate()
         
-        closestTagDist = [self.max_value]*4
-        closestTagID = [0]*4
-        closestAmb = [0]*4
-        acceptEstimate = [False]*4
-        stdXY = [self.max_value]*4
-        stdRot = [self.max_value]*4
+        closestTagDist = [self.max_value]*2
+        closestTagID = [0]*2
+        closestAmb = [0]*2
+        acceptEstimate = [False]*2
+        stdXY = [self.max_value]*2
+        stdRot = [self.max_value]*2
 
 
 
@@ -132,10 +132,10 @@ class LLsystem(Subsystem):
 
 
 
-                    if SmartDashboard.getBoolean("Vision Active",True):
-                     if closestAmb[i]<0.3:
-                        x = self.current_estimate[i].pose.X() + SmartDashboard.getNumber("CAM0 xoff",0)
-                        y = self.current_estimate[i].pose.Y()+ SmartDashboard.getNumber("CAM0 yoff",0)
+                    if True:#SmartDashboard.getBoolean("Vision Active",True):
+                     if ((closestAmb[i]<0.3 and numTags==2) or (closestAmb[i]<2 and numTags==1)):
+                        x = self.current_estimate[i].pose.X()# + SmartDashboard.getNumber("CAM0 xoff",0)
+                        y = self.current_estimate[i].pose.Y()#+ SmartDashboard.getNumber("CAM0 yoff",0)
                         r = self.current_estimate[i].pose.rotation().radians()
 
                         self.driveTrain.add_vision_measurement(
@@ -148,14 +148,14 @@ class LLsystem(Subsystem):
 #                print(self.print_counter,"  ",self.print_interval)
                 if(self.print_counter>self.print_interval):
                     label=self.cam_label[i]
-                    SmartDashboard.putNumber(label+"closest Tag ID ",closestTagID[i])    
-                    SmartDashboard.putNumber(label+"closest Dist",round(closestTagDist[i],3))                                    
+#                    SmartDashboard.putNumber(label+"closest Tag ID ",closestTagID[i])    
+#                    SmartDashboard.putNumber(label+"closest Dist",round(closestTagDist[i],3))                                    
                     SmartDashboard.putNumber(label+"Num Targ",self.current_estimate[i].tag_count)                
                     SmartDashboard.putNumber(label+"pose X",round(self.current_estimate[i].pose.translation().X(),3))
                     SmartDashboard.putNumber(label+"pose Y",round(self.current_estimate[i].pose.translation().Y(),3))
                     SmartDashboard.putNumber(label+"pose Rot",round(self.current_estimate[i].pose.rotation().degrees(),3) )                               
-                    SmartDashboard.putNumber(label+"pose X(in)",round(self.current_estimate[i].pose.translation().X()*39.37,3))
-                    SmartDashboard.putNumber(label+"pose Y(in)",round(self.current_estimate[i].pose.translation().Y()*39.37,3))
+ #                   SmartDashboard.putNumber(label+"pose X(in)",round(self.current_estimate[i].pose.translation().X()*39.37,3))
+ #                   SmartDashboard.putNumber(label+"pose Y(in)",round(self.current_estimate[i].pose.translation().Y()*39.37,3))
                     SmartDashboard.putNumber(label+"Amb",round(closestAmb[i],3))
 #                    SmartDashboard.putNumber(label+"Dist avg",round(self.current_estimate[i].avg_tag_dist,3))                
 #                   SmartDashboard.putNumber(label+"Area avg",round(current_estimate[i].avg_tag_area,3))    
@@ -163,8 +163,8 @@ class LLsystem(Subsystem):
 #                   SmartDashboard.putNumber(label+"Pitch_tync",LimelightHelpers.get_tync(self.constants.CAM_NAME[i]))
 #                   SmartDashboard.putNumber(label+"Yaw_tx",LimelightHelpers.get_tx(self.constants.CAM_NAME[i]))                                 
 #                   SmartDashboard.putNumber(label+"Yaw_txnc",LimelightHelpers.get_txnc(self.constants.CAM_NAME[i]))                
-                    SmartDashboard.putNumber(label+"Std Dev XY",round(stdXY[i],3))  
-                    SmartDashboard.putNumber(label+"Std Dev Theta",round(stdRot[i],3))  
+#                    SmartDashboard.putNumber(label+"Std Dev XY",round(stdXY[i],3))  
+#                    SmartDashboard.putNumber(label+"Std Dev Theta",round(stdRot[i],3))  
 
             
         if self.print_counter>self.print_interval:
