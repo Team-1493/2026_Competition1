@@ -13,7 +13,8 @@ class Hub(Enum):
     BOTH = 2
     NONE = 3 
     RED_YELLOW = 4   # last 8s of red period
-    BLUE_YELLOW = 5  # last 8s of blue period    
+    BLUE_YELLOW = 5  # last 8s of blue period 
+    TRANSITION = 6   
 
 class led_system(Subsystem):
    
@@ -37,10 +38,15 @@ class led_system(Subsystem):
         self.has_alliance = False
         self.msg=None
         self.al = None
+        self.timer = Timer()
+#        self.timer.restart()
+#        self.timer.start()
 
     def periodic(self):
         time = Timer.getMatchTime()
-#        print(time)
+ #       if DriverStation.isDisabled(): self.timer.reset()
+ #       time =160-self.timer.get() 
+        print(time)
 
         if (not self.has_alliance):
             self.al=DriverStation.getAlliance()
@@ -63,7 +69,10 @@ class led_system(Subsystem):
             elif hub == Hub.BLUE_YELLOW:
                 self.a = self.RY
             else:
-                self.a = self.GY
+                if time<40:
+                    self.a = self.G
+                else:
+                    self.a = self.GY
 
         elif self.al == DriverStation.Alliance.kBlue:
             if hub == Hub.BLUE or hub == Hub.BOTH:
@@ -73,7 +82,10 @@ class led_system(Subsystem):
             elif hub == Hub.RED_YELLOW:
                 self.a = self.RY
             else:
-                self.a = self.GY
+                if time<40:
+                    self.a = self.G
+                else:
+                    self.a = self.GY
 
         else:
             self.a = self.G
@@ -110,15 +122,15 @@ def get_active_hub(match_time: float, gsm: str) -> Hub:
     """
 
     # --- AUTO ---
-    if match_time > 130:
-        return Hub.NONE
+    if match_time > 140:
+        return Hub.BOTH
 
     # --- TRANSITION ---
-    if match_time > 120:
+    if match_time > 130:
         return Hub.BOTH
 
     # --- ENDGAME ---
-    if match_time <= 20:
+    if match_time <= 30:
         return Hub.BOTH
 
     # --- DETERMINE LOSER ---
@@ -132,7 +144,7 @@ def get_active_hub(match_time: float, gsm: str) -> Hub:
         return Hub.NONE
 
     # --- CYCLING PERIOD ---
-    time_into_cycle = 120 - match_time  # 0 → 100
+    time_into_cycle = 130 - match_time  # 0 → 100
     period_index = int(time_into_cycle // 25)  # 0–3
     time_into_period = time_into_cycle % 25
 
@@ -142,8 +154,8 @@ def get_active_hub(match_time: float, gsm: str) -> Hub:
     else:
         active = winner
 
-    # --- YELLOW (last 8 seconds) ---
-    if time_into_period >= 17:
+    # --- YELLOW (last 10 seconds) ---
+    if time_into_period >= 15 :
         if active == Hub.RED:
             return Hub.RED_YELLOW
         elif active == Hub.BLUE:
