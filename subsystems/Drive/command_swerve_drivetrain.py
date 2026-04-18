@@ -169,9 +169,7 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
 
         self.define_gain_slots()
         self.apply_teleop_gains()
-        self.setup_swerve_requests()           
-        
-        self.setup_swerve_requests()
+        self.setup_swerve_requests()                   
 
         if utils.is_simulation():
             self._start_sim_thread()
@@ -218,23 +216,12 @@ class CommandSwerveDrivetrain(Subsystem, swerve.SwerveDrivetrain[hardware.TalonF
 #       retrieve and store the pose and speeds once per loop for use in 
 #        dashboard and other systems, so we don't have to call get_state() 
 #       multiple times per loop
+        p = self.get_po
         self.state = self.get_state()
         self.pose =  self.state.pose
         self.rotation_rad = self.pose.rotation().radians()
         self.rotation_deg = self.pose.rotation().degrees()        
         self.speeds = self.state.speeds
-
-
-# every 10 loops, print the avg loop time and write pose data to dashboard
-        if (self.timing_counter==25):
-            time = Timer.getFPGATimestamp()
-            delta_time = time - self.time_start
-#            print("CSD Loop Time:", delta_time/25)
-            self.time_start = time
-            self.timing_counter = 0
-
-        self.timing_counter = self.timing_counter+1
-
 
     def write_to_dashboard(self):
 
